@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="../../Sources.Build.props" />
+
+    <PropertyGroup Label="Language">
+        <RootNamespace>Falko.Foundry.CSharp</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup Label="Dependencies">
+        <ProjectReference Include="..\Falko.Foundry\Falko.Foundry.csproj" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "+CHI03UNzpQ=",
+  "success": true,
+  "projectFilePath": "/Users/Shared/Developer/Falko.Foundry/Sources/Falko.Foundry/Falko.Foundry.csproj",
+  "expectedPackageFiles": [
+    "/Users/fembina/.nuget/packages/microsoft.net.illink.tasks/9.0.14/microsoft.net.illink.tasks.9.0.14.nupkg.sha512",
+    "/Users/fembina/.nuget/packages/microsoft.net.illink.tasks/10.0.5/microsoft.net.illink.tasks.10.0.5.nupkg.sha512",
+    "/Users/fembina/.nuget/packages/microsoft.netcore.app.ref/9.0.14/microsoft.netcore.app.ref.9.0.14.nupkg.sha512",
+    "/Users/fembina/.nuget/packages/microsoft.aspnetcore.app.ref/9.0.14/microsoft.aspnetcore.app.ref.9.0.14.nupkg.sha512"
+  ],
+  "logs": []
+}

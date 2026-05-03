@@ -1,0 +1,49 @@
+<Project>
+    <Import Project="Common.Build.props" />
+
+    <PropertyGroup Label="Assembly">
+        <IsPackable>true</IsPackable>
+        <Optimize Condition="$(Configuration) == 'Release'">true</Optimize>
+        <SkipLocalsInit>true</SkipLocalsInit>
+        <DebugType>portable</DebugType>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <IncludeSource>true</IncludeSource>
+        <Deterministic>true</Deterministic>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+        <EnablePackageValidation>true</EnablePackageValidation>
+        <OutputType>Library</OutputType>
+    </PropertyGroup>
+
+    <PropertyGroup Label="Description">
+        <PackageIcon>Assets/Icon512.png</PackageIcon>
+        <PackageIconUrl>https://raw.githubusercontent.com/falko-team/zero-logger/main/Icon512.png</PackageIconUrl>
+        <PackageProjectUrl>https://github.com/falko-team/zero-logger</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/falko-team/zero-logger.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>logger;falko</PackageTags>
+        <PackageReadmeFile>Assets/ReadMe.package.md</PackageReadmeFile>
+        <PackageLicenseFile>Assets/License.md</PackageLicenseFile>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    </PropertyGroup>
+
+    <ItemGroup Label="Assets">
+        <None Include="../../Icon512.png">
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+            <PackagePath>Assets</PackagePath>
+        </None>
+        <None Include="../../License.md">
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+            <PackagePath>Assets</PackagePath>
+        </None>
+        <None Include="../../ReadMe.package.md">
+            <Pack>true</Pack>
+            <Visible>false</Visible>
+            <PackagePath>Assets</PackagePath>
+        </None>
+    </ItemGroup>
+</Project>
