@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="../../Examples.Build.props" />
+
+    <PropertyGroup Label="Assembly">
+        <TargetFramework>net10.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup Label="Dependencies">
+        <ProjectReference Include="..\..\Sources\Falko.Foundry.CSharp\Falko.Foundry.CSharp.csproj" />
+    </ItemGroup>
+</Project>
