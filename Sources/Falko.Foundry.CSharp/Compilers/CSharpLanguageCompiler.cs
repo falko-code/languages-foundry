@@ -1,8 +1,8 @@
 using System.Runtime.CompilerServices;
+using Falko.Foundry.Compilers;
 using Falko.Foundry.CSharp.Elements;
-using Falko.Foundry.Languages;
 
-namespace Falko.Foundry.CSharp.Languages;
+namespace Falko.Foundry.CSharp.Compilers;
 
 public sealed class CSharpLanguageCompiler : LanguageCompiler<CSharpLanguageCompiler>
 {

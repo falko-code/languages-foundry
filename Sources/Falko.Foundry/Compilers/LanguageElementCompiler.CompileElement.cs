@@ -2,7 +2,7 @@ using Falko.Foundry.Buffers;
 using Falko.Foundry.Elements;
 using Falko.Foundry.Types;
 
-namespace Falko.Foundry.Languages;
+namespace Falko.Foundry.Compilers;
 
 public static class LanguageElementCompilerExtensions
 {

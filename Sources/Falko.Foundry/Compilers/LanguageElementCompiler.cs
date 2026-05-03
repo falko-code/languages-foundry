@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 using Falko.Foundry.Buffers;
 using Falko.Foundry.Elements;
 
-namespace Falko.Foundry.Languages;
+namespace Falko.Foundry.Compilers;
 
 [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
 public readonly ref struct LanguageElementCompiler<TElement>

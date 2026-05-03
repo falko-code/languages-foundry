@@ -2,7 +2,7 @@ using System.Runtime.CompilerServices;
 using Falko.Foundry.Caches;
 using Falko.Foundry.Elements;
 
-namespace Falko.Foundry.Languages;
+namespace Falko.Foundry.Compilers;
 
 public abstract class LanguageCompiler<TSelf> : ILanguageCompiler
     where TSelf : class, ILanguageCompiler

@@ -1,8 +1,9 @@
+using Falko.Foundry.Compilers;
 using Falko.Foundry.Elements;
 
 namespace Falko.Foundry.Caches;
 
-public static class ElementCompilerCache<TElementCompiler, TElement>
+internal static class ElementCompilerCache<TElementCompiler, TElement>
     where TElementCompiler : IElementCompiler<TElement>, new()
     where TElement : struct, ILanguageElement, allows ref struct
 {

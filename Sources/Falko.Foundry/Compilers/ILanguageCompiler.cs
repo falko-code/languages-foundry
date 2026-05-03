@@ -1,6 +1,6 @@
 using Falko.Foundry.Elements;
 
-namespace Falko.Foundry.Languages;
+namespace Falko.Foundry.Compilers;
 
 public interface ILanguageCompiler
 {

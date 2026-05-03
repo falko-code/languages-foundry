@@ -1,11 +1,11 @@
 using System.Runtime.CompilerServices;
+using Falko.Foundry.Compilers;
 using Falko.Foundry.Elements;
-using Falko.Foundry.Languages;
 
 namespace Falko.Foundry.Caches;
 
 // ReSharper disable once UnusedTypeParameter
-public static class ElementCompilerRelativeCache<TLanguageCompiler, TElement>
+internal static class ElementCompilerRelativeCache<TLanguageCompiler, TElement>
     where TLanguageCompiler : class, ILanguageCompiler
     where TElement : struct, ILanguageElement, allows ref struct
 {

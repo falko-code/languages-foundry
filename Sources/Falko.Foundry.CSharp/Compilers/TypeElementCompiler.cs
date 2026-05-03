@@ -1,10 +1,10 @@
 using Falko.Foundry.Buffers;
-using Falko.Foundry.Elements;
-using Falko.Foundry.Languages;
+using Falko.Foundry.Compilers;
+using Falko.Foundry.CSharp.Elements;
 
-namespace Falko.Foundry.CSharp.Elements;
+namespace Falko.Foundry.CSharp.Compilers;
 
-public sealed class TypeElementCompiler : IElementCompiler<TypeElement>
+internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
 {
     public void Compile
     (
