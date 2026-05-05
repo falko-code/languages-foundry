@@ -61,9 +61,9 @@ public readonly struct Utf8String
         leftSpan.CopyTo(combinedSpan);
         rightSpan.CopyTo(combinedSpan[leftSpanLength..]);
 
-        return Unsafe(combinedBytes);
+        return Wrap(combinedBytes);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Utf8String Unsafe(ReadOnlyMemory<byte> utf8Bytes) => new(utf8Bytes);
+    public static Utf8String Wrap(ReadOnlyMemory<byte> utf8Bytes) => new(utf8Bytes);
 }

@@ -9,7 +9,7 @@ public static class LanguageElementCompilerExtensions
     public static Utf8String CompileElement<TElement>(this ILanguageCompiler compiler, scoped in TElement element)
         where TElement : struct, ILanguageElement, allows ref struct
     {
-        return Utf8String.Unsafe(SpanByteBuffer.Create
+        return Utf8String.Wrap(SpanByteBuffer.Create
         (
             argument: new CompileContext<TElement>(compiler, in element),
             allocator: static (context, buffer) =>
