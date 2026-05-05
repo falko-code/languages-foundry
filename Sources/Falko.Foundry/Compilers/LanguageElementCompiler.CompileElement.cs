@@ -6,7 +6,7 @@ namespace Falko.Foundry.Compilers;
 
 public static class LanguageElementCompilerExtensions
 {
-    public static TextMemory CompileElement<TElement>(this ILanguageCompiler compiler, scoped in TElement element)
+    public static Utf8String CompileElement<TElement>(this ILanguageCompiler compiler, scoped in TElement element)
         where TElement : struct, ILanguageElement, allows ref struct
     {
         return SpanByteBuffer.Create
@@ -14,8 +14,10 @@ public static class LanguageElementCompilerExtensions
             argument: new CompileContext<TElement>(compiler, in element),
             allocator: static (context, buffer) =>
             {
-                var elementCompiler = context.Compiler.GetElementCompiler<TElement>();
-                elementCompiler.Compile(context.Element, ref buffer);
+                context
+                    .Compiler
+                    .GetElementCompiler<TElement>()
+                    .Compile(context.Element, ref buffer);
             }
         );
     }

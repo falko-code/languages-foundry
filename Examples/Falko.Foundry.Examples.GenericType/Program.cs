@@ -12,7 +12,7 @@ var loggerType = new TypeElement
 {
     Namespace = "Falko.Logging.Loggers"u8,
     Name = "Logger"u8,
-    GenericTypes = serviceType
+    GenericTypes = [serviceType]
 };
 
 var result = CSharpLanguageCompiler
