@@ -106,7 +106,7 @@ public readonly struct Utf8String
     public static bool operator ==(Utf8String left, Utf8String right) => left.Equals(right);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool operator !=(Utf8String left, Utf8String right) => !left.Equals(right);
+    public static bool operator !=(Utf8String left, Utf8String right) => left.Equals(right) is false;
 
     [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public static Utf8String operator +(Utf8String left, Utf8String right)
