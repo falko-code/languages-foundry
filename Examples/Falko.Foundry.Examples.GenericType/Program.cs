@@ -18,7 +18,7 @@ var loggerType = new TypeElement
 var result = CSharpLanguageCompiler
     .Instance
     .CompileElement(in loggerType)
-    .ToString();
+    .ToString(); // we convert to Utf8String to String, but that do allocate, so better avoid it in real code
 
 Console.WriteLine(result);
 
