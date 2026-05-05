@@ -5,6 +5,7 @@ namespace Falko.Foundry.Types;
 
 [SkipLocalsInit]
 public readonly struct Utf8String
+    : IEquatable<Utf8String>, IComparable<Utf8String>, ISpanFormattable, IUtf8SpanFormattable
 {
     private readonly ReadOnlyMemory<byte> _utf8Bytes;
 
@@ -29,11 +30,65 @@ public readonly struct Utf8String
         get => _utf8Bytes.IsEmpty;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ReadOnlySpan<byte> AsSpan() => _utf8Bytes.Span;
+
+    public ReadOnlySpan<byte> Span
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => _utf8Bytes.Span;
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override string ToString() => Encoding.UTF8.GetString(_utf8Bytes.Span);
+    public override int GetHashCode()
+    {
+        var hash = new HashCode();
+        hash.AddBytes(Span);
+        return hash.ToHashCode();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override bool Equals(object? obj) => obj is Utf8String other && Equals(other);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool Equals(Utf8String other) => Span.SequenceEqual(other.Span);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public int CompareTo(Utf8String other) => Span.SequenceCompareTo(other.Span);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override string ToString() => Encoding.UTF8.GetString(Span);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public string ToString(string? format, IFormatProvider? provider) => ToString();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool TryFormat
+    (
+        Span<char> destination,
+        out int charsWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider
+    ) => Encoding.UTF8.TryGetChars(Span, destination, out charsWritten);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool TryFormat
+    (
+        Span<byte> utf8Destination,
+        out int bytesWritten,
+        ReadOnlySpan<char> format,
+        IFormatProvider? provider
+    )
+    {
+        var span = Span;
+
+        if (span.TryCopyTo(utf8Destination))
+        {
+            bytesWritten = span.Length;
+            return true;
+        }
+
+        bytesWritten = 0;
+        return false;
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Utf8String(ReadOnlySpan<byte> utf8Bytes) => new(utf8Bytes);
@@ -42,16 +97,22 @@ public readonly struct Utf8String
     public static implicit operator Utf8String(string text) => new(text);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator ReadOnlySpan<byte>(Utf8String utf8String) => utf8String.AsSpan();
+    public static implicit operator ReadOnlySpan<byte>(Utf8String utf8String) => utf8String.Span;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator string(Utf8String utf8String) => utf8String.ToString();
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator ==(Utf8String left, Utf8String right) => left.Equals(right);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static bool operator !=(Utf8String left, Utf8String right) => !left.Equals(right);
+
     [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public static Utf8String operator +(Utf8String left, Utf8String right)
     {
-        var leftSpan = left.AsSpan();
-        var rightSpan = right.AsSpan();
+        var leftSpan = left.Span;
+        var rightSpan = right.Span;
 
         var leftSpanLength = leftSpan.Length;
 
@@ -66,4 +127,34 @@ public readonly struct Utf8String
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Utf8String Wrap(ReadOnlyMemory<byte> utf8Bytes) => new(utf8Bytes);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Enumerator GetEnumerator() => new(Span);
+
+    public ref struct Enumerator
+    {
+        private ReadOnlySpan<byte> _remaining;
+        private Rune _current;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal Enumerator(ReadOnlySpan<byte> span) => _remaining = span;
+
+        public Rune Current
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _current;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool MoveNext()
+        {
+            var remaining = _remaining;
+
+            if (remaining.IsEmpty) return false;
+
+            Rune.DecodeFromUtf8(remaining, out _current, out var bytesConsumed);
+            _remaining = remaining[bytesConsumed..];
+            return true;
+        }
+    }
 }
