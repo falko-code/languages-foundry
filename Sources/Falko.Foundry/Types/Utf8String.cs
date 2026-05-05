@@ -7,6 +7,8 @@ namespace Falko.Foundry.Types;
 public readonly struct Utf8String
     : IEquatable<Utf8String>, IComparable<Utf8String>, ISpanFormattable, IUtf8SpanFormattable
 {
+    public static readonly Utf8String Empty = Wrap(ReadOnlyMemory<byte>.Empty);
+
     private readonly ReadOnlyMemory<byte> _utf8Bytes;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -30,18 +32,17 @@ public readonly struct Utf8String
         get => _utf8Bytes.IsEmpty;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ReadOnlySpan<byte> AsSpan() => _utf8Bytes.Span;
 
-    public ReadOnlySpan<byte> Span
-    {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => _utf8Bytes.Span;
-    }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ReadOnlyMemory<byte> AsMemory() => _utf8Bytes;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override int GetHashCode()
     {
         var hash = new HashCode();
-        hash.AddBytes(Span);
+        hash.AddBytes(AsSpan());
         return hash.ToHashCode();
     }
 
@@ -49,13 +50,13 @@ public readonly struct Utf8String
     public override bool Equals(object? obj) => obj is Utf8String other && Equals(other);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool Equals(Utf8String other) => Span.SequenceEqual(other.Span);
+    public bool Equals(Utf8String other) => AsSpan().SequenceEqual(other.AsSpan());
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int CompareTo(Utf8String other) => Span.SequenceCompareTo(other.Span);
+    public int CompareTo(Utf8String other) => AsSpan().SequenceCompareTo(other.AsSpan());
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override string ToString() => Encoding.UTF8.GetString(Span);
+    public override string ToString() => Encoding.UTF8.GetString(AsSpan());
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public string ToString(string? format, IFormatProvider? provider) => ToString();
@@ -67,7 +68,7 @@ public readonly struct Utf8String
         out int charsWritten,
         ReadOnlySpan<char> format,
         IFormatProvider? provider
-    ) => Encoding.UTF8.TryGetChars(Span, destination, out charsWritten);
+    ) => Encoding.UTF8.TryGetChars(AsSpan(), destination, out charsWritten);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryFormat
@@ -78,7 +79,7 @@ public readonly struct Utf8String
         IFormatProvider? provider
     )
     {
-        var span = Span;
+        var span = AsSpan();
 
         if (span.TryCopyTo(utf8Destination))
         {
@@ -97,7 +98,7 @@ public readonly struct Utf8String
     public static implicit operator Utf8String(string text) => new(text);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator ReadOnlySpan<byte>(Utf8String utf8String) => utf8String.Span;
+    public static implicit operator ReadOnlySpan<byte>(Utf8String utf8String) => utf8String.AsSpan();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator string(Utf8String utf8String) => utf8String.ToString();
@@ -111,8 +112,8 @@ public readonly struct Utf8String
     [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public static Utf8String operator +(Utf8String left, Utf8String right)
     {
-        var leftSpan = left.Span;
-        var rightSpan = right.Span;
+        var leftSpan = left.AsSpan();
+        var rightSpan = right.AsSpan();
 
         var leftSpanLength = leftSpan.Length;
 
@@ -129,7 +130,7 @@ public readonly struct Utf8String
     public static Utf8String Wrap(ReadOnlyMemory<byte> utf8Bytes) => new(utf8Bytes);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Enumerator GetEnumerator() => new(Span);
+    public Enumerator GetEnumerator() => new(AsSpan());
 
     public ref struct Enumerator
     {
