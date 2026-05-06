@@ -31,14 +31,14 @@ var stringType = new TypeElement { Namespace = "System"u8, Name = "String"u8 };
 // compile the element to a utf8 result that can be output without allocations
 var result = CSharpLanguageCompiler.Instance.CompileElement(in stringType);
 
-// output without allocations
-foreach (var part in result) Console.Write(part);
-
-// output with allocations
-Console.WriteLine(result.ToString());
-
 // output to file without allocations
 File.WriteAllText("output.cs", result.AsSpan());
+
+// output without allocations but longer
+foreach (var part in result) Console.Write(part);
+
+// output with allocations but faster
+Console.WriteLine(result.ToString());
 ```
 
 ## License
