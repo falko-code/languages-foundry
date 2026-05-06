@@ -1,3 +1,4 @@
+using System.Buffers;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -8,6 +9,8 @@ public readonly struct Utf8String
     : IEquatable<Utf8String>, IComparable<Utf8String>, ISpanFormattable, IUtf8SpanFormattable
 {
     public static readonly Utf8String Empty = Wrap(ReadOnlyMemory<byte>.Empty);
+
+    private const int MaxStackByteCount = 256;
 
     private readonly ReadOnlyMemory<byte> _utf8Bytes;
 
@@ -20,11 +23,9 @@ public readonly struct Utf8String
     [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public Utf8String(string text)
     {
-        const int maxStackByteCount = 256;
-
         var maxByteCount = Encoding.UTF8.GetMaxByteCount(text.Length);
 
-        if (maxByteCount > maxStackByteCount)
+        if (maxByteCount > MaxStackByteCount)
         {
             _utf8Bytes = new ReadOnlyMemory<byte>(Encoding.UTF8.GetBytes(text));
             return;
@@ -137,6 +138,72 @@ public readonly struct Utf8String
 
         leftSpan.CopyTo(combinedSpan);
         rightSpan.CopyTo(combinedSpan[leftSpanLength..]);
+
+        return Wrap(combinedBytes);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Utf8String operator +(Utf8String left, string right) => Concat
+    (
+        sourceSpan: left.AsSpan(),
+        targetString: right,
+        targetIsRight: true
+    );
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Utf8String operator +(string left, Utf8String right) => Concat
+    (
+        sourceSpan: right.AsSpan(),
+        targetString: left,
+        targetIsRight: false
+    );
+
+    [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.AggressiveOptimization)]
+    private static Utf8String Concat
+    (
+        ReadOnlySpan<byte> sourceSpan,
+        string targetString,
+        bool targetIsRight
+    )
+    {
+        var maxByteCount = Encoding.UTF8.GetMaxByteCount(targetString.Length);
+
+        if (maxByteCount <= MaxStackByteCount)
+        {
+            Span<byte> stackBuffer = stackalloc byte[maxByteCount];
+
+            var written = Encoding.UTF8.GetBytes(targetString, stackBuffer);
+            var targetSpan = stackBuffer[..written];
+
+            return targetIsRight
+                ? Combine(sourceSpan, targetSpan)
+                : Combine(targetSpan, sourceSpan);
+        }
+
+        var rentedBytes = ArrayPool<byte>.Shared.Rent(maxByteCount);
+
+        try
+        {
+            var written = Encoding.UTF8.GetBytes(targetString, rentedBytes);
+            var targetSpan = rentedBytes.AsSpan(0, written);
+
+            return targetIsRight
+                ? Combine(sourceSpan, targetSpan)
+                : Combine(targetSpan, sourceSpan);
+        }
+        finally
+        {
+            ArrayPool<byte>.Shared.Return(rentedBytes);
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Utf8String Combine(ReadOnlySpan<byte> left, ReadOnlySpan<byte> right)
+    {
+        var combinedBytes = new byte[left.Length + right.Length];
+
+        left.CopyTo(combinedBytes);
+        right.CopyTo(combinedBytes.AsSpan(left.Length));
 
         return Wrap(combinedBytes);
     }
