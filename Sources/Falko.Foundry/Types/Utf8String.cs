@@ -17,8 +17,23 @@ public readonly struct Utf8String
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Utf8String(ReadOnlySpan<byte> utf8Bytes) : this(new ReadOnlyMemory<byte>(utf8Bytes.ToArray())) { }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Utf8String(string text) : this(Encoding.UTF8.GetBytes(text)) { }
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+    public Utf8String(string text)
+    {
+        const int maxStackByteCount = 256;
+
+        var maxByteCount = Encoding.UTF8.GetMaxByteCount(text.Length);
+
+        if (maxByteCount > maxStackByteCount)
+        {
+            _utf8Bytes = new ReadOnlyMemory<byte>(Encoding.UTF8.GetBytes(text));
+            return;
+        }
+
+        Span<byte> stackBuffer = stackalloc byte[maxByteCount];
+        var written = Encoding.UTF8.GetBytes(text, stackBuffer);
+        _utf8Bytes = new ReadOnlyMemory<byte>(stackBuffer[..written].ToArray());
+    }
 
     public int Length
     {
