@@ -11,9 +11,16 @@
 
 Fluent and Zero-Allocation Code Generation for Source Generators.
 
-> [!INFO]
-> _Tired of StringBuilder hacks and verbose SyntaxFactory?_
-> LanguagesFoundry gives you a clean, zero-allocation API for code generation inside SourceGenerators.
+# Why?
+
+_Tired of StringBuilder hacks and verbose SyntaxFactory?_
+LanguagesFoundry gives you a clean, zero-allocation API for code generation inside SourceGenerators.
+
+This library is designed to be a powerful and efficient tool for generating C# code at compile time,
+without the overhead of string manipulation or complex syntax trees.
+
+It provides a fluent API that allows you to build code structures in a clear and concise manner,
+while ensuring optimal performance.
 
 ## License
 
