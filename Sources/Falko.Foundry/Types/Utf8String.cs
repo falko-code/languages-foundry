@@ -5,8 +5,7 @@ using System.Text;
 namespace Falko.Foundry.Types;
 
 [SkipLocalsInit]
-public readonly struct Utf8String
-    : IEquatable<Utf8String>, IComparable<Utf8String>, ISpanFormattable, IUtf8SpanFormattable
+public readonly struct Utf8String : IEquatable<Utf8String>, IComparable<Utf8String>, ISpanFormattable, IUtf8SpanFormattable
 {
     public static readonly Utf8String Empty = Wrap(ReadOnlyMemory<byte>.Empty);
 
