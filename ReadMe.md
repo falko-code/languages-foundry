@@ -26,8 +26,10 @@ System.
 ## Example
 
 ```csharp
+// example element to compile
 var stringType = new TypeElement { Namespace = "System"u8, Name = "String"u8 };
 
+// compile the element to a utf8 result that can be output without allocations
 var result = CSharpLanguageCompiler.Instance.CompileElement(in stringType);
 
 // output without allocations
