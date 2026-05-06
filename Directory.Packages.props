@@ -1,3 +1,5 @@
 <Project>
-    <!-- This file is used to centralize the version numbers of all packages used in the solution. -->
+    <ItemGroup Label="Dependencies">
+        <PackageVersion Include="BenchmarkDotNet" Version="0.15.8" />
+    </ItemGroup>
 </Project>

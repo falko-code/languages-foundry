@@ -1,0 +1,11 @@
+<Project>
+    <Import Project="Examples.Build.props" />
+
+    <PropertyGroup Label="Language">
+        <RootNamespace>Falko.Benchmarks</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup Label="Dependencies">
+        <PackageReference Include="BenchmarkDotNet" />
+    </ItemGroup>
+</Project>

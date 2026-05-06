@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/Assets/">
+    <File Path="Benchmarks.Build.props" />
     <File Path="Common.Build.props" />
     <File Path="Directory.Build.props" />
     <File Path="Examples.Build.props" />
@@ -13,7 +14,9 @@
     <File Path="License.md" />
     <File Path="global.json" />
   </Folder>
-  <Folder Name="/Benchmarks/" />
+  <Folder Name="/Benchmarks/">
+    <Project Path="Benchmarks/Falko.Foundry.Benchmarks.StringVsUtf8String/Falko.Foundry.Benchmarks.StringVsUtf8String.csproj" />
+  </Folder>
   <Folder Name="/Examples/">
     <Project Path="Examples/Falko.Foundry.Examples.GenericType/Falko.Foundry.Examples.GenericType.csproj" />
   </Folder>
