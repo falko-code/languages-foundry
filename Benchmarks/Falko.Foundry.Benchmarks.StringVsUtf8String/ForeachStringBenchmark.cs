@@ -53,4 +53,20 @@ public class ForeachStringBenchmark
 
         return result;
     }
+
+    [Benchmark]
+    public char ForeachUtf8StringToString()
+    {
+        var result = char.MinValue;
+
+        for (var i = 0; i < Iterations; i++)
+        {
+            foreach (var c in _utf8TextValue.ToString())
+            {
+                result = c;
+            }
+        }
+
+        return result;
+    }
 }
