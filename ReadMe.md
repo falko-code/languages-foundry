@@ -32,7 +32,7 @@ var stringType = new TypeElement { Namespace = "System"u8, Name = "String"u8 };
 var result = CSharpLanguageCompiler.Instance.CompileElement(in stringType);
 
 // output to file without allocations
-File.WriteAllText("output.cs", result.AsSpan());
+File.WriteAllBytes("output.cs", result.AsSpan());
 
 // output without allocations but longer
 foreach (var part in result) Console.Write(part);
