@@ -32,7 +32,7 @@ var stringType = new TypeElement { Namespace = "System"u8, Name = "String"u8 };
 var result = CSharpLanguageCompiler.Instance.CompileElement(in stringType);
 
 // output without allocations
-foreac (var part in result) Console.Write(part);
+foreach (var part in result) Console.Write(part);
 
 // output with allocations
 Console.WriteLine(result.ToString());
