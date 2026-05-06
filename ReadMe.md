@@ -22,6 +22,24 @@ without the overhead of string manipulation or complex syntax trees.
 It provides a fluent API that allows you to build code structures in a clear and concise manner,
 while ensuring optimal performance.
 
+System.
+## Example
+
+```csharp
+var stringType = new TypeElement { Namespace = "System"u8, Name = "String"u8 };
+
+var result = CSharpLanguageCompiler.Instance.CompileElement(in stringType);
+
+// output without allocations
+foreac (var part in result) Console.Write(part);
+
+// output with allocations
+Console.WriteLine(result.ToString());
+
+// output to file without allocations
+File.WriteAllText("output.cs", result.AsSpan());
+```
+
 ## License
 
 This project is licensed under the **[GNU General Public License v3.0](License.md)**.
