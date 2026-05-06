@@ -36,12 +36,6 @@ public readonly struct Utf8String
         _utf8Bytes = new ReadOnlyMemory<byte>(stackBuffer[..written].ToArray());
     }
 
-    public int Length
-    {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => _utf8Bytes.Length;
-    }
-
     public bool IsEmpty
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
