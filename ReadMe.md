@@ -38,7 +38,7 @@ File.WriteAllBytes("output.cs", result.AsSpan());
 foreach (var part in result) Console.Write(part);
 
 // output with allocations but faster
-Console.WriteLine(result.ToString());
+Console.Write(result.ToString());
 ```
 
 ## License
