@@ -11,6 +11,10 @@
 
 Fluent and Zero-Allocation Code Generation for Source Generators.
 
+> [!INFO]
+> _Tired of StringBuilder hacks and verbose SyntaxFactory?_
+> LanguagesFoundry gives you a clean, zero-allocation API for code generation inside SourceGenerators.
+
 ## License
 
 This project is licensed under the **[GNU General Public License v3.0](License.md)**.
