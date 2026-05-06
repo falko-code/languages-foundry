@@ -22,7 +22,6 @@ without the overhead of string manipulation or complex syntax trees.
 It provides a fluent API that allows you to build code structures in a clear and concise manner,
 while ensuring optimal performance.
 
-System.
 ## Example
 
 ```csharp
