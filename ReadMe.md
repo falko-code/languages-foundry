@@ -41,7 +41,7 @@ foreach (var part in result) Console.Write(part);
 Console.Write(result.ToString());
 ```
 
-# How Create Own Compilers?
+## How Create Own Compilers?
 
 The library is designed to be extensible, allowing you to create your own compilers for different languages or code structures.
 
