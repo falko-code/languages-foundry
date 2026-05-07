@@ -41,6 +41,56 @@ foreach (var part in result) Console.Write(part);
 Console.Write(result.ToString());
 ```
 
+# How Create Own Compilers?
+
+The library is designed to be extensible, allowing you to create your own compilers for different languages or code structures.
+
+At first, you need to define your own element types that represent the code structures you want to generate. For example, you can define a `PropertyElement` that represents a property in C#.
+
+```csharp
+public struct JsonPropertyElement
+{
+    public required Utf8String Name;
+}
+```
+
+After that, you can create specific compilers for different element types by implementing the `ElementCompiler` class.
+
+```csharp
+public sealed class JsonPropertyElementCompiler : IElementCompiler<PropertyElement>
+{
+    public override void Compile(ref Utf8Buffer builder, in PropertyElement element)
+    {
+        const string bracket = '"';
+        builder.Append(bracket).Append(element.Name).Append(bracket);
+    }
+}
+```
+
+After implementing the element compilers, you need to create a class that implements the `LanguageCompiler` class, which defines the contract for compiling elements into code.
+
+```csharp
+public sealed class JsonLanguageCompiler : LanguageCompiler<JsonpLanguageCompiler> // <-- not forget to specify the current type of the compiler
+{
+    public static readonly JsonLanguageCompiler Instance = new();
+
+    private JsonLanguageCompiler()
+    {
+        // register compilers for different element types
+        SetElementCompiler<JsonPropertyElementCompiler, cPropertyElement>();
+    }
+}
+```
+
+After all, you can use the `CompileElement` method of your language compiler to compile elements into code.
+
+```csharp
+var propertyElement = new PropertyElement { Name = "MyProperty"u8, Type = "int"u8 };
+var result = JsonLanguageCompiler.Instance.CompileElement(in propertyElement);
+```
+
+That's it! You can now generate code for your custom elements using your own language compiler.
+
 ## License
 
 This project is licensed under the **[GNU General Public License v3.0](License.md)**.
