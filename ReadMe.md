@@ -59,7 +59,7 @@ After that, you can create specific compilers for different element types by imp
 ```csharp
 public sealed class JsonPropertyElementCompiler : IElementCompiler<PropertyElement>
 {
-    public override void Compile(ref Utf8Buffer builder, in PropertyElement element)
+    public override void Compile(ILanguageCompiler compailer, ref Utf8Buffer builder, in PropertyElement element)
     {
         const string bracket = '"';
         builder.Append(bracket).Append(element.Name).Append(bracket);
