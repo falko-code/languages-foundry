@@ -59,9 +59,15 @@ After that, you can create specific compilers for different element types by imp
 ```csharp
 public sealed class JsonPropertyElementCompiler : IElementCompiler<PropertyElement>
 {
-    public override void Compile(ILanguageCompiler compailer, ref Utf8Buffer builder, in PropertyElement element)
+    public override void Compile
+    (
+        ILanguageCompiler compiler,
+        ref Utf8Buffer buffer,
+        in PropertyElement element
+    )
     {
         const string bracket = '"';
+        buffer.Allocate(bracket.Length * 2 + element.Name.Length);
         builder.Append(bracket).Append(element.Name).Append(bracket);
     }
 }
@@ -70,8 +76,7 @@ public sealed class JsonPropertyElementCompiler : IElementCompiler<PropertyEleme
 After implementing the element compilers, you need to create a class that implements the `LanguageCompiler` class, which defines the contract for compiling elements into code.
 
 ```csharp
-public sealed class JsonLanguageCompiler : LanguageCompiler<JsonpLanguageCompiler> // <-- not forget to specify the current type of the compiler
-{
+public sealed class JsonLanguageCompiler : LanguageCompiler<JsonpLanguageCompiler>
     public static readonly JsonLanguageCompiler Instance = new();
 
     private JsonLanguageCompiler()
