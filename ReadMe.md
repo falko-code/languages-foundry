@@ -62,10 +62,12 @@ After that, you can create specific compilers for different element types by imp
 
 > [!NOTE]
 > The `IElementCompiler` should be always with constructor without parameters.
+> Due to design limitation.
 
 > [!NOTE]
 > We need to allocate the buffer with the exact size of the code we want to generate.
 > Better call allocate method at once (or less as possible).
+> Allocate offers better performance than multiple appends, because it avoids unnecessary copying of the buffer.
 
 ```csharp
 public sealed class JsonPropertyElementCompiler : IElementCompiler<PropertyElement>
@@ -90,6 +92,7 @@ And in the constructor of your language compiler, you can register the compilers
 
 > [!NOTE]
 > Not forgot to set in the generic parameter of `LanguageCompiler` the type of your language compiler itself.
+> Due to design limitation.
 
 ```csharp
 public sealed class JsonLanguageCompiler : LanguageCompiler<JsonpLanguageCompiler>
