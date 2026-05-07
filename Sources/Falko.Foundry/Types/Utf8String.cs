@@ -71,7 +71,17 @@ public readonly struct Utf8String : IEquatable<Utf8String>, IComparable<Utf8Stri
     public int CompareTo(Utf8String other) => AsSpan().SequenceCompareTo(other.AsSpan());
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override string ToString() => Encoding.UTF8.GetString(AsSpan());
+    public override string ToString()
+    {
+        var charCount = this.Count();
+
+        return string.Create
+        (
+            length: charCount,
+            state: this,
+            action: (stringSpan, utf8String) => Encoding.UTF8.GetChars(utf8String.AsSpan(), stringSpan)
+        );
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public string ToString(string? format, IFormatProvider? provider) => ToString();
