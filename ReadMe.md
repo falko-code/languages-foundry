@@ -105,6 +105,9 @@ public sealed class JsonLanguageCompiler : LanguageCompiler<JsonpLanguageCompile
 
 After all, you can use the `CompileElement` method of your language compiler to compile elements into code.
 
+> [!NOTE]
+> Not forgot to use `in` keyword when passing the element to avoid unnecessary copying of the struct.
+
 ```csharp
 var propertyElement = new JsonPropertyElement { Name = "MyProperty"u8 };
 var result = JsonLanguageCompiler.Instance.CompileElement(in propertyElement);
