@@ -77,7 +77,7 @@ public sealed class JsonLanguageCompiler : LanguageCompiler<JsonpLanguageCompile
     private JsonLanguageCompiler()
     {
         // register compilers for different element types
-        SetElementCompiler<JsonPropertyElementCompiler, cPropertyElement>();
+        SetElementCompiler<JsonPropertyElementCompiler, JsonPropertyElement>();
     }
 }
 ```
@@ -85,7 +85,7 @@ public sealed class JsonLanguageCompiler : LanguageCompiler<JsonpLanguageCompile
 After all, you can use the `CompileElement` method of your language compiler to compile elements into code.
 
 ```csharp
-var propertyElement = new PropertyElement { Name = "MyProperty"u8 };
+var propertyElement = new JsonPropertyElement { Name = "MyProperty"u8 };
 var result = JsonLanguageCompiler.Instance.CompileElement(in propertyElement);
 ```
 
