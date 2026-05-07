@@ -77,6 +77,7 @@ After implementing the element compilers, you need to create a class that implem
 
 ```csharp
 public sealed class JsonLanguageCompiler : LanguageCompiler<JsonpLanguageCompiler>
+{
     public static readonly JsonLanguageCompiler Instance = new();
 
     private JsonLanguageCompiler()
