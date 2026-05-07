@@ -48,7 +48,7 @@ The library is designed to be extensible, allowing you to create your own compil
 At first, you need to define your own element types that represent the code structures you want to generate. For example, you can define a `PropertyElement` that represents a property in C#.
 
 > [!NOTE]
-> Use `Utf8String` for string properties to avoid allocations during compilation.
+> Use `Utf8String` for string properties.
 > And for lists of elements, use `ImmutableArray<T>` to ensure immutability and low memory overhead.
 
 ```csharp
@@ -64,8 +64,8 @@ After that, you can create specific compilers for different element types by imp
 > The `IElementCompiler` should be always with constructor without parameters.
 
 > [!NOTE]
-> We need to allocate the buffer with the exact size of the code we want to generate to avoid allocations during compilation.
-> Better allocate the buffer less times as you can and incoke that as one time as possible.
+> We need to allocate the buffer with the exact size of the code we want to generate.
+> Better call allocate method at once (or less as possible).
 
 ```csharp
 public sealed class JsonPropertyElementCompiler : IElementCompiler<PropertyElement>
