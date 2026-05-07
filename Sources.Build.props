@@ -19,9 +19,9 @@
 
     <PropertyGroup Label="Description">
         <PackageIcon>Assets/Icon512.png</PackageIcon>
-        <PackageIconUrl>https://raw.githubusercontent.com/falko-team/zero-logger/main/Icon512.png</PackageIconUrl>
-        <PackageProjectUrl>https://github.com/falko-team/zero-logger</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/falko-team/zero-logger.git</RepositoryUrl>
+        <PackageIconUrl>https://raw.githubusercontent.com/falko-team/languages-foundry/main/Icon512.png</PackageIconUrl>
+        <PackageProjectUrl>https://github.com/falko-team/languages-foundry</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/falko-team/languages-foundry.git</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageTags>logger;falko</PackageTags>
         <PackageReadmeFile>Assets/ReadMe.package.md</PackageReadmeFile>

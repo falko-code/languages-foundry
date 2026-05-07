@@ -24,5 +24,7 @@
     <Project Path="Sources/Falko.Foundry.CSharp/Falko.Foundry.CSharp.csproj" />
     <Project Path="Sources/Falko.Foundry/Falko.Foundry.csproj" />
   </Folder>
-  <Folder Name="/Tests/" />
+  <Folder Name="/Tests/">
+    <Project Path="Tests/Falko.Foundry.Tests/Falko.Foundry.Tests.csproj" />
+  </Folder>
 </Solution>
