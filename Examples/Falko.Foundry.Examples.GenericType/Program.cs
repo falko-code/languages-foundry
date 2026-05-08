@@ -1,7 +1,9 @@
-﻿using Falko.Foundry.Compilers;
+﻿using System.Collections.Immutable;
+using Falko.Foundry.Compilers;
 using Falko.Foundry.CSharp.Compilers;
 using Falko.Foundry.CSharp.Elements;
 using Falko.Foundry.Elements;
+using Falko.Foundry.Utf8Texts;
 
 var compiler = CSharpLanguageCompiler.Instance;
 
@@ -19,17 +21,15 @@ var loggerType = new TypeElement
 
 loggerType = loggerType.WithCache(compiler.CompileElement(in loggerType));
 
-var loggerFirstVariable = new TypeIdentifierElement
-{
-    Name = "firstLogger"u8,
-    Type = loggerType
-};
+var loggerVariables = ImmutableArray.Create<Utf8String>("firstLogger"u8, "secondLogger"u8);
 
-var loggerSecondVariable = new TypeIdentifierElement
+Parallel.ForEach(loggerVariables, loggerVariableName =>
 {
-    Name = "secondLogger"u8,
-    Type = loggerType
-};
+    var loggerVariable = new TypeIdentifierElement
+    {
+        Name = loggerVariableName,
+        Type = loggerType,
+    };
 
-Console.WriteLine(compiler.CompileElement(in loggerFirstVariable));
-Console.WriteLine(compiler.CompileElement(in loggerSecondVariable));
+    Console.WriteLine(compiler.CompileElement(in loggerVariable));
+});
