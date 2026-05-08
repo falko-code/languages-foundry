@@ -8,17 +8,18 @@ public static class LanguageElementCompilerExtensions
     public static Utf8String CompileElement<TElement>(this ILanguageCompiler compiler, scoped in TElement element)
         where TElement : struct, ILanguageElement, allows ref struct
     {
-        return Utf8String.Wrap(Utf8Buffer.Create
+        return Utf8Buffer.Create
         (
             argument: new CompileContext<TElement>(compiler, in element),
-            allocator: static (context, buffer) =>
+            action: static (scoped ref buffer, in context) =>
             {
-                context
-                    .Compiler
-                    .GetElementCompiler<TElement>()
-                    .Compile(ref buffer, in context.Element);
+                context.Compiler.GetElementCompiler<TElement>().Compile
+                (
+                    ref buffer,
+                    in context.Element
+                );
             }
-        ));
+        );
     }
 
     private readonly ref struct CompileContext<TElement>

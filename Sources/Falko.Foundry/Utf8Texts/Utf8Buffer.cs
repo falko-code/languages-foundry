@@ -1,7 +1,21 @@
+using System.Runtime.CompilerServices;
+
 namespace Falko.Foundry.Utf8Texts;
 
 public ref struct Utf8Buffer : IDisposable
 {
+    public const int StackAllocationThreshold = 256;
+
+    private Utf8Buffer(Span<byte> stackAllocatedBuffer)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Utf8Buffer(int capacity)
+    {
+        throw new NotImplementedException();
+    }
+
     public void Allocate(int capacity)
     {
         throw new NotImplementedException();
@@ -27,12 +41,29 @@ public ref struct Utf8Buffer : IDisposable
 
     public void Dispose()
     {
-        // TODO release managed resources here
+        throw new NotImplementedException();
     }
 
-    public static ReadOnlyMemory<byte> Create<T>(T argument, Action<T, Utf8Buffer> allocator)
-        where T : struct, allows ref struct
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    public static Utf8String Create<T>
+    (
+        in T argument,
+        Utf8BufferAction<T> action,
+        int capacity = StackAllocationThreshold
+    ) where T : struct, allows ref struct
     {
-        throw new NotImplementedException();
+        scoped var builder = capacity > StackAllocationThreshold
+            ? new Utf8Buffer(capacity)
+            : new Utf8Buffer(stackalloc byte[StackAllocationThreshold]);
+
+        try
+        {
+            action(ref builder, argument);
+            return builder.ToString();
+        }
+        finally
+        {
+            builder.Dispose();
+        }
     }
 }
