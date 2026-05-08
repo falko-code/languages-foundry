@@ -51,10 +51,22 @@ At first, you need to define your own element types that represent the code stru
 > Use `Utf8String` for string properties.
 > And for lists of elements, use `ImmutableArray<T>` to ensure immutability and low memory overhead.
 
+> [!NOTE]
+> The own element types should implement the `ILanguageElement` interface,
+> which is a marker interface that indicates that the type can be compiled by a language compiler.
+
+> [!NOTE]
+> The `IElementCompiler` can be as struct or class or ref struct.
+> If you declare it as any struct, its should be readonly and only with readonly fields,
+> to ensure immutability and read-only access to the element data.
+> if that class it's should be sealed to prevent inheritance and ensure that the compiler is used as intended.
+> Also if that class it's should contains only get properties with init accessors,
+> to ensure immutability and read-only access to the element data.
+
 ```csharp
-public struct JsonPropertyElement
+public readonly struct JsonPropertyElement : ILanguageElement
 {
-    public required Utf8String Name;
+    public required readonly Utf8String Name;
 }
 ```
 
@@ -68,6 +80,7 @@ After that, you can create specific compilers for different element types by imp
 > We need to allocate the buffer with the exact size of the code we want to generate.
 > Better call allocate method at once (or less as possible).
 > Allocate offers better performance than multiple appends, because it avoids unnecessary copying of the buffer.
+> You can allocate more than you need, but not less that will be use to generate the code, otherwise it will throw an exception.
 
 ```csharp
 public sealed class JsonPropertyElementCompiler : IElementCompiler<PropertyElement>
@@ -95,7 +108,7 @@ And in the constructor of your language compiler, you can register the compilers
 > Due to design limitation.
 
 ```csharp
-public sealed class JsonLanguageCompiler : LanguageCompiler<JsonpLanguageCompiler>
+public sealed class JsonLanguageCompiler : LanguageCompiler<JsonLanguageCompiler>
 {
     public static readonly JsonLanguageCompiler Instance = new();
 
