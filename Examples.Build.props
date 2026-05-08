@@ -4,6 +4,15 @@
     <PropertyGroup Label="Assembly">
         <OutputType>exe</OutputType>
         <TargetFramework>net10.0</TargetFramework>
+        <PublishReadyToRun>true</PublishReadyToRun>
+        <TieredCompilation>true</TieredCompilation>
+        <TieredPGO>true</TieredPGO>
+    </PropertyGroup>
+
+    <PropertyGroup Label="GC">
+        <GarbageCollectionAdaptationMode>0</GarbageCollectionAdaptationMode>
+        <ServerGarbageCollection>false</ServerGarbageCollection>
+        <GarbageCollectionConserveMemory>9</GarbageCollectionConserveMemory>
     </PropertyGroup>
 
     <PropertyGroup Label="Language">
