@@ -90,8 +90,8 @@ public sealed class JsonPropertyElementCompiler : IElementCompiler<JsonPropertyE
     public override void Compile
     (
         ILanguageCompiler compiler,
-        scoped in PropertyElement element
-        scoped ref Utf8Buffer buffer,
+        scoped in PropertyElement element,
+        scoped ref Utf8Buffer buffer
     )
     {
         buffer.Allocate(element.Name.Length + Utf8Char.Length * 2);

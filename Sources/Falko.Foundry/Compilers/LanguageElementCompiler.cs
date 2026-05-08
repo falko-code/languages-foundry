@@ -14,8 +14,8 @@ public readonly ref struct LanguageElementCompiler<TElement>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Compile
     (
-        scoped in TElement element,
-        scoped ref Utf8Buffer buffer
+        scoped ref Utf8Buffer buffer,
+        scoped in TElement element
     )
     {
         elementCompiler.Compile(languageCompiler, in element, ref buffer);

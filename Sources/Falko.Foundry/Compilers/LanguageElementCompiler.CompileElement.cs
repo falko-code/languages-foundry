@@ -16,7 +16,7 @@ public static class LanguageElementCompilerExtensions
                 context
                     .Compiler
                     .GetElementCompiler<TElement>()
-                    .Compile(context.Element, ref buffer);
+                    .Compile(ref buffer, in context.Element);
             }
         ));
     }
