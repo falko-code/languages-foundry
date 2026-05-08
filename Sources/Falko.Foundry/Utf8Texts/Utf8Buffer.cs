@@ -85,7 +85,7 @@ public ref struct Utf8Buffer : IDisposable
 
         try
         {
-            action(ref builder, argument);
+            action(ref builder, in argument);
             return builder.ToString();
         }
         finally
