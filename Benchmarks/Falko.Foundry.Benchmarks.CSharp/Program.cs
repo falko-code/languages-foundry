@@ -2,3 +2,4 @@
 using Falko.Benchmarks;
 
 BenchmarkRunner.Run<CompileTypeElementBenchmark>();
+BenchmarkRunner.Run<CacheTypeElementBenchmark>();

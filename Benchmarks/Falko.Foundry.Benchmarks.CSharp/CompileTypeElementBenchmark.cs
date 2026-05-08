@@ -11,7 +11,7 @@ public class CompileTypeElementBenchmark
 {
     private TypeElement _loggerType = new() { Name = Utf8String.Empty };
 
-    [Params(1, 8, 16)]
+    [Params(1, 4)]
     public int Iterations { get; set; }
 
     [GlobalSetup]
