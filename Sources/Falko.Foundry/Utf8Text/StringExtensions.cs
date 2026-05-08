@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace Falko.Foundry.Types;
+namespace Falko.Foundry.Utf8Text;
 
 public static class StringExtensions
 {

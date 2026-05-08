@@ -1,6 +1,5 @@
-using Falko.Foundry.Buffers;
 using Falko.Foundry.Elements;
-using Falko.Foundry.Types;
+using Falko.Foundry.Utf8Text;
 
 namespace Falko.Foundry.Compilers;
 
@@ -9,7 +8,7 @@ public static class LanguageElementCompilerExtensions
     public static Utf8String CompileElement<TElement>(this ILanguageCompiler compiler, scoped in TElement element)
         where TElement : struct, ILanguageElement, allows ref struct
     {
-        return Utf8String.Wrap(SpanByteBuffer.Create
+        return Utf8String.Wrap(Utf8Buffer.Create
         (
             argument: new CompileContext<TElement>(compiler, in element),
             allocator: static (context, buffer) =>

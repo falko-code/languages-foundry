@@ -1,6 +1,6 @@
 using System.Text;
 using BenchmarkDotNet.Attributes;
-using Falko.Foundry.Types;
+using Falko.Foundry.Utf8Text;
 
 namespace Falko.Benchmarks;
 

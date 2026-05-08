@@ -1,5 +1,5 @@
-using Falko.Foundry.Buffers;
 using Falko.Foundry.Elements;
+using Falko.Foundry.Utf8Text;
 
 namespace Falko.Foundry.Compilers;
 
@@ -9,6 +9,6 @@ public interface IElementCompiler<TElement> where TElement : struct, ILanguageEl
     (
         ILanguageCompiler compiler,
         scoped in TElement element,
-        scoped ref SpanByteBuffer buffer
+        scoped ref Utf8Buffer buffer
     );
 }

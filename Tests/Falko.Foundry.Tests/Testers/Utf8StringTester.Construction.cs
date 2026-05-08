@@ -1,4 +1,4 @@
-using Falko.Foundry.Types;
+using Falko.Foundry.Utf8Text;
 using NUnit.Framework;
 
 namespace Falko.Tests.Testers;

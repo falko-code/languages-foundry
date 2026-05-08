@@ -85,16 +85,17 @@ After that, you can create specific compilers for different element types by imp
 ```csharp
 public sealed class JsonPropertyElementCompiler : IElementCompiler<JsonPropertyElement>
 {
+    private static readonly Utf8Char Bracket = "\""u8;
+    
     public override void Compile
     (
         ILanguageCompiler compiler,
-        ref Utf8Buffer buffer,
-        in PropertyElement element
+        scoped in PropertyElement element
+        scoped ref Utf8Buffer buffer,
     )
     {
-        const char bracket = '"';
-        buffer.Allocate(element.Name.Length + 2);
-        buffer.Append(bracket).Append(element.Name).Append(bracket);
+        buffer.Allocate(element.Name.Length + Utf8Char.Length * 2);
+        buffer.Append(bracket).Append(element.Name).Append(Bracket);
     }
 }
 ```

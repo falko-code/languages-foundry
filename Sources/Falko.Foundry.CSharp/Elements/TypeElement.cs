@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 using Falko.Foundry.Elements;
-using Falko.Foundry.Types;
+using Falko.Foundry.Utf8Text;
 
 namespace Falko.Foundry.CSharp.Elements;
 

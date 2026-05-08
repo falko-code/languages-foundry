@@ -1,9 +1,7 @@
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Runtime.Intrinsics;
 using System.Text;
 
-namespace Falko.Foundry.Types;
+namespace Falko.Foundry.Utf8Text;
 
 public static class Utf8StringExtensions
 {
