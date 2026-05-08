@@ -83,7 +83,7 @@ After that, you can create specific compilers for different element types by imp
 > You can allocate more than you need, but not less that will be use to generate the code, otherwise it will throw an exception.
 
 ```csharp
-public sealed class JsonPropertyElementCompiler : IElementCompiler<PropertyElement>
+public sealed class JsonPropertyElementCompiler : IElementCompiler<JsonPropertyElement>
 {
     public override void Compile
     (
@@ -92,9 +92,9 @@ public sealed class JsonPropertyElementCompiler : IElementCompiler<PropertyEleme
         in PropertyElement element
     )
     {
-        const string bracket = '"';
-        buffer.Allocate(bracket.Length * 2 + element.Name.Length);
-        builder.Append(bracket).Append(element.Name).Append(bracket);
+        const char bracket = '"';
+        buffer.Allocate(element.Name.Length + 2);
+        buffer.Append(bracket).Append(element.Name).Append(bracket);
     }
 }
 ```
