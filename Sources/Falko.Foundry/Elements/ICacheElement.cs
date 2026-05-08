@@ -2,14 +2,14 @@ using Falko.Foundry.Caches;
 
 namespace Falko.Foundry.Elements;
 
-public interface ICacheElement<TSelfElement>
-    where TSelfElement : notnull, ICacheElement<TSelfElement>, allows ref struct
+public interface ICacheElement<TSelfElement> : ILanguageElement
+    where TSelfElement : ICacheElement<TSelfElement>, allows ref struct
 {
-    CompilerCacheFingerprint Cache { get; }
+    CompilerCache Cache { get; }
 
-    static abstract TSelfElement Fingerprint
+    static abstract TSelfElement CacheCopy
     (
         scoped in TSelfElement element,
-        CompilerCacheFingerprint fingerprint
+        CompilerCache cache
     );
 }

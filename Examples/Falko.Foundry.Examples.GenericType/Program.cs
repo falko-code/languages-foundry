@@ -1,7 +1,9 @@
-﻿using System.Diagnostics;
-using Falko.Foundry.Compilers;
+﻿using Falko.Foundry.Compilers;
 using Falko.Foundry.CSharp.Compilers;
 using Falko.Foundry.CSharp.Elements;
+using Falko.Foundry.Elements;
+
+var compiler = CSharpLanguageCompiler.Instance;
 
 var serviceType = new TypeElement
 {
@@ -15,11 +17,19 @@ var loggerType = new TypeElement
     GenericTypes = [serviceType]
 };
 
-var result = CSharpLanguageCompiler
-    .Instance
-    .CompileElement(in loggerType)
-    .ToString(); // we convert to Utf8String to String, but that do allocate, so better avoid it in real code
+loggerType = loggerType.WithCache(compiler.CompileElement(in loggerType));
 
-Console.WriteLine(result);
+var loggerFirstVariable = new TypeIdentifierElement
+{
+    Name = "firstLogger"u8,
+    Type = loggerType
+};
 
-Debug.Assert(result is "Falko.Logging.Loggers.Logger<Service>");
+var loggerSecondVariable = new TypeIdentifierElement
+{
+    Name = "secondLogger"u8,
+    Type = loggerType
+};
+
+Console.WriteLine(compiler.CompileElement(in loggerFirstVariable));
+Console.WriteLine(compiler.CompileElement(in loggerSecondVariable));

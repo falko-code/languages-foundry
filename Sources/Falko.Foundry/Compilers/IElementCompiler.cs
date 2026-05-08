@@ -3,7 +3,7 @@ using Falko.Foundry.Utf8Texts;
 
 namespace Falko.Foundry.Compilers;
 
-public interface IElementCompiler<TElement> where TElement : struct, ILanguageElement, allows ref struct
+public interface IElementCompiler<TElement> where TElement : ILanguageElement, allows ref struct
 {
     void Compile
     (

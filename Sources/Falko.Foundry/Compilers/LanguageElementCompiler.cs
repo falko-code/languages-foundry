@@ -9,7 +9,7 @@ public readonly ref struct LanguageElementCompiler<TElement>
 (
     ILanguageCompiler languageCompiler,
     IElementCompiler<TElement> elementCompiler
-) where TElement : struct, ILanguageElement, allows ref struct
+) where TElement : ILanguageElement, allows ref struct
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Compile

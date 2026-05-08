@@ -7,7 +7,7 @@ namespace Falko.Foundry.CSharp.Elements;
 
 public readonly struct TypeElement() : ILanguageElement, ICacheElement<TypeElement>
 {
-    public CompilerCacheFingerprint Cache { get; private init; }
+    public CompilerCache Cache { get; private init; }
 
     public required Utf8String Name { get; init; }
 
@@ -15,7 +15,7 @@ public readonly struct TypeElement() : ILanguageElement, ICacheElement<TypeEleme
 
     public ImmutableArray<TypeElement> GenericTypes { get; init; } = ImmutableArray<TypeElement>.Empty;
 
-    public static TypeElement Fingerprint(scoped in TypeElement element, CompilerCacheFingerprint fingerprint)
+    public static TypeElement CacheCopy(scoped in TypeElement element, CompilerCache fingerprint)
     {
         return element with
         {
