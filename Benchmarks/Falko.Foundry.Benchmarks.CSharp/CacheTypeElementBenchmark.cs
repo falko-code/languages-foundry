@@ -44,7 +44,7 @@ public class CacheTypeElementBenchmark
         var loggerVariable = new TypeIdentifierElement
         {
             Name = "loggerVariable"u8,
-            Type = _loggerTypeWithoutCache,
+            Type = _loggerTypeWithoutCache
         };
 
         for (var i = 0; i < Iterations; i++)
@@ -65,7 +65,7 @@ public class CacheTypeElementBenchmark
         var loggerVariable = new TypeIdentifierElement
         {
             Name = "loggerVariable"u8,
-            Type = _loggerTypeWithCache,
+            Type = _loggerTypeWithCache
         };
 
         for (var i = 0; i < Iterations; i++)

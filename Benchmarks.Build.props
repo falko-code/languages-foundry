@@ -1,5 +1,10 @@
 <Project>
-    <Import Project="Examples.Build.props" />
+    <Import Project="Common.Build.props" />
+
+    <PropertyGroup Label="Assembly">
+        <OutputType>exe</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+    </PropertyGroup>
 
     <PropertyGroup Label="Language">
         <RootNamespace>Falko.Benchmarks</RootNamespace>
