@@ -32,7 +32,7 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
 
         var hasTypeNamespace = typeNamespace.IsEmpty is false;
 
-        var dotLength = hasTypeNamespace ? Utf8Char.Length : 1;
+        var dotLength = hasTypeNamespace ? Utf8Char.Length : 0;
         var typeLength = typeNamespace.Length + typeName.Length + dotLength;
         var genericTypesCount = genericTypes.Length;
 
