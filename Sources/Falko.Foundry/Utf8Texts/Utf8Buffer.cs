@@ -5,7 +5,7 @@ namespace Falko.Foundry.Utf8Texts;
 
 public ref struct Utf8Buffer : IDisposable
 {
-    public const int StackAllocationThreshold = 256;
+    public const int StackAllocationThreshold = 256; // average good size for stack allocation
 
     private byte[]? _cache;
 
