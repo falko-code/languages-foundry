@@ -49,14 +49,14 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
         if (hasTypeNamespace)
         {
             buffer.Append(typeNamespace);
-            buffer.Append(CSharpLanguageConstants.DotChar);
+            buffer.Append(CSharpLanguageConstants.DotChar); // namespace and type name separator
         }
 
         buffer.Append(typeName);
 
         if (genericTypesCount is 0) return;
 
-        buffer.Append(CSharpLanguageConstants.LeftBracketChar);
+        buffer.Append(CSharpLanguageConstants.LeftAngleBracketChar);
 
         var genericTypesSpan = genericTypes.AsSpan();
         var genericTypeIndex = 0;
@@ -71,6 +71,6 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
             goto genericTypeAppendLoop;
         }
 
-        buffer.Append(CSharpLanguageConstants.RightBracketChar);
+        buffer.Append(CSharpLanguageConstants.RightAngleBracketChar);
     }
 }
