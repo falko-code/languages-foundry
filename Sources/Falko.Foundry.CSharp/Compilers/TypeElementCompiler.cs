@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using Falko.Foundry.Compilers;
 using Falko.Foundry.CSharp.Elements;
+using Falko.Foundry.Exceptions;
 using Falko.Foundry.Utf8Texts;
 
 namespace Falko.Foundry.CSharp.Compilers;
@@ -28,8 +29,12 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
     )
     {
         var typeNamespace = element.Namespace;
+
         var typeName = element.Name;
+        CompilerException.ThrowIfEmptyOrDefault(typeName, nameof(element.Name));
+
         var genericTypes = element.GenericTypes;
+        CompilerException.ThrowIfDefault(genericTypes, nameof(element.GenericTypes));
 
         var hasTypeNamespace = typeNamespace.IsEmpty is false;
 
@@ -49,14 +54,14 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
         if (hasTypeNamespace)
         {
             buffer.Append(typeNamespace);
-            buffer.Append(CSharpLanguageConstants.DotChar); // namespace and type name separator
+            buffer.Append(CSharpLanguageConstants.Dot); // namespace and type name separator
         }
 
         buffer.Append(typeName);
 
         if (genericTypesCount is 0) return;
 
-        buffer.Append(CSharpLanguageConstants.LeftAngleBracketChar);
+        buffer.Append(CSharpLanguageConstants.LeftAngleBracket);
 
         var genericTypesSpan = genericTypes.AsSpan();
         var genericTypeIndex = 0;
@@ -67,10 +72,10 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
 
         if (++genericTypeIndex < genericTypesCount)
         {
-            buffer.Append(CSharpLanguageConstants.CommaChar);
+            buffer.Append(CSharpLanguageConstants.Comma);
             goto genericTypeAppendLoop;
         }
 
-        buffer.Append(CSharpLanguageConstants.RightAngleBracketChar);
+        buffer.Append(CSharpLanguageConstants.RightAngleBracket);
     }
 }
