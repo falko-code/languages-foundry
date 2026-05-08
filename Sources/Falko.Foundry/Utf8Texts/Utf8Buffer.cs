@@ -32,27 +32,71 @@ public ref struct Utf8Buffer : IDisposable
         get => _buffer.Length;
     }
 
-    public void Allocate(int capacity)
+    public int Count
     {
-        throw new NotImplementedException();
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => _position;
     }
 
+    public bool IsEmpty
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => Length is 0;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public readonly ReadOnlySpan<byte> AsSpan() => _buffer[.._position];
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    public void Allocate(int length)
+    {
+        var newLength = length + _position;
+
+        if (newLength <= _buffer.Length) return;
+
+        var newArray = ArrayPool<byte>.Shared.Rent(newLength);
+        var newSpan = newArray.AsSpan();
+
+        AsSpan().CopyTo(newSpan);
+
+        if (_cache is not null)
+        {
+            ArrayPool<byte>.Shared.Return(_cache);
+        }
+
+        _cache = newArray;
+        _buffer = newSpan;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Append(Utf8String data) => Append(data.AsSpan());
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Append(Utf8Char data) => Append(data.AsByte());
 
-    private void Append(ReadOnlySpan<byte> data)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private void Append(scoped ReadOnlySpan<byte> data)
     {
-        throw new NotImplementedException();
+        var position = _position;
+        ref var symbolsRef = ref data;
+        var symbolsLength = symbolsRef.Length;
+        symbolsRef.CopyTo(_buffer.Slice(position, symbolsLength));
+        _position = position + symbolsLength;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private void Append(byte data)
     {
-        throw new NotImplementedException();
+        scoped ref var positionRef = ref _position;
+        var position = positionRef;
+        _buffer[position] = data;
+        positionRef = position + 1;
     }
 
-    public Utf8String ToUtf8String() => throw new NotImplementedException();
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Utf8String ToUtf8String() => new(AsSpan());
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString() => ToUtf8String().ToString();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
