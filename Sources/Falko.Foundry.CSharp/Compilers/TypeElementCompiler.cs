@@ -30,34 +30,44 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
         var typeName = element.Name;
         var genericTypes = element.GenericTypes;
 
-        var dotLength = typeNamespace.IsEmpty ? 0 : Utf8Char.Length;
-        var typeLength = typeNamespace.Length + typeName.Length + dotLength;
+        var hasTypeNamespace = typeNamespace.IsEmpty is false;
 
-        if (genericTypes.Length is not 0)
+        var dotLength = hasTypeNamespace ? Utf8Char.Length : 1;
+        var typeLength = typeNamespace.Length + typeName.Length + dotLength;
+        var genericTypesCount = genericTypes.Length;
+
+        if (genericTypesCount is not 0)
         {
             typeLength = Math.Max(typeLength, MinimumTypeLength); // if current type is too short
-            var typeLengthWithGenerics = typeLength * (1 + genericTypes.Length); // 1 is for current
+            var typeLengthWithGenerics = typeLength * (1 + genericTypesCount); // 1 is for current
             typeLength += typeLengthWithGenerics + 2; // 2 is for brackets
         }
 
         buffer.Allocate(typeLength);
 
-        buffer.Append(typeNamespace);
-        buffer.Append(CSharpLanguageConstants.DotChar);
+        if (hasTypeNamespace)
+        {
+            buffer.Append(typeNamespace);
+            buffer.Append(CSharpLanguageConstants.DotChar);
+        }
+
         buffer.Append(typeName);
 
-        if (genericTypes.Length is 0) return;
+        if (genericTypesCount is 0) return;
 
         buffer.Append(CSharpLanguageConstants.LeftBracketChar);
 
         var genericTypesSpan = genericTypes.AsSpan();
+        var genericTypeIndex = 0;
 
-        AppendTypeWithGenerics(ref buffer, in genericTypesSpan[0]);
+        genericTypeAppendLoop:
 
-        for (var i = 1; i < genericTypesSpan.Length; i++)
+        AppendTypeWithGenerics(ref buffer, in genericTypesSpan[genericTypeIndex]);
+
+        if (++genericTypeIndex < genericTypesCount)
         {
             buffer.Append(CSharpLanguageConstants.CommaChar);
-            AppendTypeWithGenerics(ref buffer, in genericTypesSpan[i]);
+            goto genericTypeAppendLoop;
         }
 
         buffer.Append(CSharpLanguageConstants.RightBracketChar);
