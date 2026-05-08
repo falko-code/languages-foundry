@@ -21,7 +21,11 @@ var loggerType = new TypeElement
 
 loggerType = loggerType.WithCache(compiler.CompileElement(in loggerType));
 
-var loggerVariables = ImmutableArray.Create<Utf8String>("firstLogger"u8, "secondLogger"u8);
+var loggerVariables = ImmutableArray.Create<Utf8String>
+(
+    "firstLogger"u8,
+    "secondLogger"u8
+);
 
 Parallel.ForEach(loggerVariables, loggerVariableName =>
 {
