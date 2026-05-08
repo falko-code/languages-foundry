@@ -9,6 +9,7 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
 {
     private const int MinimumTypeLength = 64; // average type name length
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Compile
     (
         ILanguageCompiler compiler,
