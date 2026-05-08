@@ -4,31 +4,21 @@ public ref struct Utf8Buffer : IDisposable
 {
     public void Allocate(int capacity)
     {
-
-    }
-
-    public void Append(string data) => Append(data.AsSpan());
-
-    public void Append(ReadOnlySpan<char> data)
-    {
-
-    }
-
-    public void Append(char data)
-    {
-
+        throw new NotImplementedException();
     }
 
     public void Append(Utf8String data) => Append(data.AsSpan());
 
-    public void Append(ReadOnlySpan<byte> data)
-    {
+    public void Append(Utf8Char data) => Append(data.AsByte());
 
+    private void Append(ReadOnlySpan<byte> data)
+    {
+        throw new NotImplementedException();
     }
 
-    public void Append(byte data)
+    private void Append(byte data)
     {
-
+        throw new NotImplementedException();
     }
 
     public Utf8String ToUtf8String() => throw new NotImplementedException();
