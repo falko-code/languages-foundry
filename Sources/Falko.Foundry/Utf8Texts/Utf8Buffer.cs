@@ -1,3 +1,4 @@
+using System.Buffers;
 using System.Runtime.CompilerServices;
 
 namespace Falko.Foundry.Utf8Texts;
@@ -6,14 +7,29 @@ public ref struct Utf8Buffer : IDisposable
 {
     public const int StackAllocationThreshold = 256;
 
+    private byte[]? _cache;
+
+    private Span<byte> _buffer;
+
+    private int _position;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private Utf8Buffer(Span<byte> stackAllocatedBuffer)
     {
-        throw new NotImplementedException();
+        _buffer = stackAllocatedBuffer;
     }
 
-    public Utf8Buffer(int capacity)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private Utf8Buffer(int capacity)
     {
-        throw new NotImplementedException();
+        _cache = ArrayPool<byte>.Shared.Rent(capacity);
+        _buffer = _cache;
+    }
+
+    public int Length
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => _buffer.Length;
     }
 
     public void Allocate(int capacity)
@@ -39,9 +55,20 @@ public ref struct Utf8Buffer : IDisposable
 
     public override string ToString() => ToUtf8String().ToString();
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Dispose()
     {
-        throw new NotImplementedException();
+        if (_cache is null) return; // we used stack-allocated buffer
+
+        ArrayPool<byte>.Shared.Return(_cache);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Utf8Buffer Create(int capacity = StackAllocationThreshold)
+    {
+        capacity = Math.Max(capacity, StackAllocationThreshold); // if array we can't use less capacity
+
+        return new Utf8Buffer(capacity);
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
@@ -54,7 +81,7 @@ public ref struct Utf8Buffer : IDisposable
     {
         scoped var builder = capacity > StackAllocationThreshold
             ? new Utf8Buffer(capacity)
-            : new Utf8Buffer(stackalloc byte[StackAllocationThreshold]);
+            : new Utf8Buffer(stackalloc byte[capacity]); // if stackalloc we can use less capacity
 
         try
         {
