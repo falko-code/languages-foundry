@@ -15,6 +15,7 @@
     <File Path="global.json" />
   </Folder>
   <Folder Name="/Benchmarks/">
+    <Project Path="Benchmarks/Falko.Foundry.Benchmarks.CSharp/Falko.Foundry.Benchmarks.CSharp.csproj" />
     <Project Path="Benchmarks\Falko.Foundry.Benchmarks.Utf8String\Falko.Foundry.Benchmarks.Utf8String.csproj" />
   </Folder>
   <Folder Name="/Examples/">

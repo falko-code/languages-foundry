@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="../../Benchmarks.Build.props" />
+
+    <ItemGroup Label="Dependencies">
+        <ProjectReference Include="..\..\Sources\Falko.Foundry.CSharp\Falko.Foundry.CSharp.csproj" />
+    </ItemGroup>
+</Project>
