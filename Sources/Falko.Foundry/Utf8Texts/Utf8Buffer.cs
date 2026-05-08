@@ -47,25 +47,14 @@ public ref struct Utf8Buffer : IDisposable
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public readonly ReadOnlySpan<byte> AsSpan() => _buffer[.._position];
 
-    [MethodImpl(MethodImplOptions.NoInlining)]
-    public void Allocate(int length)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Allocate(int amount)
     {
-        var newLength = length + _position;
+        var newLength = _position + amount;
 
         if (newLength <= _buffer.Length) return;
 
-        var newArray = ArrayPool<byte>.Shared.Rent(newLength);
-        var newSpan = newArray.AsSpan();
-
-        AsSpan().CopyTo(newSpan);
-
-        if (_cache is not null)
-        {
-            ArrayPool<byte>.Shared.Return(_cache);
-        }
-
-        _cache = newArray;
-        _buffer = newSpan;
+        AllocateCore(newLength);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -91,6 +80,20 @@ public ref struct Utf8Buffer : IDisposable
         var position = positionRef;
         _buffer[position] = data;
         positionRef = position + 1;
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.AggressiveOptimization)]
+    private void AllocateCore(int length)
+    {
+        var newArray = ArrayPool<byte>.Shared.Rent(length);
+        var newSpan = newArray.AsSpan();
+
+        AsSpan().CopyTo(newSpan);
+
+        if (_cache is not null) ArrayPool<byte>.Shared.Return(_cache);
+
+        _cache = newArray;
+        _buffer = newSpan;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
