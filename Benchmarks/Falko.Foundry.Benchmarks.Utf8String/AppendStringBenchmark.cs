@@ -1,5 +1,5 @@
 using BenchmarkDotNet.Attributes;
-using Falko.Foundry.Utf8Text;
+using Falko.Foundry.Utf8Texts;
 
 namespace Falko.Benchmarks;
 

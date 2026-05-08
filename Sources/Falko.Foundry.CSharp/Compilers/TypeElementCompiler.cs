@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
 using Falko.Foundry.Compilers;
 using Falko.Foundry.CSharp.Elements;
-using Falko.Foundry.Utf8Text;
+using Falko.Foundry.Utf8Texts;
 
 namespace Falko.Foundry.CSharp.Compilers;
 

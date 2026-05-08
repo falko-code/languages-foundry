@@ -1,5 +1,5 @@
 using Falko.Foundry.Elements;
-using Falko.Foundry.Utf8Text;
+using Falko.Foundry.Utf8Texts;
 
 namespace Falko.Foundry.Compilers;
 

@@ -1,4 +1,4 @@
-namespace Falko.Foundry.Utf8Text;
+namespace Falko.Foundry.Utf8Texts;
 
 public ref struct Utf8Buffer : IDisposable
 {

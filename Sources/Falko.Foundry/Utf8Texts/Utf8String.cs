@@ -2,7 +2,7 @@ using System.Buffers;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace Falko.Foundry.Utf8Text;
+namespace Falko.Foundry.Utf8Texts;
 
 [SkipLocalsInit]
 public readonly struct Utf8String : IEquatable<Utf8String>, IComparable<Utf8String>, ISpanFormattable, IUtf8SpanFormattable
