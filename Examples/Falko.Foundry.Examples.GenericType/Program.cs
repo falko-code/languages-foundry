@@ -1,5 +1,4 @@
 ﻿using System.Collections.Immutable;
-using System.Diagnostics;
 using Falko.Foundry.Compilers;
 using Falko.Foundry.CSharp.Compilers;
 using Falko.Foundry.CSharp.Elements;
@@ -24,7 +23,7 @@ loggerType = loggerType.WithCache(compiler.CompileElement(in loggerType));
 
 var loggerVariables = Enumerable
     .Range(1, 16)
-    .Select(i => (Utf8String)"logger"u8 + i.ToString())
+    .Select(i => "logger"u8.ToUtf8String() + i.ToString())
     .ToImmutableArray();
 
 Parallel.ForEach(loggerVariables, loggerVariableName =>
