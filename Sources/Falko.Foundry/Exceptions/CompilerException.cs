@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
+using Falko.Foundry.Elements;
 using Falko.Foundry.Utf8Texts;
 
 namespace Falko.Foundry.Exceptions;
@@ -17,6 +18,15 @@ public static class CompilerException
         if (value.IsEmpty)
         {
             throw new ArgumentException(ValueCannotBeEmptyMessage, paramName);
+        }
+    }
+
+    public static void ThrowIfDefault<T>(T element, [CallerArgumentExpression(nameof(element))] string? paramName = null)
+        where T : ILanguageElement
+    {
+        if (element.IsInit is false)
+        {
+            throw new ArgumentException(ValueCannotBeDefaultMessage, paramName);
         }
     }
 

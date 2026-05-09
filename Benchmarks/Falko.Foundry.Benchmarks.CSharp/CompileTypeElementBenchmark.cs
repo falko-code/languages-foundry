@@ -2,14 +2,14 @@ using BenchmarkDotNet.Attributes;
 using Falko.Foundry.Compilers;
 using Falko.Foundry.CSharp.Compilers;
 using Falko.Foundry.CSharp.Elements;
-using Falko.Foundry.Utf8Texts;
+using Falko.Foundry.Elements;
 
 namespace Falko.Benchmarks;
 
 [MemoryDiagnoser]
 public class CompileTypeElementBenchmark
 {
-    private TypeElement _loggerType = new() { Name = Utf8String.Empty };
+    private TypeElement _loggerType;
 
     [Params(1, 4)]
     public int Iterations { get; set; }
@@ -33,9 +33,9 @@ public class CompileTypeElementBenchmark
     }
 
     [Benchmark]
-    public Utf8String CompileTypeElement()
+    public CompilerElement<TypeElement> CompileTypeElement()
     {
-        var result = Utf8String.Empty;
+        var result = default(CompilerElement<TypeElement>);
 
         for (var i = 0; i < Iterations; i++)
         {

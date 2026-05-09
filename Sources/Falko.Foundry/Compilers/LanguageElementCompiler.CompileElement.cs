@@ -12,9 +12,9 @@ public static class LanguageElementCompilerExtensions
         this ILanguageCompiler compiler,
         scoped in TElement element,
         scoped in TArgument argument,
-        CompileElementAction<TArgument> action
+        CompilerElementAsSpanAction<TArgument> action
     )
-        where TElement : ILanguageElement, allows ref struct
+        where TElement : ILanguageElement
         where TArgument : allows ref struct
     {
         Utf8Buffer.ActionScope
@@ -40,8 +40,11 @@ public static class LanguageElementCompilerExtensions
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Utf8String CompileElement<TElement>(this ILanguageCompiler compiler, scoped in TElement element)
-        where TElement : ILanguageElement, allows ref struct
+    public static CompilerElement<TElement> CompileElement<TElement>
+    (
+        this ILanguageCompiler compiler,
+        scoped in TElement element
+    ) where TElement : ILanguageElement
     {
         return Utf8Buffer.StringScope
         (
@@ -54,7 +57,14 @@ public static class LanguageElementCompilerExtensions
                     in context.Element
                 );
             }
-        );
+        ).ToCompilerElement<TElement>();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static CompilerElement<T> ToCompilerElement<T>(this Utf8String elementText)
+        where T : ILanguageElement
+    {
+        return new CompilerElement<T>(elementText);
     }
 
     [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -62,7 +72,7 @@ public static class LanguageElementCompilerExtensions
     (
         ILanguageCompiler compiler,
         scoped in TElement element
-    ) where TElement : ILanguageElement, allows ref struct
+    ) where TElement : ILanguageElement
     {
         public readonly ILanguageCompiler Compiler = compiler;
 
@@ -75,9 +85,9 @@ public static class LanguageElementCompilerExtensions
         ILanguageCompiler compiler,
         scoped in TElement element,
         scoped in TArgument argument,
-        CompileElementAction<TArgument> action
+        CompilerElementAsSpanAction<TArgument> action
     )
-        where TElement : ILanguageElement, allows ref struct
+        where TElement : ILanguageElement
         where TArgument : allows ref struct
     {
         public readonly ILanguageCompiler Compiler = compiler;
@@ -86,6 +96,6 @@ public static class LanguageElementCompilerExtensions
 
         public readonly TArgument Argument = argument;
 
-        public readonly CompileElementAction<TArgument> Action = action;
+        public readonly CompilerElementAsSpanAction<TArgument> Action = action;
     }
 }

@@ -2,7 +2,6 @@
 using Falko.Foundry.Compilers;
 using Falko.Foundry.CSharp.Compilers;
 using Falko.Foundry.CSharp.Elements;
-using Falko.Foundry.Elements;
 using Falko.Foundry.Utf8Texts;
 
 var compiler = CSharpLanguageCompiler.Instance;
@@ -19,7 +18,7 @@ var loggerType = new TypeElement
     GenericTypes = [serviceType]
 };
 
-loggerType = loggerType.WithCache(compiler.CompileElement(in loggerType));
+var compilerLoggerType = compiler.CompileElement(in loggerType);
 
 var loggerVariablePrefix = "logger"u8.ToUtf8String();
 
@@ -33,7 +32,7 @@ Parallel.ForEach(loggerVariables, loggerVariableName =>
     var loggerVariable = new TypeIdentifierElement
     {
         Name = loggerVariableName,
-        Type = loggerType,
+        Type = compilerLoggerType
     };
 
     compiler.CompileElement

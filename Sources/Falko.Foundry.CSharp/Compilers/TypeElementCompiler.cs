@@ -28,6 +28,8 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
         scoped in TypeElement element
     )
     {
+        CompilerException.ThrowIfDefault(element);
+
         var typeNamespace = element.Namespace;
 
         var typeName = element.Name;
@@ -68,7 +70,11 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
 
         genericTypeAppendLoop:
 
-        AppendTypeWithGenerics(ref buffer, in genericTypesSpan[genericTypeIndex]);
+        buffer.AllocateAppendCompilerElementOrAction
+        (
+            element: genericTypesSpan[genericTypeIndex],
+            action: AppendTypeWithGenerics
+        );
 
         if (++genericTypeIndex < genericTypesCount)
         {

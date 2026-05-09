@@ -5,21 +5,13 @@ using Falko.Foundry.Utf8Texts;
 
 namespace Falko.Foundry.CSharp.Elements;
 
-public readonly struct TypeElement() : ICacheLanguageElement<TypeElement>
+public sealed class TypeElement : ILanguageElement
 {
-    public CompilerCache Cache { get; private init; }
+    public bool IsInit => true;
 
     public required Utf8String Name { get; init; }
 
-    public Utf8String Namespace { get; init; } = Utf8String.Empty;
+    public Utf8String Namespace { get; init; }
 
-    public ImmutableArray<TypeElement> GenericTypes { get; init; } = ImmutableArray<TypeElement>.Empty;
-
-    public static TypeElement CacheCopy(scoped in TypeElement element, CompilerCache cache)
-    {
-        return element with
-        {
-            Cache = cache
-        };
-    }
+    public ImmutableArray<CompilerOrLanguageElement<TypeElement>> GenericTypes { get; init; } = ImmutableArray<CompilerOrLanguageElement<TypeElement>>.Empty;
 }

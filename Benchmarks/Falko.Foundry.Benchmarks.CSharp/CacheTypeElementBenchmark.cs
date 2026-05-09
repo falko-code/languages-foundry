@@ -3,16 +3,15 @@ using Falko.Foundry.Compilers;
 using Falko.Foundry.CSharp.Compilers;
 using Falko.Foundry.CSharp.Elements;
 using Falko.Foundry.Elements;
-using Falko.Foundry.Utf8Texts;
 
 namespace Falko.Benchmarks;
 
 [MemoryDiagnoser]
 public class CacheTypeElementBenchmark
 {
-    private TypeElement _loggerTypeWithoutCache = new() { Name = Utf8String.Empty };
+    private TypeElement _loggerType;
 
-    private TypeElement _loggerTypeWithCache = new() { Name = Utf8String.Empty };
+    private CompilerElement<TypeElement> _compilerLoggerType;
 
     [Params(1, 4, 8)]
     public int Iterations { get; set; }
@@ -32,19 +31,19 @@ public class CacheTypeElementBenchmark
             GenericTypes = [serviceType]
         };
 
-        _loggerTypeWithoutCache = loggerType;
-        _loggerTypeWithCache = loggerType.WithCache(CSharpLanguageCompiler.Instance.CompileElement(in loggerType));
+        _loggerType = loggerType;
+        _compilerLoggerType = CSharpLanguageCompiler.Instance.CompileElement(in loggerType);
     }
 
     [Benchmark(Baseline = true)]
-    public Utf8String CompileVariableWithoutTypeElementCache()
+    public CompilerElement<TypeIdentifierElement> CompileVariableWithoutTypeElementCache()
     {
-        var result = Utf8String.Empty;
+        var result = default(CompilerElement<TypeIdentifierElement>);
 
         var loggerVariable = new TypeIdentifierElement
         {
             Name = "loggerVariable"u8,
-            Type = _loggerTypeWithoutCache
+            Type = _loggerType
         };
 
         for (var i = 0; i < Iterations; i++)
@@ -58,14 +57,14 @@ public class CacheTypeElementBenchmark
     }
 
     [Benchmark]
-    public Utf8String CompileVariableWithTypeElementCache()
+    public CompilerElement<TypeIdentifierElement> CompileVariableWithTypeElementCache()
     {
-        var result = Utf8String.Empty;
+        var result = default(CompilerElement<TypeIdentifierElement>);
 
         var loggerVariable = new TypeIdentifierElement
         {
             Name = "loggerVariable"u8,
-            Type = _loggerTypeWithCache
+            Type = _compilerLoggerType
         };
 
         for (var i = 0; i < Iterations; i++)

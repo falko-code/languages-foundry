@@ -1,3 +1,6 @@
 namespace Falko.Foundry.Elements;
 
-public interface ILanguageElement;
+public interface ILanguageElement
+{
+    bool IsInit { get; }
+}

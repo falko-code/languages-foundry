@@ -10,14 +10,14 @@ public abstract class LanguageCompiler<TSelf> : ILanguageCompiler
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     protected static void SetElementCompiler<TElementCompiler, TElement>()
         where TElementCompiler : class, IElementCompiler<TElement>, new()
-        where TElement : ILanguageElement, allows ref struct
+        where TElement : ILanguageElement
     {
         ElementCompilerRelativeCache<TSelf, TElement>.Declare<TElementCompiler>();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public LanguageElementCompiler<TElement> GetElementCompiler<TElement>()
-        where TElement : ILanguageElement, allows ref struct
+        where TElement : ILanguageElement
     {
         var elementCompiler = ElementCompilerRelativeCache<TSelf, TElement>.Compiler;
 

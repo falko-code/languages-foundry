@@ -7,7 +7,7 @@ namespace Falko.Foundry.Caches;
 // ReSharper disable once UnusedTypeParameter
 internal static class ElementCompilerRelativeCache<TLanguageCompiler, TElement>
     where TLanguageCompiler : class, ILanguageCompiler
-    where TElement : ILanguageElement, allows ref struct
+    where TElement : ILanguageElement
 {
     private static IElementCompiler<TElement>? _compiler;
 
