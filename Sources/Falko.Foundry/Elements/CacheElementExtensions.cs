@@ -17,19 +17,12 @@ public static class CacheElementExtensions
     {
         var cacheString = element.Cache.AsString();
 
-        if (cacheString.IsEmpty)
-        {
-            compiler.GetElementCompiler<TCacheElement>().Compile
-            (
-                ref buffer,
-                in element
-            );
-        }
-        else
-        {
-            buffer.Allocate(cacheString.Length);
-            buffer.Append(cacheString);
-        }
+        if (cacheString.IsEmpty) compiler.GetElementCompiler<TCacheElement>().Compile
+        (
+            ref buffer,
+            in element
+        );
+        else buffer.AllocateAppend(cacheString);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

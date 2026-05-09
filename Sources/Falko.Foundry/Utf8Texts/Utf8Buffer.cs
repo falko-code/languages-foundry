@@ -59,6 +59,21 @@ public ref struct Utf8Buffer : IDisposable
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void AllocateAppend(Utf8String data)
+    {
+        scoped ref var dataRef = ref data;
+        Allocate(dataRef.Length);
+        Append(dataRef);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void AllocateAppend(Utf8Char data)
+    {
+        Allocate(Utf8Char.Length);
+        Append(data);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Append(Utf8String data) => Append(data.AsSpan());
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -14,7 +14,7 @@ public static class LanguageElementCompilerExtensions
         scoped in TArgument argument,
         CompileElementAction<TArgument> action
     )
-        where TElement : struct, ILanguageElement, allows ref struct
+        where TElement : ILanguageElement, allows ref struct
         where TArgument : allows ref struct
     {
         Utf8Buffer.ActionScope
@@ -41,7 +41,7 @@ public static class LanguageElementCompilerExtensions
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Utf8String CompileElement<TElement>(this ILanguageCompiler compiler, scoped in TElement element)
-        where TElement : struct, ILanguageElement, allows ref struct
+        where TElement : ILanguageElement, allows ref struct
     {
         return Utf8Buffer.StringScope
         (
