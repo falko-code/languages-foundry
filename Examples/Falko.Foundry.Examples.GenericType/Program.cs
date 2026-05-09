@@ -24,7 +24,7 @@ loggerType = loggerType.WithCache(compiler.CompileElement(in loggerType));
 var loggerVariablePrefix = "logger"u8.ToUtf8String();
 
 var loggerVariables = Enumerable
-    .Range(1, 16)
+    .Range(1, Environment.ProcessorCount)
     .Select(i => loggerVariablePrefix + i.ToString())
     .ToImmutableArray();
 
