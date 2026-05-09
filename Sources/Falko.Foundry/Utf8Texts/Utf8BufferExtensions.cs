@@ -21,16 +21,13 @@ public static class Utf8BufferExtensions
         {
             var compilerElementString = compilerElement.AsString();
             CompilerException.ThrowIfEmptyOrDefault(compilerElementString, nameof(compilerElement));
+
             buffer.Allocate(compilerElementString.Length + allocateAdditional);
             buffer.Append(compilerElementString);
         }
         else
         {
-            compiler.GetElementCompiler<TElement>().Compile
-            (
-                buffer: ref buffer,
-                element: element.LanguageElement
-            );
+            compiler.GetElementCompiler<TElement>().Compile(ref buffer, element.LanguageElement);
             buffer.Allocate(allocateAdditional);
         }
     }
@@ -48,6 +45,7 @@ public static class Utf8BufferExtensions
         {
             var compilerElementString = compilerElement.AsString();
             CompilerException.ThrowIfEmptyOrDefault(compilerElementString, nameof(compilerElement));
+
             buffer.Allocate(compilerElementString.Length + allocateAdditional);
             buffer.Append(compilerElementString);
         }
