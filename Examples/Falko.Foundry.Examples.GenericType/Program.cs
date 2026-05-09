@@ -6,10 +6,6 @@ using Falko.Foundry.CSharp.Elements;
 using Falko.Foundry.Elements;
 using Falko.Foundry.Utf8Texts;
 
-var allocate = GC.GetAllocatedBytesForCurrentThread();
-
-var watch = Stopwatch.StartNew();
-
 var compiler = CSharpLanguageCompiler.Instance;
 
 var serviceType = new TypeElement
@@ -27,7 +23,7 @@ var loggerType = new TypeElement
 loggerType = loggerType.WithCache(compiler.CompileElement(in loggerType));
 
 var loggerVariables = Enumerable
-    .Range(1, 1000)
+    .Range(1, 16)
     .Select(i => (Utf8String)"logger"u8 + i.ToString())
     .ToImmutableArray();
 
@@ -49,9 +45,3 @@ Parallel.ForEach(loggerVariables, loggerVariableName =>
         }
     );
 });
-
-watch.Stop();
-
-allocate = GC.GetAllocatedBytesForCurrentThread() - allocate;
-
-Console.WriteLine($"Generated {loggerVariables.Length} logger variables in {watch.Elapsed.TotalMilliseconds} milliseconds, allocated {allocate} bytes");
