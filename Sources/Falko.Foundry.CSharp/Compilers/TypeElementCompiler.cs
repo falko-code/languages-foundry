@@ -28,8 +28,6 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
         scoped in TypeElement element
     )
     {
-        CompilerException.ThrowIfDefault(element);
-
         var typeNamespace = element.Namespace;
 
         var typeName = element.Name;
@@ -40,7 +38,10 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
 
         var hasTypeNamespace = typeNamespace.IsEmpty is false;
 
-        var dotBetweenLength = hasTypeNamespace ? Utf8Char.Length : 0;
+        var leftAngleBracket = CSharpLanguageConstants.LeftAngleBracket;
+        var rightAngleBracket = CSharpLanguageConstants.RightAngleBracket;
+        var dot = CSharpLanguageConstants.Dot;
+        var dotBetweenLength = hasTypeNamespace ? dot.Length : 0;
         var typeLength = typeNamespace.Length + typeName.Length + dotBetweenLength;
         var genericTypesCount = genericTypes.Length;
 
@@ -48,22 +49,22 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
         {
             typeLength = Math.Max(typeLength, MinimumTypeLength); // if current type is too short
             var typeLengthWithGenerics = typeLength + MinimumTypeLength * genericTypesCount;
-            typeLength += typeLengthWithGenerics + 2; // 2 is for brackets
+            typeLength += typeLengthWithGenerics + leftAngleBracket.Length + rightAngleBracket.Length;
         }
 
         buffer.Allocate(typeLength);
 
         if (hasTypeNamespace)
         {
-            buffer.Append(typeNamespace);
-            buffer.Append(CSharpLanguageConstants.Dot); // namespace and type name separator
+            buffer.Append(in typeNamespace);
+            buffer.Append(in dot); // namespace and type name separator
         }
 
-        buffer.Append(typeName);
+        buffer.Append(in typeName);
 
         if (genericTypesCount is 0) return;
 
-        buffer.Append(CSharpLanguageConstants.LeftAngleBracket);
+        buffer.Append(in leftAngleBracket);
 
         var genericTypesSpan = genericTypes.AsSpan();
         var genericTypeIndex = 0;
@@ -78,10 +79,10 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
 
         if (++genericTypeIndex < genericTypesCount)
         {
-            buffer.Append(CSharpLanguageConstants.Comma);
+            buffer.Append(in CSharpLanguageConstants.Comma);
             goto genericTypeAppendLoop;
         }
 
-        buffer.Append(CSharpLanguageConstants.RightAngleBracket);
+        buffer.Append(in rightAngleBracket);
     }
 }

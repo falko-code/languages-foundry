@@ -21,7 +21,8 @@ public sealed class TypeIdentifierElementCompiler : IElementCompiler<TypeIdentif
         var name = element.Name;
         CompilerException.ThrowIfEmptyOrDefault(name, nameof(element.Name));
 
-        var postfixLength = Utf8Char.Length + element.Name.Length; // 1 for space between
+        var space = CSharpLanguageConstants.Space;
+        var postfixLength = space.Length + name.Length;
 
         buffer.AllocateAppendCompilerElementOrCompile
         (
@@ -30,7 +31,7 @@ public sealed class TypeIdentifierElementCompiler : IElementCompiler<TypeIdentif
             allocateAdditional: postfixLength // we can not invoke allocate 2 times
         );
 
-        buffer.Append(CSharpLanguageConstants.Space);
-        buffer.Append(element.Name);
+        buffer.Append(in space);
+        buffer.Append(in name);
     }
 }

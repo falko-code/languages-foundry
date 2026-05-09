@@ -7,8 +7,6 @@ namespace Falko.Foundry.CSharp.Elements;
 
 public sealed class TypeElement : ILanguageElement
 {
-    public bool IsInit => true;
-
     public required Utf8String Name { get; init; }
 
     public Utf8String Namespace { get; init; }

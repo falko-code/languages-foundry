@@ -1,10 +1,11 @@
 using Falko.Foundry.Caches;
+using Falko.Foundry.Common;
 using Falko.Foundry.Elements;
 using Falko.Foundry.Utf8Texts;
 
 namespace Falko.Foundry.CSharp.Elements;
 
-public readonly record struct TypeIdentifierElement() : ILanguageElement
+public readonly record struct TypeIdentifierElement() : ILanguageElement, ISafeStruct
 {
     public bool IsInit { get; } = true;
 

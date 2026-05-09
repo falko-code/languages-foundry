@@ -1,7 +1,6 @@
 using System.Buffers;
 using System.Runtime.CompilerServices;
 using Falko.Foundry.Common;
-using Void = Falko.Foundry.Common.Void;
 
 namespace Falko.Foundry.Utf8Texts;
 
@@ -60,38 +59,31 @@ public ref struct Utf8Buffer : IDisposable
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void AllocateAppend(Utf8String data)
+    public void Append(scoped in Utf8String data)
     {
-        scoped ref var dataRef = ref data;
-        Allocate(dataRef.Length);
-        Append(dataRef);
+        Append(data.AsSpan());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void AllocateAppend(Utf8Char data)
+    public void Append(scoped in Utf8Char data)
     {
-        Allocate(Utf8Char.Length);
-        Append(data);
+        scoped ref var positionRef = ref _position;
+        var position = positionRef;
+        data.AsSpan().CopyTo(_buffer[position..]);
+        positionRef = position + data.Length;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Append(Utf8String data) => Append(data.AsSpan());
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Append(Utf8Char data) => Append(data.AsByte());
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private void Append(scoped ReadOnlySpan<byte> data)
+    public void Append(scoped in ReadOnlySpan<byte> data)
     {
-        var position = _position;
-        ref var symbolsRef = ref data;
-        var symbolsLength = symbolsRef.Length;
-        symbolsRef.CopyTo(_buffer.Slice(position, symbolsLength));
-        _position = position + symbolsLength;
+        scoped ref var positionRef = ref _position;
+        var position = positionRef;
+        data.CopyTo(_buffer[position..]);
+        positionRef = position + data.Length;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private void Append(byte data)
+    public void Append(byte data)
     {
         scoped ref var positionRef = ref _position;
         var position = positionRef;
@@ -148,7 +140,7 @@ public ref struct Utf8Buffer : IDisposable
         ResultScope(in cotext, static (scoped ref buffer, in context) =>
         {
             context.Action(ref buffer, in context.Argument);
-            return default(Void); // return value is not used
+            return default(Unit); // return value is not used
         }, capacity);
     }
 

@@ -21,11 +21,19 @@ public static class CompilerException
         }
     }
 
+    public static void ThrowIfEmpty<T>(ReadOnlySpan<T> value, [CallerArgumentExpression(nameof(value))] string? paramName = null)
+    {
+        if (value.IsEmpty)
+        {
+            throw new ArgumentException(ValueCannotBeEmptyMessage, paramName);
+        }
+    }
+
     public static void ThrowIfDefault<T>
     (
         T element,
         [CallerArgumentExpression(nameof(element))] string? paramName = null
-    ) where T : ILanguageElement
+    ) where T : struct, ISafeStruct, allows ref struct
     {
         if (element.IsInit is false)
         {
