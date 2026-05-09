@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using Falko.Foundry.Elements;
 using Falko.Foundry.Utf8Texts;
 
-namespace Falko.Foundry.Exceptions;
+namespace Falko.Foundry.Common;
 
 public static class CompilerException
 {
@@ -21,8 +21,11 @@ public static class CompilerException
         }
     }
 
-    public static void ThrowIfDefault<T>(T element, [CallerArgumentExpression(nameof(element))] string? paramName = null)
-        where T : ILanguageElement
+    public static void ThrowIfDefault<T>
+    (
+        T element,
+        [CallerArgumentExpression(nameof(element))] string? paramName = null
+    ) where T : ILanguageElement
     {
         if (element.IsInit is false)
         {

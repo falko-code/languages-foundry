@@ -13,5 +13,6 @@ public sealed class TypeElement : ILanguageElement
 
     public Utf8String Namespace { get; init; }
 
-    public ImmutableArray<CompilerOrLanguageElement<TypeElement>> GenericTypes { get; init; } = ImmutableArray<CompilerOrLanguageElement<TypeElement>>.Empty;
+    public ImmutableArray<CompilerOrLanguageElement<TypeElement>> GenericTypes { get; init; }
+        = ImmutableArray<CompilerOrLanguageElement<TypeElement>>.Empty;
 }
