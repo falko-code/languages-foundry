@@ -13,7 +13,7 @@ public static class CacheElementExtensions
         this ILanguageCompiler compiler,
         scoped ref Utf8Buffer buffer,
         scoped in TCacheElement element
-    ) where TCacheElement : ICacheElement<TCacheElement>, allows ref struct
+    ) where TCacheElement : ICacheLanguageElement<TCacheElement>, allows ref struct
     {
         var cacheString = element.Cache.AsString();
 
@@ -37,7 +37,7 @@ public static class CacheElementExtensions
     (
         this TCacheElement element,
         Utf8String cache
-    ) where TCacheElement : ICacheElement<TCacheElement>, allows ref struct
+    ) where TCacheElement : ICacheLanguageElement<TCacheElement>, allows ref struct
     {
         return TCacheElement.CacheCopy(in element, new CompilerCache(cache));
     }

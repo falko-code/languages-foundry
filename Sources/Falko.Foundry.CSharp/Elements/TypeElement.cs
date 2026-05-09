@@ -5,7 +5,7 @@ using Falko.Foundry.Utf8Texts;
 
 namespace Falko.Foundry.CSharp.Elements;
 
-public readonly struct TypeElement() : ILanguageElement, ICacheElement<TypeElement>
+public readonly struct TypeElement() : ICacheLanguageElement<TypeElement>
 {
     public CompilerCache Cache { get; private init; }
 
