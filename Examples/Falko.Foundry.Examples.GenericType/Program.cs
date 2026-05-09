@@ -21,9 +21,11 @@ var loggerType = new TypeElement
 
 loggerType = loggerType.WithCache(compiler.CompileElement(in loggerType));
 
+var loggerVariablePrefix = "logger"u8.ToUtf8String();
+
 var loggerVariables = Enumerable
     .Range(1, 16)
-    .Select(i => "logger"u8.ToUtf8String() + i.ToString())
+    .Select(i => loggerVariablePrefix + i.ToString())
     .ToImmutableArray();
 
 Parallel.ForEach(loggerVariables, loggerVariableName =>
