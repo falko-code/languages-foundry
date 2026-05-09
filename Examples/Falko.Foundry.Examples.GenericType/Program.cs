@@ -42,7 +42,7 @@ Parallel.ForEach(loggerVariables, loggerVariableName =>
         argument: loggerVariableName,
         action: static (scoped utf8Bytes, in loggerVariableName) =>
         {
-            File.WriteAllBytes($"{loggerVariableName}.variable.cs", utf8Bytes);
+            File.WriteAllBytes($"{loggerVariableName}.csvar", utf8Bytes);
         }
     );
 });
