@@ -1,5 +1,6 @@
 using System.Buffers;
 using System.Runtime.CompilerServices;
+using Falko.Foundry.Common;
 
 namespace Falko.Foundry.Utf8Texts;
 
@@ -118,13 +119,47 @@ public ref struct Utf8Buffer : IDisposable
         return new Utf8Buffer(capacity);
     }
 
-    [MethodImpl(MethodImplOptions.NoInlining)]
-    public static Utf8String Create<T>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static void ActionScope<TArgument>
     (
-        in T argument,
-        Utf8BufferAction<T> action,
+        in TArgument argument,
+        Utf8BufferAction<TArgument> action,
         int capacity = StackAllocationThreshold
-    ) where T : struct, allows ref struct
+    ) where TArgument : struct, allows ref struct
+    {
+        var cotext = new CreateToStringArgument<TArgument>(in argument, action);
+
+        ResultScope(in cotext, static (scoped ref buffer, in context) =>
+        {
+            context.Action(ref buffer, in context.Argument);
+            return Unit.Value; // return value is not used
+        }, capacity);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Utf8String StringScope<TArgument>
+    (
+        in TArgument argument,
+        Utf8BufferAction<TArgument> action,
+        int capacity = StackAllocationThreshold
+    ) where TArgument : struct, allows ref struct
+    {
+        var cotext = new CreateToStringArgument<TArgument>(in argument, action);
+
+        return ResultScope(in cotext, static (scoped ref buffer, in context) =>
+        {
+            context.Action(ref buffer, in context.Argument);
+            return buffer.ToUtf8String();
+        }, capacity);
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.AggressiveOptimization)]
+    public static TResult ResultScope<TArgument, TResult>
+    (
+        in TArgument argument,
+        Utf8BufferAction<TArgument, TResult> action,
+        int capacity = StackAllocationThreshold
+    ) where TArgument : allows ref struct
     {
         scoped var builder = capacity > StackAllocationThreshold
             ? new Utf8Buffer(capacity)
@@ -132,12 +167,22 @@ public ref struct Utf8Buffer : IDisposable
 
         try
         {
-            action(ref builder, in argument);
-            return builder.ToString();
+            return action(ref builder, in argument);
         }
         finally
         {
             builder.Dispose();
         }
+    }
+
+    private readonly ref struct CreateToStringArgument<TArgument>
+    (
+        in TArgument argument,
+        Utf8BufferAction<TArgument> action
+    ) where TArgument : struct, allows ref struct
+    {
+        public readonly TArgument Argument = argument;
+
+        public readonly Utf8BufferAction<TArgument> Action = action;
     }
 }

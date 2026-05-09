@@ -21,11 +21,10 @@ var loggerType = new TypeElement
 
 loggerType = loggerType.WithCache(compiler.CompileElement(in loggerType));
 
-var loggerVariables = ImmutableArray.Create<Utf8String>
-(
-    "firstLogger"u8,
-    "secondLogger"u8
-);
+var loggerVariables = Enumerable
+    .Range(1, 10)
+    .Select(i => (Utf8String)"logger"u8 + i.ToString())
+    .ToImmutableArray();
 
 Parallel.ForEach(loggerVariables, loggerVariableName =>
 {
@@ -35,5 +34,13 @@ Parallel.ForEach(loggerVariables, loggerVariableName =>
         Type = loggerType,
     };
 
-    Console.WriteLine(compiler.CompileElement(in loggerVariable));
+    compiler.CompileElement
+    (
+        element: in loggerVariable,
+        argument: loggerVariableName,
+        action: static (scoped utf8Bytes, in loggerVariableName) =>
+        {
+            File.WriteAllBytes($"{loggerVariableName}.variable.cs", utf8Bytes);
+        }
+    );
 });
