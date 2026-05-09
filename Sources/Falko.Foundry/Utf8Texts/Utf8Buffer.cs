@@ -1,6 +1,7 @@
 using System.Buffers;
 using System.Runtime.CompilerServices;
 using Falko.Foundry.Common;
+using Void = Falko.Foundry.Common.Void;
 
 namespace Falko.Foundry.Utf8Texts;
 
@@ -147,7 +148,7 @@ public ref struct Utf8Buffer : IDisposable
         ResultScope(in cotext, static (scoped ref buffer, in context) =>
         {
             context.Action(ref buffer, in context.Argument);
-            return Unit.Value; // return value is not used
+            return default(Void); // return value is not used
         }, capacity);
     }
 
