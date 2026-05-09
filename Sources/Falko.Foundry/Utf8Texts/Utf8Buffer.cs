@@ -8,7 +8,7 @@ public ref struct Utf8Buffer : IDisposable
 {
     public const int StackAllocationThreshold = 256; // average good size for stack allocation
 
-    private byte[]? _cache;
+    private byte[]? _rented;
 
     private Span<byte> _buffer;
 
@@ -23,8 +23,8 @@ public ref struct Utf8Buffer : IDisposable
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private Utf8Buffer(int capacity)
     {
-        _cache = ArrayPool<byte>.Shared.Rent(capacity);
-        _buffer = _cache;
+        _rented = ArrayPool<byte>.Shared.Rent(capacity);
+        _buffer = _rented;
     }
 
     public int Length
@@ -106,9 +106,9 @@ public ref struct Utf8Buffer : IDisposable
 
         AsSpan().CopyTo(newSpan);
 
-        if (_cache is not null) ArrayPool<byte>.Shared.Return(_cache);
+        if (_rented is not null) ArrayPool<byte>.Shared.Return(_rented);
 
-        _cache = newArray;
+        _rented = newArray;
         _buffer = newSpan;
     }
 
@@ -121,9 +121,9 @@ public ref struct Utf8Buffer : IDisposable
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Dispose()
     {
-        if (_cache is null) return; // we used stack-allocated buffer
+        if (_rented is null) return; // we used stack-allocated buffer
 
-        ArrayPool<byte>.Shared.Return(_cache);
+        ArrayPool<byte>.Shared.Return(_rented);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
