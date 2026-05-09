@@ -15,11 +15,11 @@ public readonly struct TypeElement() : ILanguageElement, ICacheElement<TypeEleme
 
     public ImmutableArray<TypeElement> GenericTypes { get; init; } = ImmutableArray<TypeElement>.Empty;
 
-    public static TypeElement CacheCopy(scoped in TypeElement element, CompilerCache fingerprint)
+    public static TypeElement CacheCopy(scoped in TypeElement element, CompilerCache cache)
     {
         return element with
         {
-            Cache = fingerprint
+            Cache = cache
         };
     }
 }

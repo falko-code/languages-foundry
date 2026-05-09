@@ -38,14 +38,14 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
 
         var hasTypeNamespace = typeNamespace.IsEmpty is false;
 
-        var dotLength = hasTypeNamespace ? Utf8Char.Length : 0;
-        var typeLength = typeNamespace.Length + typeName.Length + dotLength;
+        var dotBetweenLength = hasTypeNamespace ? Utf8Char.Length : 0;
+        var typeLength = typeNamespace.Length + typeName.Length + dotBetweenLength;
         var genericTypesCount = genericTypes.Length;
 
         if (genericTypesCount is not 0)
         {
             typeLength = Math.Max(typeLength, MinimumTypeLength); // if current type is too short
-            var typeLengthWithGenerics = typeLength * (1 + genericTypesCount); // 1 is for current
+            var typeLengthWithGenerics = typeLength + MinimumTypeLength * genericTypesCount;
             typeLength += typeLengthWithGenerics + 2; // 2 is for brackets
         }
 
