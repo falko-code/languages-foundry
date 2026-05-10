@@ -22,9 +22,14 @@ public ref struct Utf8Buffer : IDisposable
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private Utf8Buffer(int capacity)
     {
+        capacity = Math.Max(capacity, StackAllocationThreshold + 1); // if array we can't use less capacity
+
         _rented = ArrayPool<byte>.Shared.Rent(capacity);
         _buffer = _rented;
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Utf8Buffer() : this(0) { }
 
     public readonly int Length
     {
@@ -44,7 +49,7 @@ public ref struct Utf8Buffer : IDisposable
         get => Length is 0;
     }
 
-    public readonly bool IsAllocatedOnStack
+    public readonly bool IsOnStack
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => _rented is null;
@@ -67,7 +72,7 @@ public ref struct Utf8Buffer : IDisposable
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void StackToHeap()
+    public void MoveToHeap()
     {
         if (_rented is not null) return; // already on heap
 
