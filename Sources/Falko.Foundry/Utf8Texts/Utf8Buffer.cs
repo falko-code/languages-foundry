@@ -45,6 +45,12 @@ public ref struct Utf8Buffer : IDisposable
         get => Length is 0;
     }
 
+    public bool IsAllocatedOnStack
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => _rented is null;
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public readonly ReadOnlySpan<byte> AsSpan() => _buffer[.._position];
 
