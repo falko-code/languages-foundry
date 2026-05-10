@@ -25,20 +25,14 @@ while ensuring optimal performance.
 ## Example
 
 ```csharp
-// example element to compile
-var stringType = new TypeElement { Namespace = "System"u8, Name = "String"u8 };
+// declare the element
+var serviceType = new TypeElement { Name = "Service"u8 };
 
-// compile the element to a utf8 result that can be output without allocations
-var result = CSharpLanguageCompiler.Instance.CompileElement(in stringType);
+// compile the element
+var compileElement = CSharpLanguageCompiler.Instance.CompileElement(in serviceType);
 
-// output to file without allocations
-File.WriteAllBytes("output.cs", result.AsSpan());
-
-// output without allocations but longer
-foreach (var part in result) Console.Write(part);
-
-// output with allocations but faster
-Console.Write(result.ToString());
+// output compiled element
+File.WriteAllBytes("output.g.cs", compileElement.AsString().AsSpan());
 ```
 
 ## How Create Own Compilers?
