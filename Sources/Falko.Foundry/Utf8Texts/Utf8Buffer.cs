@@ -59,7 +59,7 @@ public ref struct Utf8Buffer : IDisposable
     public readonly ReadOnlySpan<byte> AsSpan() => _buffer[.._position];
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public readonly ReadOnlyMemory<byte> AsMemory() => _rented.AsMemory()[.._position];
+    public readonly ReadOnlyMemory<byte> AsMemory() => new(_rented, 0, _position);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Allocate(int amount)
