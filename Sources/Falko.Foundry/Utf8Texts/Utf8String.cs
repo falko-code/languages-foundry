@@ -9,8 +9,6 @@ public readonly struct Utf8String : IEquatable<Utf8String>, IComparable<Utf8Stri
 {
     public static readonly Utf8String Empty = Wrap(ReadOnlyMemory<byte>.Empty);
 
-    private const int MaxStackByteCount = 256;
-
     private readonly ReadOnlyMemory<byte> _utf8Bytes;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -24,7 +22,7 @@ public readonly struct Utf8String : IEquatable<Utf8String>, IComparable<Utf8Stri
     {
         var maxByteCount = Encoding.UTF8.GetMaxByteCount(text.Length);
 
-        if (maxByteCount > MaxStackByteCount)
+        if (maxByteCount > Utf8Buffer.StackAllocationThreshold)
         {
             _utf8Bytes = new ReadOnlyMemory<byte>(Encoding.UTF8.GetBytes(text));
             return;
@@ -167,7 +165,7 @@ public readonly struct Utf8String : IEquatable<Utf8String>, IComparable<Utf8Stri
     {
         var maxByteCount = Encoding.UTF8.GetMaxByteCount(targetString.Length);
 
-        if (maxByteCount <= MaxStackByteCount)
+        if (maxByteCount <= Utf8Buffer.StackAllocationThreshold)
         {
             Span<byte> stackBuffer = stackalloc byte[maxByteCount];
 
