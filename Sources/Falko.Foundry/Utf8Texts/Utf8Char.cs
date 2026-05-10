@@ -5,7 +5,6 @@ using Falko.Foundry.Common;
 
 namespace Falko.Foundry.Utf8Texts;
 
-[method: MethodImpl(MethodImplOptions.AggressiveInlining)]
 public readonly struct Utf8Char : ISafeStruct
 {
     private readonly uint _raw;
@@ -58,8 +57,7 @@ public readonly struct Utf8Char : ISafeStruct
     public static Utf8Char From(scoped in ReadOnlySpan<byte> utf8Bytes)
     {
         CompilerException.ThrowIfEmpty(utf8Bytes);
-
-        ref var utf8BytesFirstByteRef = ref MemoryMarshal.GetReference(utf8Bytes);
+        scoped ref var utf8BytesFirstByteRef = ref MemoryMarshal.GetReference(utf8Bytes);
 
         var expectedLength = GetByteCount(utf8BytesFirstByteRef);
 
