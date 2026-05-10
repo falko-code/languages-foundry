@@ -26,25 +26,25 @@ public ref struct Utf8Buffer : IDisposable
         _buffer = _rented;
     }
 
-    public int Length
+    public readonly int Length
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => _buffer.Length;
     }
 
-    public int Count
+    public readonly int Count
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => _position;
     }
 
-    public bool IsEmpty
+    public readonly bool IsEmpty
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => Length is 0;
     }
 
-    public bool IsAllocatedOnStack
+    public readonly bool IsAllocatedOnStack
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => _rented is null;
@@ -54,6 +54,9 @@ public ref struct Utf8Buffer : IDisposable
     public readonly ReadOnlySpan<byte> AsSpan() => _buffer[.._position];
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public readonly ReadOnlyMemory<byte> AsMemory() => _rented.AsMemory()[.._position];
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Allocate(int amount)
     {
         var newLength = _position + amount;
@@ -61,6 +64,14 @@ public ref struct Utf8Buffer : IDisposable
         if (newLength <= _buffer.Length) return;
 
         AllocateCore(newLength);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void StackToHeap()
+    {
+        if (_rented is not null) return; // already on heap
+
+        StackToHeapCore();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -110,18 +121,32 @@ public ref struct Utf8Buffer : IDisposable
         _buffer = newSpan;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Utf8String ToUtf8String() => new(AsSpan());
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override string ToString() => ToUtf8String().ToString();
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Dispose()
+    [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.AggressiveOptimization)]
+    private void StackToHeapCore()
     {
-        if (_rented is null) return; // we used stack-allocated buffer
+        var newArray = ArrayPool<byte>.Shared.Rent(StackAllocationThreshold + 1);
+        var newSpan = newArray.AsSpan();
 
-        ArrayPool<byte>.Shared.Return(_rented);
+        AsSpan().CopyTo(newSpan);
+
+        _rented = newArray;
+        _buffer = newSpan;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public readonly Utf8String ToUtf8String() => new(AsSpan());
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public readonly override string ToString() => ToUtf8String().ToString();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public readonly void Dispose()
+    {
+        var rented = _rented;
+
+        if (rented is null) return; // we used stack-allocated buffer
+
+        ArrayPool<byte>.Shared.Return(rented);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
