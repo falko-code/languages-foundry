@@ -61,7 +61,7 @@ public readonly struct Utf8Char : ISafeStruct
 
         var expectedLength = GetByteCount(utf8BytesFirstByteRef);
 
-        ArgumentOutOfRangeException.ThrowIfNotEqual(expectedLength, utf8Bytes.Length, nameof(utf8Bytes));
+        ArgumentOutOfRangeException.ThrowIfNotEqual(utf8Bytes.Length, expectedLength, nameof(utf8Bytes));
 
         return new Utf8Char
         (
