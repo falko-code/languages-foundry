@@ -1,6 +1,5 @@
 using System.Buffers;
 using System.Runtime.CompilerServices;
-using Falko.Foundry.Common;
 
 namespace Falko.Foundry.Utf8Texts;
 
