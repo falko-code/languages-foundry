@@ -31,7 +31,7 @@ public ref struct Utf8Buffer : IDisposable
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Utf8Buffer() : this(0) { }
 
-    public readonly int Length
+    public readonly int Capacity
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get => _buffer.Length;
@@ -46,7 +46,7 @@ public ref struct Utf8Buffer : IDisposable
     public readonly bool IsEmpty
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => Length is 0;
+        get => Capacity is 0;
     }
 
     public readonly bool IsOnStack

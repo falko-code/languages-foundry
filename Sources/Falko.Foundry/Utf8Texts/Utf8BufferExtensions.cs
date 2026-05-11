@@ -20,7 +20,7 @@ public static class Utf8BufferExtensions
         if (element.TryGetCompilerElement(out var compilerElement))
         {
             var compilerElementString = compilerElement.AsString();
-            CompilerException.ThrowIfEmptyOrDefault(compilerElementString, nameof(compilerElement));
+            CompileArgumentException.ThrowIfEmptyOrDefault(compilerElementString, nameof(compilerElement));
 
             buffer.Allocate(compilerElementString.Length + allocateAdditional);
             buffer.Append(compilerElementString);
@@ -44,7 +44,7 @@ public static class Utf8BufferExtensions
         if (element.TryGetCompilerElement(out var compilerElement))
         {
             var compilerElementString = compilerElement.AsString();
-            CompilerException.ThrowIfEmptyOrDefault(compilerElementString, nameof(compilerElement));
+            CompileArgumentException.ThrowIfEmptyOrDefault(compilerElementString, nameof(compilerElement));
 
             buffer.Allocate(compilerElementString.Length + allocateAdditional);
             buffer.Append(compilerElementString);

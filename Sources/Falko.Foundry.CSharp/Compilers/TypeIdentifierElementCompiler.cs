@@ -16,10 +16,10 @@ public sealed class TypeIdentifierElementCompiler : IElementCompiler<TypeIdentif
         scoped ref Utf8Buffer buffer
     )
     {
-        CompilerException.ThrowIfDefault(element);
+        CompileArgumentException.ThrowIfDefault(element);
 
         var name = element.Name;
-        CompilerException.ThrowIfEmptyOrDefault(name, nameof(element.Name));
+        CompileArgumentException.ThrowIfEmptyOrDefault(name, nameof(element.Name));
 
         var space = CSharpLanguageConstants.Space;
         var postfixLength = space.Length + name.Length;

@@ -81,6 +81,22 @@ public readonly struct CompilerOrLanguageElement<TElement> : ILanguageElement wh
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override string ToString()
+    {
+        if (TryGetCompilerElement(out var compilerElement))
+        {
+            return compilerElement.ToString();
+        }
+
+        if (TryGetLanguageElement(out var languageElement))
+        {
+            return languageElement.ToString() ?? string.Empty;
+        }
+
+        return string.Empty;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator CompilerOrLanguageElement<TElement>(TElement languageElement)
     {
         return new CompilerOrLanguageElement<TElement>(languageElement);

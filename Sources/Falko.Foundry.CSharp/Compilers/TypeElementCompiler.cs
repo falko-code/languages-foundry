@@ -31,25 +31,27 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
         var typeNamespace = element.Namespace;
 
         var typeName = element.Name;
-        CompilerException.ThrowIfEmptyOrDefault(typeName, nameof(element.Name));
+        CompileArgumentException.ThrowIfEmptyOrDefault(typeName, nameof(element.Name));
 
         var genericTypes = element.GenericTypes;
-        CompilerException.ThrowIfDefault(genericTypes, nameof(element.GenericTypes));
+        CompileArgumentException.ThrowIfDefault(genericTypes, nameof(element.GenericTypes));
 
         var hasTypeNamespace = typeNamespace.IsEmpty is false;
 
         var leftAngleBracket = CSharpLanguageConstants.LeftAngleBracket;
         var rightAngleBracket = CSharpLanguageConstants.RightAngleBracket;
         var dot = CSharpLanguageConstants.Dot;
+        var commaSpace = CSharpLanguageConstants.CommaSpace;
         var dotBetweenLength = hasTypeNamespace ? dot.Length : 0;
         var typeLength = typeNamespace.Length + typeName.Length + dotBetweenLength;
         var genericTypesCount = genericTypes.Length;
 
         if (genericTypesCount is not 0)
         {
+            typeLength += leftAngleBracket.Length + rightAngleBracket.Length; // for generic type brackets
             typeLength = Math.Max(typeLength, MinimumTypeLength); // if current type is too short
-            var typeLengthWithGenerics = typeLength + MinimumTypeLength * genericTypesCount;
-            typeLength += typeLengthWithGenerics + leftAngleBracket.Length + rightAngleBracket.Length;
+            typeLength += MinimumTypeLength * genericTypesCount; // for do fewer allocations when appending generic types
+            typeLength += commaSpace.Length * (genericTypesCount - 1); // for comma and space between generic types
         }
 
         buffer.Allocate(typeLength);
@@ -79,7 +81,7 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
 
         if (++genericTypeIndex < genericTypesCount)
         {
-            buffer.Append(in CSharpLanguageConstants.Comma);
+            buffer.Append(in commaSpace);
             goto genericTypeAppendLoop;
         }
 

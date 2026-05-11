@@ -8,9 +8,9 @@ internal static class CSharpLanguageConstants
 
     public static readonly Utf8Char Dot = "."u8;
 
-    public static readonly Utf8Char Comma = ","u8;
-
     public static readonly Utf8Char LeftAngleBracket = "<"u8;
 
     public static readonly Utf8Char RightAngleBracket = ">"u8;
+
+    public static readonly Utf8String CommaSpace = ", "u8;
 }

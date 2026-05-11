@@ -1,47 +1,37 @@
-﻿using System.Collections.Immutable;
+﻿using Falko.Foundry.Common;
 using Falko.Foundry.Compilers;
 using Falko.Foundry.CSharp.Compilers;
 using Falko.Foundry.CSharp.Elements;
-using Falko.Foundry.Utf8Texts;
 
-var compiler = CSharpLanguageCompiler.Instance;
-
-var serviceType = new TypeElement
+var intType = new TypeElement
 {
-    Name = "Service"u8
+    Name = "Int32"u8,
+    Namespace = "System"u8
 };
 
-var loggerType = new TypeElement
+var listType = new TypeElement
 {
-    Namespace = "Falko.Logging.Loggers"u8,
-    Name = "Logger"u8,
-    GenericTypes = [serviceType]
+    Name = "List"u8,
+    Namespace = "System.Collections.Generic"u8,
+    GenericTypes = [intType]
 };
 
-var compilerLoggerType = compiler.CompileElement(in loggerType);
-
-var loggerVariablePrefix = "logger"u8.ToUtf8String();
-
-var loggerVariables = Enumerable
-    .Range(1, Environment.ProcessorCount)
-    .Select(i => loggerVariablePrefix + i.ToString())
-    .ToImmutableArray();
-
-Parallel.ForEach(loggerVariables, loggerVariableName =>
+var pairType = new TypeElement
 {
-    var loggerVariable = new TypeIdentifierElement
-    {
-        Name = loggerVariableName,
-        Type = compilerLoggerType
-    };
+    Name = "KeyValuePair"u8,
+    Namespace = "System.Collections.Generic"u8,
+    GenericTypes = [intType, listType]
+};
 
-    compiler.CompileElement
-    (
-        element: in loggerVariable,
-        argument: loggerVariableName,
-        action: static (scoped utf8Bytes, in loggerVariableName) =>
-        {
-            File.WriteAllBytes($"{loggerVariableName}.csvar", utf8Bytes);
-        }
-    );
-});
+var pairVariable = new TypeIdentifierElement
+{
+    Name = "pair"u8,
+    Type = pairType
+};
+
+CSharpLanguageCompiler.Instance.CompileElement
+(
+    element: in pairVariable,
+    argument: default(Unit),
+    action: static (scoped in e, in _) => Console.WriteLine(e)
+);

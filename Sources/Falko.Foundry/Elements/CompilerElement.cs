@@ -14,4 +14,13 @@ public readonly struct CompilerElement<TCompiledElement>
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Utf8String AsString() => elementText;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public override string ToString() => elementText.ToString();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator Utf8String(CompilerElement<TCompiledElement> compilerElement)
+    {
+        return compilerElement.AsString();
+    }
 }

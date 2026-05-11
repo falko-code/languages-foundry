@@ -88,6 +88,7 @@ public static class LanguageElementCompilerExtensions
                         ref buffer,
                         in context.Element
                     );
+                    Console.WriteLine($"Compiled element of type {typeof(TElement).Name} with Count: {buffer.Count} and Capacity: {buffer.Capacity}");
                 }
             ).ToCompilerElement<TElement>();
         }

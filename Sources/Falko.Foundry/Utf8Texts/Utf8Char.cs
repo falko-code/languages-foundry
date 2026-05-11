@@ -56,7 +56,7 @@ public readonly struct Utf8Char : ISafeStruct
     [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
     public static Utf8Char From(scoped in ReadOnlySpan<byte> utf8Bytes)
     {
-        CompilerException.ThrowIfEmpty(utf8Bytes);
+        CompileArgumentException.ThrowIfEmpty(utf8Bytes);
         scoped ref var utf8BytesFirstByteRef = ref MemoryMarshal.GetReference(utf8Bytes);
 
         var expectedLength = GetByteCount(utf8BytesFirstByteRef);

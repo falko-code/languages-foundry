@@ -4,7 +4,7 @@ using Falko.Foundry.Utf8Texts;
 
 namespace Falko.Foundry.Common;
 
-public static class CompilerException
+public static class CompileArgumentException
 {
     private const string ValueCannotBeDefaultMessage = "Value cannot be default.";
 
