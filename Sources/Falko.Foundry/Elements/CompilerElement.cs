@@ -16,6 +16,9 @@ public readonly struct CompilerElement<TCompiledElement>
     public Utf8String AsString() => elementText;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ReadOnlySpan<byte> AsSpan() => elementText.AsSpan();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString() => elementText.ToString();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

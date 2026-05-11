@@ -21,7 +21,7 @@ var serviceType = new TypeElement { Name = "Service"u8 };
 var compilerElement = CSharpLanguageCompiler.Instance.CompileElement(in serviceType);
 
 // output compiled element
-File.WriteAllBytes("output.g.cs", compilerElement.AsString().AsSpan());
+File.WriteAllBytes("output.g.cs", compilerElement.AsSpan());
 ```
 
 ## License

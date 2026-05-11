@@ -85,15 +85,15 @@ public readonly struct CompilerOrLanguageElement<TElement> : ILanguageElement wh
     {
         if (TryGetCompilerElement(out var compilerElement))
         {
-            return compilerElement.ToString();
+            return $"Compiler: {compilerElement}";
         }
 
         if (TryGetLanguageElement(out var languageElement))
         {
-            return languageElement.ToString() ?? string.Empty;
+            return $"Language: {languageElement}";
         }
 
-        return string.Empty;
+        return "Uninitialized";
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
