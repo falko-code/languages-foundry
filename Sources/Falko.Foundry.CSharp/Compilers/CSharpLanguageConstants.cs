@@ -15,4 +15,6 @@ internal static class CSharpLanguageConstants
     public static readonly Utf8Char LineBreak = ";"u8;
 
     public static readonly Utf8String CommaSpace = ", "u8;
+
+    public static readonly Utf8String UsingNamespace = "using "u8;
 }

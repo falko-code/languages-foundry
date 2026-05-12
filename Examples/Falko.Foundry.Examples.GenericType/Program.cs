@@ -3,6 +3,23 @@ using Falko.Foundry.Compilers;
 using Falko.Foundry.CSharp.Compilers;
 using Falko.Foundry.CSharp.Elements;
 
+var usingNamespace = new UsingNamespaceElement
+{
+    Namespace = "System"u8
+};
+
+var usingNamespaceLine = new LineElement<UsingNamespaceElement>
+{
+    Element = usingNamespace
+};
+
+CSharpLanguageCompiler.Instance.CompileElement
+(
+    element: in usingNamespaceLine,
+    argument: default(Unit),
+    action: static (scoped in e, in _) => Console.WriteLine(e)
+);
+
 var intType = new TypeElement
 {
     Name = "Int32"u8,
@@ -31,7 +48,6 @@ var pairVariable = new TypeIdentifierElement
 
 var pairVariableLine = new LineElement<TypeIdentifierElement>
 {
-    Padding = 1,
     Element = pairVariable
 };
 

@@ -31,7 +31,7 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
         var typeNamespace = element.Namespace;
 
         var typeName = element.Name;
-        CompileArgumentException.ThrowIfEmptyOrDefault(typeName, nameof(element.Name));
+        CompileArgumentException.ThrowIfEmpty(typeName, nameof(element.Name));
 
         var genericTypes = element.GenericTypes;
         CompileArgumentException.ThrowIfDefault(genericTypes, nameof(element.GenericTypes));

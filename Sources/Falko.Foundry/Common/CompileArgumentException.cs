@@ -28,6 +28,14 @@ public static class CompileArgumentException
         }
     }
 
+    public static void ThrowIfEmpty(Utf8String value, [CallerArgumentExpression(nameof(value))] string? paramName = null)
+    {
+        if (value.IsEmpty)
+        {
+            throw new ArgumentException(ValueCannotBeEmptyMessage, paramName);
+        }
+    }
+
     public static void ThrowIfDefault<T>
     (
         T element,
@@ -51,14 +59,6 @@ public static class CompileArgumentException
     public static void ThrowIfEmptyOrDefault<T>(ImmutableArray<T> value, [CallerArgumentExpression(nameof(value))] string? paramName = null)
     {
         if (value.IsDefaultOrEmpty)
-        {
-            throw new ArgumentException(ValueCannotBeEmptyOrDefaultMessage, paramName);
-        }
-    }
-
-    public static void ThrowIfEmptyOrDefault(Utf8String value, [CallerArgumentExpression(nameof(value))] string? paramName = null)
-    {
-        if (value.IsEmpty)
         {
             throw new ArgumentException(ValueCannotBeEmptyOrDefaultMessage, paramName);
         }

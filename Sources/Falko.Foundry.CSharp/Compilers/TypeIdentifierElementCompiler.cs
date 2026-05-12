@@ -6,7 +6,7 @@ using Falko.Foundry.Utf8Texts;
 
 namespace Falko.Foundry.CSharp.Compilers;
 
-public sealed class TypeIdentifierElementCompiler : IElementCompiler<TypeIdentifierElement>
+internal sealed class TypeIdentifierElementCompiler : IElementCompiler<TypeIdentifierElement>
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Compile
@@ -19,7 +19,7 @@ public sealed class TypeIdentifierElementCompiler : IElementCompiler<TypeIdentif
         CompileArgumentException.ThrowIfDefault(element);
 
         var name = element.Name;
-        CompileArgumentException.ThrowIfEmptyOrDefault(name, nameof(element.Name));
+        CompileArgumentException.ThrowIfEmpty(name, nameof(element.Name));
 
         var space = CSharpLanguageConstants.Space;
         var postfixLength = space.Length + name.Length;

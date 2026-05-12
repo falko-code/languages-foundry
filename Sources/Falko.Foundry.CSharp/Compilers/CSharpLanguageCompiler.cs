@@ -10,9 +10,10 @@ public sealed class CSharpLanguageCompiler : LanguageCompiler<CSharpLanguageComp
     private CSharpLanguageCompiler()
     {
         SetElementCompiler<TypeElementCompiler, TypeElement>();
-
         SetElementCompiler<TypeIdentifierElementCompiler, TypeIdentifierElement>();
+        SetElementCompiler<UsingNamespaceElementCompiler, UsingNamespaceElement>();
 
         SetElementCompiler<LineElementCompiler<TypeIdentifierElement>, LineElement<TypeIdentifierElement>>();
+        SetElementCompiler<LineElementCompiler<UsingNamespaceElement>, LineElement<UsingNamespaceElement>>();
     }
 }

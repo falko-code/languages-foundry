@@ -5,7 +5,7 @@ using Falko.Foundry.Utf8Texts;
 
 namespace Falko.Foundry.CSharp.Compilers;
 
-public sealed class LineElementCompiler<T> : IElementCompiler<LineElement<T>> where T : ILanguageElement
+internal sealed class LineElementCompiler<T> : IElementCompiler<LineElement<T>> where T : ILanguageElement
 {
     public void Compile
     (
