@@ -29,9 +29,15 @@ var pairVariable = new TypeIdentifierElement
     Type = pairType
 };
 
+var pairVariableLine = new LineElement<TypeIdentifierElement>
+{
+    Padding = 1,
+    Element = pairVariable
+};
+
 CSharpLanguageCompiler.Instance.CompileElement
 (
-    element: in pairVariable,
+    element: in pairVariableLine,
     argument: default(Unit),
     action: static (scoped in e, in _) => Console.WriteLine(e)
 );
