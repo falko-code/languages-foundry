@@ -50,7 +50,7 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
         if (genericTypesCount is not 0)
         {
             typeLength += leftAngleBracket.Length + rightAngleBracket.Length; // for generic type brackets
-            typeLength += MinimumTypeLength * genericTypesCount; // for do fewer allocations when appending generic types
+            typeLength += checked(MinimumTypeLength * genericTypesCount); // for do fewer allocations when appending generic types
             typeLength += commaSpace.Length * (genericTypesCount - 1); // for comma and space between generic types
         }
 
