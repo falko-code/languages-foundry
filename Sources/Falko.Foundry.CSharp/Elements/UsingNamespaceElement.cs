@@ -14,4 +14,9 @@ public readonly struct UsingNamespaceElement() : ILanguageElement, ISafeStruct
     {
         return new UsingNamespaceElement { Namespace = namespaceText };
     }
+
+    public static implicit operator UsingNamespaceElement(ReadOnlySpan<byte> namespaceTextUtf8Bytes)
+    {
+        return new UsingNamespaceElement { Namespace = namespaceTextUtf8Bytes };
+    }
 }

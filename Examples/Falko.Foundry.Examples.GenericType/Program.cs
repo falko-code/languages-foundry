@@ -9,10 +9,10 @@ var program = Utf8Buffer.StringScope(default(Unit), (scoped ref buffer, in _) =>
 {
     var compiler = CSharpLanguageCompiler.Instance;
 
-    UsingNamespaceElement usingSystem = "System"u8.ToUtf8String();
+    UsingNamespaceElement usingSystem = "System"u8;
     compiler.CompileElement(ref buffer, usingSystem.AsLine());
 
-    UsingNamespaceElement usingCollectionsGeneric = "System.Collections.Generic"u8.ToUtf8String();
+    UsingNamespaceElement usingCollectionsGeneric = "System.Collections.Generic"u8;
     compiler.CompileElement(ref buffer, usingCollectionsGeneric.AsLine());
 
     var intType = new TypeElement { Name = "Int32"u8 };
