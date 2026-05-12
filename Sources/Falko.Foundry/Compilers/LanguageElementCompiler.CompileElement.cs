@@ -12,8 +12,8 @@ public static class LanguageElementCompilerExtensions
         public void CompileElement<TElement, TArgument>
         (
             scoped in TElement element,
-            CompilerElementAction<TElement, TArgument> action,
-            scoped in TArgument argument
+            scoped in TArgument argument,
+            CompilerElementAction<TElement, TArgument> action
         ) where TElement : ILanguageElement
         {
             Utf8Buffer.ActionScope
@@ -46,8 +46,8 @@ public static class LanguageElementCompilerExtensions
         public void CompileElement<TElement, TArgument>
         (
             scoped in TElement element,
-            CompilerElementAsSpanAction<TArgument> action,
-            scoped in TArgument argument
+            scoped in TArgument argument,
+            CompilerElementAsSpanAction<TArgument> action
         ) where TElement : ILanguageElement
         {
             Utf8Buffer.ActionScope
@@ -90,6 +90,16 @@ public static class LanguageElementCompilerExtensions
                     );
                 }
             ).ToCompilerElement<TElement>();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void CompileElement<TElement>
+        (
+            scoped ref Utf8Buffer buffer,
+            scoped in TElement element
+        ) where TElement : ILanguageElement
+        {
+            compiler.GetElementCompiler<TElement>().Compile(ref buffer, in element);
         }
     }
 
