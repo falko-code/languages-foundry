@@ -2,20 +2,13 @@
 using Falko.Foundry.Compilers;
 using Falko.Foundry.CSharp.Compilers;
 using Falko.Foundry.CSharp.Elements;
+using Falko.Foundry.Utf8Texts;
 
-var usingNamespace = new UsingNamespaceElement
-{
-    Namespace = "System"u8
-};
-
-var usingNamespaceLine = new LineElement<UsingNamespaceElement>
-{
-    Element = usingNamespace
-};
+UsingNamespaceElement usingSystem = "System"u8.ToUtf8String();
 
 CSharpLanguageCompiler.Instance.CompileElement
 (
-    element: in usingNamespaceLine,
+    element: usingSystem.AsLine(),
     argument: default(Unit),
     action: static (scoped in e, in _) => Console.WriteLine(e)
 );
@@ -46,14 +39,9 @@ var pairVariable = new TypeIdentifierElement
     Type = pairType
 };
 
-var pairVariableLine = new LineElement<TypeIdentifierElement>
-{
-    Element = pairVariable
-};
-
 CSharpLanguageCompiler.Instance.CompileElement
 (
-    element: in pairVariableLine,
+    element: pairVariable.AsLine(),
     argument: default(Unit),
     action: static (scoped in e, in _) => Console.WriteLine(e)
 );
