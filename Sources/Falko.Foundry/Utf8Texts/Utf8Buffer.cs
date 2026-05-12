@@ -80,36 +80,75 @@ public ref struct Utf8Buffer : IDisposable
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Append(scoped in Utf8String data)
-    {
-        Append(data.AsSpan());
-    }
+    public void Append(scoped in Utf8String value) => Append(value.AsSpan());
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Append(scoped in Utf8Char data)
+    public void Append(scoped in Utf8String value, int count) => Append(value.AsSpan());
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Append(scoped in Utf8Char value) => Append(value.AsSpan());
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Append(scoped in Utf8Char value, int count) => Append(value.AsSpan(), count);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Append(scoped in ReadOnlySpan<byte> value)
     {
         scoped ref var positionRef = ref _position;
         var position = positionRef;
-        data.AsSpan().CopyTo(_buffer[position..]);
-        positionRef = position + data.Length;
+        value.CopyTo(_buffer[position..]);
+        positionRef = position + value.Length;
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.AggressiveOptimization)]
+    public void Append(scoped in ReadOnlySpan<byte> value, int count)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
+        if (count is 1) { Append(value); return; }
+
+        var valueLength = value.Length;
+        ArgumentOutOfRangeException.ThrowIfZero(count);
+        if (valueLength is 1) { Append(value[0], count); return; }
+
+        var appendLength = checked(value.Length * count);
+
+        scoped ref var positionRef = ref _position;
+        var position = positionRef;
+        var destination = _buffer.Slice(position, appendLength);
+
+        // write first copy
+        value.CopyTo(destination);
+
+        // each iteration doubles the written region
+        var written = value.Length;
+        while (written < appendLength)
+        {
+            var copyLength = Math.Min(written, appendLength - written);
+            destination[..written][..copyLength].CopyTo(destination[written..]);
+            written += copyLength;
+        }
+
+        positionRef = position + appendLength;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Append(scoped in ReadOnlySpan<byte> data)
+    public void Append(byte value)
     {
         scoped ref var positionRef = ref _position;
         var position = positionRef;
-        data.CopyTo(_buffer[position..]);
-        positionRef = position + data.Length;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Append(byte data)
-    {
-        scoped ref var positionRef = ref _position;
-        var position = positionRef;
-        _buffer[position] = data;
+        _buffer[position] = value;
         positionRef = position + 1;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Append(byte value, int count)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
+        if (count is 1) { Append(value); return; }
+        scoped ref var positionRef = ref _position;
+        var position = positionRef;
+        _buffer.Slice(position, count).Fill(value);
+        positionRef = position + count;
     }
 
     [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.AggressiveOptimization)]
@@ -157,7 +196,7 @@ public ref struct Utf8Buffer : IDisposable
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Utf8Buffer Create(int capacity = StackAllocationThreshold)
     {
-        capacity = Math.Max(capacity, StackAllocationThreshold); // if array we can't use less capacity
+        capacity = Math.Max(capacity, StackAllocationThreshold + 1); // if array we can't use less capacity
 
         return new Utf8Buffer(capacity);
     }
@@ -165,8 +204,8 @@ public ref struct Utf8Buffer : IDisposable
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void ActionScope<TArgument>
     (
-        Utf8BufferAction<TArgument> action,
         scoped in TArgument argument,
+        Utf8BufferAction<TArgument> action,
         int capacity = StackAllocationThreshold
     ) where TArgument : allows ref struct
     {
@@ -187,8 +226,8 @@ public ref struct Utf8Buffer : IDisposable
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Utf8String StringScope<TArgument>
     (
-        Utf8BufferAction<TArgument> action,
         scoped in TArgument argument,
+        Utf8BufferAction<TArgument> action,
         int capacity = StackAllocationThreshold
     ) where TArgument : allows ref struct
     {
@@ -210,8 +249,8 @@ public ref struct Utf8Buffer : IDisposable
     [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.AggressiveOptimization)]
     public static TResult ResultScope<TArgument, TResult>
     (
-        Utf8BufferAction<TArgument, TResult> action,
         scoped in TArgument argument,
+        Utf8BufferAction<TArgument, TResult> action,
         int capacity = StackAllocationThreshold
     ) where TArgument : allows ref struct
     {

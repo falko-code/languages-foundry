@@ -17,16 +17,13 @@ internal sealed class LineElementCompiler<T> : IElementCompiler<LineElement<T>> 
         var padding = element.Padding;
 
         var space = CSharpLanguageConstants.Space;
-        var spacesLength = space.Length * padding * 4;
+        var spaceCount = padding * 4;
+        var spacesLength = checked(space.Length * spaceCount);
 
         if (spacesLength > 0)
         {
             buffer.Allocate(spacesLength);
-
-            for (var i = 0; i < padding * 4; i++)
-            {
-                buffer.Append(CSharpLanguageConstants.Space);
-            }
+            buffer.Append(space, spaceCount);
         }
 
         var lineEnd = CSharpLanguageConstants.LineBreak;
