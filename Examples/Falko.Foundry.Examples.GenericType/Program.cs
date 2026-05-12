@@ -4,44 +4,24 @@ using Falko.Foundry.CSharp.Compilers;
 using Falko.Foundry.CSharp.Elements;
 using Falko.Foundry.Utf8Texts;
 
-UsingNamespaceElement usingSystem = "System"u8.ToUtf8String();
-
-CSharpLanguageCompiler.Instance.CompileElement
-(
-    element: usingSystem.AsLine(),
-    argument: default(Unit),
-    action: static (scoped in e, in _) => Console.WriteLine(e)
-);
-
-var intType = new TypeElement
+// scopes more optimized instead of create, cuz can use stackalloc and more safety, cuz control of lifetime by itself
+var program = Utf8Buffer.StringScope(default(Unit), (scoped ref buffer, in _) =>
 {
-    Name = "Int32"u8,
-    Namespace = "System"u8
-};
+    var compiler = CSharpLanguageCompiler.Instance;
 
-var listType = new TypeElement
-{
-    Name = "List"u8,
-    Namespace = "System.Collections.Generic"u8,
-    GenericTypes = [intType]
-};
+    UsingNamespaceElement usingSystem = "System"u8.ToUtf8String();
+    compiler.CompileElement(ref buffer, usingSystem.AsLine());
 
-var pairType = new TypeElement
-{
-    Name = "KeyValuePair"u8,
-    Namespace = "System.Collections.Generic"u8,
-    GenericTypes = [intType, listType]
-};
+    UsingNamespaceElement usingCollectionsGeneric = "System.Collections.Generic"u8.ToUtf8String();
+    compiler.CompileElement(ref buffer, usingCollectionsGeneric.AsLine());
 
-var pairVariable = new TypeIdentifierElement
-{
-    Name = "pair"u8,
-    Type = pairType
-};
+    var intType = new TypeElement { Name = "Int32"u8 };
+    var intTypeCache = compiler.CompileElement(in intType); // for don't compile twice
 
-CSharpLanguageCompiler.Instance.CompileElement
-(
-    element: pairVariable.AsLine(),
-    argument: default(Unit),
-    action: static (scoped in e, in _) => Console.WriteLine(e)
-);
+    var listType = new TypeElement { Name = "List"u8, GenericTypes = [intTypeCache] };
+    var pairType = new TypeElement { Name = "KeyValuePair"u8, GenericTypes = [intTypeCache, listType] };
+    var pairVariable = new TypeIdentifierElement { Name = "pair"u8, Type = pairType };
+    compiler.CompileElement(ref buffer, pairVariable.AsLine());
+});
+
+Console.WriteLine(program);
