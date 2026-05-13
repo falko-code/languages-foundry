@@ -18,11 +18,10 @@ internal sealed class LineElementCompiler<T> : IElementCompiler<LineElement<T>> 
 
         var space = CSharpLanguageConstants.Space;
         var spaceCount = padding * 4;
-        var spacesLength = checked(space.Length * spaceCount);
 
-        if (spacesLength > 0)
+        if (spaceCount > 0)
         {
-            buffer.Allocate(spacesLength);
+            buffer.Allocate(space.Length, spaceCount);
             buffer.Append(space, spaceCount);
         }
 
