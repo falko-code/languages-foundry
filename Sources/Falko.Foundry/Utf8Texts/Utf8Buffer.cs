@@ -94,6 +94,9 @@ public ref struct Utf8Buffer : IDisposable
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Append(scoped in ReadOnlySpan<byte> value)
     {
+        var valueLength = value.Length;
+        if (valueLength is 0) return;
+
         scoped ref var positionRef = ref _position;
         var position = positionRef;
         value.CopyTo(_buffer[position..]);
@@ -105,8 +108,8 @@ public ref struct Utf8Buffer : IDisposable
     {
         var valueLength = value.Length;
         if (valueLength is 1) { Append(value[0], count); return; }
-        if (valueLength is 0) return;
         if (count is 1) { Append(value); return; }
+        if (valueLength is 0) return;
         if (count <= 0) return;
 
         var appendLength = checked(value.Length * count);
