@@ -83,7 +83,7 @@ public ref struct Utf8Buffer : IDisposable
     public void Append(scoped in Utf8String value) => Append(value.AsSpan());
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Append(scoped in Utf8String value, int count) => Append(value.AsSpan());
+    public void Append(scoped in Utf8String value, int count) => Append(value.AsSpan(), count);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Append(scoped in Utf8Char value) => Append(value.AsSpan());
@@ -103,24 +103,20 @@ public ref struct Utf8Buffer : IDisposable
     [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.AggressiveOptimization)]
     public void Append(scoped in ReadOnlySpan<byte> value, int count)
     {
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
-        if (count is 1) { Append(value); return; }
-
         var valueLength = value.Length;
-        ArgumentOutOfRangeException.ThrowIfZero(count);
         if (valueLength is 1) { Append(value[0], count); return; }
+        if (valueLength is 0) return;
+        if (count is 1) { Append(value); return; }
+        if (count <= 0) return;
 
         var appendLength = checked(value.Length * count);
 
         scoped ref var positionRef = ref _position;
         var position = positionRef;
-        var destination = _buffer.Slice(position, appendLength);
 
-        // write first copy
-        value.CopyTo(destination);
-
-        // each iteration doubles the written region
-        var written = value.Length;
+        var destination = _buffer[position..];
+        value.CopyTo(destination); // write first copy
+        var written = value.Length; // each iteration doubles the written region
         while (written < appendLength)
         {
             var copyLength = Math.Min(written, appendLength - written);
@@ -143,8 +139,9 @@ public ref struct Utf8Buffer : IDisposable
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Append(byte value, int count)
     {
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
         if (count is 1) { Append(value); return; }
+        if (count <= 0) return;
+
         scoped ref var positionRef = ref _position;
         var position = positionRef;
         _buffer.Slice(position, count).Fill(value);
