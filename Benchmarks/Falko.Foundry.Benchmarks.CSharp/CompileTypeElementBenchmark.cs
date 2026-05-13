@@ -9,7 +9,7 @@ namespace Falko.Benchmarks;
 [MemoryDiagnoser]
 public class CompileTypeElementBenchmark
 {
-    private TypeElement _loggerType;
+    private TypeElement? _loggerType;
 
     [Params(1, 4)]
     public int Iterations { get; set; }
@@ -41,7 +41,7 @@ public class CompileTypeElementBenchmark
         {
             result = CSharpLanguageCompiler
                 .Instance
-                .CompileElement(in _loggerType);
+                .CompileElement(in _loggerType!);
         }
 
         return result;
