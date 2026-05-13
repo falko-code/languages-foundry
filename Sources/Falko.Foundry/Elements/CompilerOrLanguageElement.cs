@@ -1,8 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using Falko.Foundry.Elements;
 
-namespace Falko.Foundry.Caches;
+namespace Falko.Foundry.Elements;
 
 public readonly struct CompilerOrLanguageElement<TElement> : ILanguageElement where TElement : ILanguageElement
 {

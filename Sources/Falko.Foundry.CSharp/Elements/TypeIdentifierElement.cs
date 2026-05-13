@@ -1,4 +1,3 @@
-using Falko.Foundry.Caches;
 using Falko.Foundry.Common;
 using Falko.Foundry.Elements;
 using Falko.Foundry.Utf8Texts;
