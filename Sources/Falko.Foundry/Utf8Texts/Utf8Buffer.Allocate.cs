@@ -40,4 +40,18 @@ public ref partial struct Utf8Buffer
         _rented = newArray;
         _buffer = newSpan;
     }
+
+    [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.AggressiveOptimization)]
+    private void AllocateCore(int length)
+    {
+        var newArray = ArrayPool<byte>.Shared.Rent(length);
+        var newSpan = newArray.AsSpan();
+
+        AsSpan().CopyTo(newSpan);
+
+        if (_rented is not null) ArrayPool<byte>.Shared.Return(_rented);
+
+        _rented = newArray;
+        _buffer = newSpan;
+    }
 }

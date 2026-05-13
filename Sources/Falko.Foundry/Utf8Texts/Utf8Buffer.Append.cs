@@ -29,33 +29,17 @@ public ref partial struct Utf8Buffer
         positionRef = position + value.Length;
     }
 
-    [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.AggressiveOptimization)]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Append(scoped in ReadOnlySpan<byte> value, int count)
     {
         var valueLength = value.Length;
-        if (valueLength is 1) { Append(value[0], count); return; }
+
+        if (valueLength is 1) { Append(value[0], count); return; } // utf8-char offend 1 byte, so first
         if (count is 1) { Append(value); return; }
         if (valueLength is 0) return;
         if (count <= 0) return;
 
-        var appendLength = checked(value.Length * count);
-
-        scoped ref var positionRef = ref _position;
-        var position = positionRef;
-
-        var destination = _buffer.Slice(position, appendLength);
-
-        value.CopyTo(destination); // write first copy
-
-        var written = value.Length; // each iteration doubles the written region
-        while (written < appendLength)
-        {
-            var copyLength = Math.Min(written, appendLength - written);
-            destination[..written][..copyLength].CopyTo(destination[written..]);
-            written += copyLength;
-        }
-
-        positionRef = position + appendLength;
+        AppendCore(value, valueLength, count);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -80,16 +64,25 @@ public ref partial struct Utf8Buffer
     }
 
     [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.AggressiveOptimization)]
-    private void AllocateCore(int length)
+    private void AppendCore(scoped in ReadOnlySpan<byte> value, int valueLength, int count)
     {
-        var newArray = ArrayPool<byte>.Shared.Rent(length);
-        var newSpan = newArray.AsSpan();
+        var appendLength = checked(valueLength * count);
 
-        AsSpan().CopyTo(newSpan);
+        scoped ref var positionRef = ref _position;
+        var position = positionRef;
 
-        if (_rented is not null) ArrayPool<byte>.Shared.Return(_rented);
+        var destination = _buffer.Slice(position, appendLength);
 
-        _rented = newArray;
-        _buffer = newSpan;
+        value.CopyTo(destination); // write first copy
+
+        var written = valueLength; // each iteration doubles the written region
+        while (written < appendLength)
+        {
+            var copyLength = Math.Min(written, appendLength - written);
+            destination[..written][..copyLength].CopyTo(destination[written..]);
+            written += copyLength;
+        }
+
+        positionRef = position + appendLength;
     }
 }
