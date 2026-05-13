@@ -30,11 +30,7 @@ public ref partial struct Utf8Buffer
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Allocate(int amount, int count)
-    {
-        if (count <= 0) return;
-        Allocate(checked(amount * count));
-    }
+    public void Allocate(int amount, int count) => Allocate(checked(amount * count));
 
     [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.AggressiveOptimization)]
     private void MoveToHeapCore()
