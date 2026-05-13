@@ -22,7 +22,7 @@ public readonly struct Utf8String : IEquatable<Utf8String>, IComparable<Utf8Stri
     {
         var maxByteCount = Encoding.UTF8.GetMaxByteCount(text.Length);
 
-        if (maxByteCount > Utf8Buffer.StackAllocationThreshold)
+        if (maxByteCount > Utf8Buffer.MaxHeapBufferSize)
         {
             _utf8Bytes = new ReadOnlyMemory<byte>(Encoding.UTF8.GetBytes(text));
             return;
@@ -165,7 +165,7 @@ public readonly struct Utf8String : IEquatable<Utf8String>, IComparable<Utf8Stri
     {
         var maxByteCount = Encoding.UTF8.GetMaxByteCount(targetString.Length);
 
-        if (maxByteCount <= Utf8Buffer.StackAllocationThreshold)
+        if (maxByteCount <= Utf8Buffer.MaxHeapBufferSize)
         {
             Span<byte> stackBuffer = stackalloc byte[maxByteCount];
 
