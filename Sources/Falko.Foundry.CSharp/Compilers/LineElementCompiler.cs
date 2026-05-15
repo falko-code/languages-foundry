@@ -14,10 +14,10 @@ internal sealed class LineElementCompiler<T> : IElementCompiler<LineElement<T>> 
         scoped ref Utf8Buffer buffer
     )
     {
-        var padding = element.Padding;
+        var indent = element.Indent;
 
         var space = CSharpLanguageConstants.Space;
-        var spaceCount = padding * 4;
+        var spaceCount = indent * 4;
 
         if (spaceCount > 0)
         {

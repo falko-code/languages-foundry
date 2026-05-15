@@ -7,13 +7,13 @@ public static class TypeElementExtensions
     public static LineElement<T> AsLine<T>
     (
         this T element,
-        int padding = 0
+        int indent = 0
     ) where T : ILanguageElement
     {
         return new LineElement<T>
         {
             Element = element,
-            Padding = padding
+            Indent = indent
         };
     }
 }

@@ -2,9 +2,20 @@ using Falko.Foundry.Elements;
 
 namespace Falko.Foundry.CSharp.Elements;
 
-public readonly struct LineElement<T> : IPaddingElement where T : ILanguageElement
+public readonly struct LineElement<TLineElement>
+    : ILanguageElement, IIndentationElementMixin<LineElement<TLineElement>>
+        where TLineElement : ILanguageElement
 {
-    public required CompilerOrLanguageElement<T> Element { get; init; }
+    public int Indent { get; init; }
 
-    public int Padding { get; init; }
+    public required CompilerOrLanguageElement<TLineElement> Element { get; init; }
+
+    public static LineElement<TLineElement> Mutate
+    (
+        in LineElement<TLineElement> element,
+        int indent
+    )
+    {
+        return element with { Indent = indent };
+    }
 }
