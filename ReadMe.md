@@ -5,9 +5,11 @@
 
 #
 
+### **LANGUAGES FOUNDRY**
+
 <img src="Sticker512.png" width="128"/>
 
-# Languages Foundry
+#
 
 </div>
 
