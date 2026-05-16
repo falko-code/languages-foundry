@@ -16,7 +16,7 @@ internal static class CSharpLanguageConstants
 
     public static readonly Utf8Char RightBracket = "}"u8;
 
-    public static readonly Utf8Char ScopeBreak = "\n"u8;
+    public static readonly Utf8Char LineEnd = "\n"u8;
 
     public static readonly Utf8String LineBreak = ";\n"u8;
 

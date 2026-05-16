@@ -37,12 +37,12 @@ internal sealed class ScopeElementCompiler : IElementCompiler<ScopeElement>
             return;
         }
 
-        var scopeBreak = CSharpLanguageConstants.ScopeBreak;
+        var lineEnd = CSharpLanguageConstants.LineEnd;
 
         var leftBracket = CSharpLanguageConstants.LeftBracket;
-        buffer.Allocate(leftBracket.Length + scopeBreak.Length);
+        buffer.Allocate(leftBracket.Length + lineEnd.Length);
         buffer.Append(in leftBracket);
-        buffer.Append(in scopeBreak);
+        buffer.Append(in lineEnd);
 
         var elementsIndent = elementIndent + 1;
         foreach (var indentationElement in elements)
@@ -57,8 +57,8 @@ internal sealed class ScopeElementCompiler : IElementCompiler<ScopeElement>
         }
 
         var rightBracket = CSharpLanguageConstants.RightBracket;
-        buffer.Allocate(leftBracket.Length + scopeBreak.Length);
+        buffer.Allocate(leftBracket.Length + lineEnd.Length);
         buffer.Append(in rightBracket);
-        buffer.Append(in scopeBreak);
+        buffer.Append(in lineEnd);
     }
 }

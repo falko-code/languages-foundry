@@ -25,15 +25,15 @@ internal sealed class LineElementCompiler<T> : IElementCompiler<LineElement<T>> 
             buffer.Append(space, spaceCount);
         }
 
-        var lineEnd = CSharpLanguageConstants.LineBreak;
+        var lineBreak = CSharpLanguageConstants.LineBreak;
 
         buffer.AllocateAppendCompilerElementOrCompile
         (
             compiler: compiler,
             element: element.Element,
-            allocateAdditional: lineEnd.Length // we can not invoke allocate 2 times
+            allocateAdditional: lineBreak.Length // we can not invoke allocate 2 times
         );
 
-        buffer.Append(in lineEnd);
+        buffer.Append(in lineBreak);
     }
 }

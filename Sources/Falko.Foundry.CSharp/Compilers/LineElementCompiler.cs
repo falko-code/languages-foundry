@@ -13,8 +13,8 @@ internal sealed class LineElementCompiler : IElementCompiler<LineElement>
         scoped ref Utf8Buffer buffer
     )
     {
-        var scopeBreak = CSharpLanguageConstants.ScopeBreak;
-        buffer.Allocate(scopeBreak.Length);
-        buffer.Append(in scopeBreak);
+        var lineEnd = CSharpLanguageConstants.LineEnd;
+        buffer.Allocate(lineEnd.Length);
+        buffer.Append(in lineEnd);
     }
 }
