@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Falko.Foundry.CSharp.Compilers;
 using Falko.Foundry.Utf8Texts;
 
@@ -7,6 +8,7 @@ internal static class Utf8BufferExtensions
 {
     private const int IndentSpaceCount = 4;
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static void AllocateAppendIndent
     (
         this scoped ref Utf8Buffer buffer,
