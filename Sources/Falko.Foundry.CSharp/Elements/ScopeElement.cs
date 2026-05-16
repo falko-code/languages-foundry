@@ -12,8 +12,8 @@ public readonly struct ScopeElement() : ILanguageElement, ISafeStruct, IIndentat
 
     public int Indent { get; init; }
 
-    public ImmutableArray<IndentationCompilerAction> Elements { get; init; }
-        = ImmutableArray<IndentationCompilerAction>.Empty;
+    public ImmutableArray<IndentationElement> Elements { get; init; }
+        = ImmutableArray<IndentationElement>.Empty;
 
     public static ScopeElement MutateIndent
     (
@@ -22,5 +22,12 @@ public readonly struct ScopeElement() : ILanguageElement, ISafeStruct, IIndentat
     )
     {
         return element with { Indent = indent };
+    }
+
+    public static ScopeElement Create(params ImmutableArray<IndentationElement> elements) => new() { Elements = elements };
+
+    public static implicit operator ScopeElement(ImmutableArray<IndentationElement> elements)
+    {
+        return new ScopeElement { Elements = elements };
     }
 }

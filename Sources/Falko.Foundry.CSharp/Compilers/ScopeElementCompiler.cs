@@ -39,7 +39,7 @@ internal sealed class ScopeElementCompiler : IElementCompiler<ScopeElement>
         var elementsIndent = elementIndent + 1;
         foreach (var elementCompilerAction in elements)
         {
-            elementCompilerAction(compiler, ref buffer, elementsIndent);
+            elementCompilerAction.Compiler.Compile(compiler, ref buffer, elementsIndent);
         }
 
         if (spaceCount > 0)

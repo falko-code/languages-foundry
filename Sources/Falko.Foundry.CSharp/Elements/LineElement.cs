@@ -16,4 +16,9 @@ public readonly struct LineElement<TLineElement> : ILanguageElement, IIndentatio
     {
         return element with { Indent = indent };
     }
+
+    public static implicit operator IndentationElement(LineElement<TLineElement> element)
+    {
+        return new IndentationElement(element.AsCompilerIndentationElement());
+    }
 }

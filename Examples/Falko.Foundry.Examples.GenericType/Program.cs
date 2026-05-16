@@ -1,4 +1,5 @@
-﻿using Falko.Foundry.Common;
+﻿using System.Collections.Immutable;
+using Falko.Foundry.Common;
 using Falko.Foundry.Compilers;
 using Falko.Foundry.CSharp.Compilers;
 using Falko.Foundry.CSharp.Elements;
@@ -18,14 +19,12 @@ var program = Utf8Buffer.StringScope(default(Unit), (scoped ref buffer, in _) =>
     var pairType = new TypeElement { Name = "KeyValuePair"u8, GenericTypes = [intTypeCache, listType] };
     var pairVariable = new TypeIdentifierElement { Name = "pair"u8, Type = pairType };
 
-    var scope = new ScopeElement {
-        Indent = 1,
-        Elements = [
-            usingSystem.AsLine().AsCompilerAction(),
-            usingCollectionsGeneric.AsLine().AsCompilerAction(),
-            pairVariable.AsLine().AsCompilerAction()
-        ]
-    };
+    var scope = ScopeElement.Create
+    (
+        usingSystem.AsLine(),
+        usingCollectionsGeneric.AsLine(),
+        pairVariable.AsLine()
+    );
 
     compiler.CompileElement(ref buffer, in scope);
 });
