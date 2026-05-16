@@ -2,9 +2,16 @@
 > This project is under active development. The underlying C# libraries are subject to change.
 
 <div align="center">
+
 <img src="Sticker512.png" width="128" />
 
-# <img src="Sticker128.png" width="18" hspace="5" /> Falko Languages Foundry <img src="Sticker128.png" width="18" hspace="5" />
+</div>
+
+<div align="center">
+
+# <img src="Sticker128.png" width="22" hspace="5" /> Falko Languages Foundry <img src="Sticker128.png" width="18" hspace="5" />
+
+</div>
 
 [![NuGet Version](https://img.shields.io/nuget/v/Falko.Foundry?style=for-the-badge&color=green)](https://www.nuget.org/packages?q=Falko.Foundry&prerel=false)
 [![NuGet Version](https://img.shields.io/nuget/vpre/Falko.Foundry?style=for-the-badge&color=red)](https://www.nuget.org/packages?q=Falko.Foundry&prerel=true)
@@ -14,7 +21,11 @@
 
 Fluent and Zero-Allocation Code Generation for Source Generators.
 
+<div align="center">
+
 ## <img src="Sticker128.png" width="18" hspace="5" /> Example <img src="Sticker128.png" width="18" hspace="5" />
+
+</div>
 
 ```csharp
 // declare the element
@@ -27,10 +38,12 @@ var compilerElement = CSharpLanguageCompiler.Instance.CompileElement(in serviceT
 File.WriteAllBytes("output.g.cs", compilerElement.AsSpan());
 ```
 
+<div align="center">
+
 ## <img src="Sticker128.png" width="18" hspace="5" /> License <img src="Sticker128.png" width="18" hspace="5" />
+
+</div>
 
 This project is licensed under the **[GNU General Public License v3.0](License.md)**.
 
 **© 2026, Falko**
-
-</div>
