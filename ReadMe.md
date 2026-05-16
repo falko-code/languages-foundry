@@ -3,7 +3,9 @@
 
 <div align="center">
 
-<img src="Sticker512.png" width="128" style="margin: 0 0 -45px 0"/>
+#
+
+<img src="Sticker512.png" width="128"/>
 
 # Languages Foundry
 
