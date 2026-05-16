@@ -22,9 +22,9 @@ var program = Utf8Buffer.StringScope(default(Unit), (scoped ref buffer, in _) =>
     (
         usingSystem.AsLine(),
         usingCollectionsGeneric.AsLine(),
-        LineElement.Empty,
+        LineElement.Default,
         ScopeElement.Empty,
-        LineElement.Empty,
+        LineElement.Default,
         pairVariable.AsLine(),
         ScopeElement.Create(pairVariable.AsLine())
     );

@@ -5,7 +5,7 @@ namespace Falko.Foundry.CSharp.Elements;
 
 public readonly struct LineElement : ILanguageElement, IIndentationElementMixin<LineElement>
 {
-    public static readonly LineElement Empty = new();
+    public static readonly LineElement Default = new();
 
     int IIndentationElementMixin<LineElement>.Indent => 0;
 
