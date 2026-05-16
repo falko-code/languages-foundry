@@ -1,9 +1,11 @@
+using System.Runtime.CompilerServices;
 using Falko.Foundry.Elements;
 
 namespace Falko.Foundry.CSharp.Elements;
 
-public static class TypeElementExtensions
+public static class LineElementExtensions
 {
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static LineElement<T> AsLine<T>
     (
         this T element,

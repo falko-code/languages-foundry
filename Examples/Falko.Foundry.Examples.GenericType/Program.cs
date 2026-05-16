@@ -1,5 +1,4 @@
-﻿using System.Collections.Immutable;
-using Falko.Foundry.Common;
+﻿using Falko.Foundry.Common;
 using Falko.Foundry.Compilers;
 using Falko.Foundry.CSharp.Compilers;
 using Falko.Foundry.CSharp.Elements;
@@ -23,7 +22,11 @@ var program = Utf8Buffer.StringScope(default(Unit), (scoped ref buffer, in _) =>
     (
         usingSystem.AsLine(),
         usingCollectionsGeneric.AsLine(),
-        pairVariable.AsLine()
+        LineElement.Empty,
+        ScopeElement.Empty,
+        LineElement.Empty,
+        pairVariable.AsLine(),
+        ScopeElement.Create(pairVariable.AsLine())
     );
 
     compiler.CompileElement(ref buffer, in scope);

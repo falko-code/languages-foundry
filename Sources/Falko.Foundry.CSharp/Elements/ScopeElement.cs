@@ -1,9 +1,11 @@
 using System.Collections.Immutable;
+using System.Runtime.CompilerServices;
 using Falko.Foundry.Common;
 using Falko.Foundry.Elements;
 
 namespace Falko.Foundry.CSharp.Elements;
 
+[method: MethodImpl(MethodImplOptions.AggressiveInlining)]
 public readonly struct ScopeElement() : ILanguageElement, ISafeStruct, IIndentationElementMixin<ScopeElement>
 {
     public static readonly ScopeElement Empty = new();
@@ -12,10 +14,10 @@ public readonly struct ScopeElement() : ILanguageElement, ISafeStruct, IIndentat
 
     public int Indent { get; init; }
 
-    public ImmutableArray<IndentationElement> Elements { get; init; }
-        = ImmutableArray<IndentationElement>.Empty;
+    public ImmutableArray<IndentationElement> Elements { get; init; } = [];
 
-    public static ScopeElement MutateIndent
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ScopeElement Copy
     (
         in ScopeElement element,
         int indent
@@ -24,10 +26,21 @@ public readonly struct ScopeElement() : ILanguageElement, ISafeStruct, IIndentat
         return element with { Indent = indent };
     }
 
-    public static ScopeElement Create(params ImmutableArray<IndentationElement> elements) => new() { Elements = elements };
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ScopeElement Create(params ImmutableArray<IndentationElement> elements)
+    {
+        return new ScopeElement { Elements = elements };
+    }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator ScopeElement(ImmutableArray<IndentationElement> elements)
     {
         return new ScopeElement { Elements = elements };
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator IndentationElement(ScopeElement element)
+    {
+        return new IndentationElement(element.ToIndentationElement());
     }
 }

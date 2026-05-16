@@ -1,26 +1,27 @@
+using System.Runtime.CompilerServices;
 using Falko.Foundry.Elements;
 
 namespace Falko.Foundry.CSharp.Elements;
 
-public readonly struct LineElement<TLineElement>
-    : ILanguageElement, IIndentationElementMixin<LineElement<TLineElement>>
-        where TLineElement : ILanguageElement
+public readonly struct LineElement : ILanguageElement, IIndentationElementMixin<LineElement>
 {
-    public int Indent { get; init; }
+    public static readonly LineElement Empty = new();
 
-    public required CompilerOrLanguageElement<TLineElement> Element { get; init; }
+    int IIndentationElementMixin<LineElement>.Indent => 0;
 
-    public static LineElement<TLineElement> MutateIndent
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LineElement Copy
     (
-        in LineElement<TLineElement> element,
+        in LineElement element,
         int indent
     )
     {
-        return element with { Indent = indent };
+        return element;
     }
 
-    public static implicit operator IndentationElement(LineElement<TLineElement> element)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static implicit operator IndentationElement(LineElement element)
     {
-        return new IndentationElement(element.AsCompilerIndentationElement());
+        return new IndentationElement(element.ToIndentationElement());
     }
 }

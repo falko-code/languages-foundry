@@ -29,6 +29,14 @@ internal sealed class ScopeElementCompiler : IElementCompiler<ScopeElement>
             buffer.Append(space, spaceCount);
         }
 
+        if (elements.IsEmpty)
+        {
+            Utf8String emptyScope = "{ }\n"u8;
+            buffer.Allocate(emptyScope.Length);
+            buffer.Append(in emptyScope);
+            return;
+        }
+
         var scopeBreak = CSharpLanguageConstants.ScopeBreak;
 
         var leftBracket = CSharpLanguageConstants.LeftBracket;

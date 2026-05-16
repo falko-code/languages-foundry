@@ -15,6 +15,8 @@ public sealed class CSharpLanguageCompiler : LanguageCompiler<CSharpLanguageComp
 
         SetElementCompiler<ScopeElementCompiler, ScopeElement>();
 
+        SetElementCompiler<LineElementCompiler, LineElement>();
+
         SetElementCompiler<LineElementCompiler<TypeIdentifierElement>, LineElement<TypeIdentifierElement>>();
         SetElementCompiler<LineElementCompiler<UsingNamespaceElement>, LineElement<UsingNamespaceElement>>();
     }
