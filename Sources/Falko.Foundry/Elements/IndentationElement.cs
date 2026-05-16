@@ -1,9 +1,8 @@
 using System.Runtime.CompilerServices;
 using Falko.Foundry.Common;
-using Falko.Foundry.CSharp.Compilers;
-using Falko.Foundry.Elements;
+using Falko.Foundry.Compilers;
 
-namespace Falko.Foundry.CSharp.Elements;
+namespace Falko.Foundry.Elements;
 
 [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
 public readonly struct IndentationElement(IIndentationElementCompiler compiler)

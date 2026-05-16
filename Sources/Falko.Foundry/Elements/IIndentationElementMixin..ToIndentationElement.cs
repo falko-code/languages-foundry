@@ -1,8 +1,7 @@
 using System.Runtime.CompilerServices;
-using Falko.Foundry.CSharp.Compilers;
-using Falko.Foundry.Elements;
+using Falko.Foundry.Compilers;
 
-namespace Falko.Foundry.CSharp.Elements;
+namespace Falko.Foundry.Elements;
 
 public static class IndentationElementMixinExtensions
 {

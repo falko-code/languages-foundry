@@ -1,10 +1,8 @@
 using System.Runtime.CompilerServices;
-using Falko.Foundry.Compilers;
-using Falko.Foundry.CSharp.Elements;
 using Falko.Foundry.Elements;
 using Falko.Foundry.Utf8Texts;
 
-namespace Falko.Foundry.CSharp.Compilers;
+namespace Falko.Foundry.Compilers;
 
 [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
 public sealed class IndentationElementCompiler<T>(T element) : IIndentationElementCompiler

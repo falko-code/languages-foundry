@@ -1,7 +1,6 @@
 using Falko.Foundry.Common;
-using Falko.Foundry.Elements;
 
-namespace Falko.Foundry.CSharp.Elements;
+namespace Falko.Foundry.Elements;
 
 public interface IIndentationElementMixin<TSelf> : IMixin<TSelf>
     where TSelf : ILanguageElement, IIndentationElementMixin<TSelf>

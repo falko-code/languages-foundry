@@ -1,7 +1,6 @@
-using Falko.Foundry.Compilers;
 using Falko.Foundry.Utf8Texts;
 
-namespace Falko.Foundry.CSharp.Compilers;
+namespace Falko.Foundry.Compilers;
 
 public interface IIndentationElementCompiler
 {
