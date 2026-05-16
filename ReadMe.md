@@ -21,7 +21,7 @@
 
 Fluent and Zero-Allocation Code Generation for Source Generators.
 
-## <img src="Sticker128.png" width="18" hspace="5" /> Example
+# <img src="Sticker128.png" width="25" hspace="5" /> Example
 
 ```csharp
 // declare the element
@@ -34,7 +34,7 @@ var compilerElement = CSharpLanguageCompiler.Instance.CompileElement(in serviceT
 File.WriteAllBytes("output.g.cs", compilerElement.AsSpan());
 ```
 
-## <img src="Sticker128.png" width="18" hspace="5" /> License
+# <img src="Sticker128.png" width="25" hspace="5" /> License
 
 This project is licensed under the **[GNU General Public License v3.0](License.md)**.
 
