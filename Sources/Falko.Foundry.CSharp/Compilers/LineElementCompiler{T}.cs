@@ -1,5 +1,6 @@
 using Falko.Foundry.Compilers;
 using Falko.Foundry.CSharp.Elements;
+using Falko.Foundry.CSharp.Utf8Texts;
 using Falko.Foundry.Elements;
 using Falko.Foundry.Utf8Texts;
 
@@ -14,16 +15,7 @@ internal sealed class LineElementCompiler<T> : IElementCompiler<LineElement<T>> 
         scoped ref Utf8Buffer buffer
     )
     {
-        var indent = element.Indent;
-
-        var space = CSharpLanguageConstants.Space;
-        var spaceCount = indent * 4;
-
-        if (spaceCount > 0)
-        {
-            buffer.Allocate(space.Length, spaceCount);
-            buffer.Append(space, spaceCount);
-        }
+        buffer.AllocateAppendIndent(element.Indent);
 
         var lineBreak = CSharpLanguageConstants.LineBreak;
 
