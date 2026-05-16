@@ -3,13 +3,9 @@
 
 <div align="center">
 
-<img src="Sticker512.png" width="128" />
+<img src="Sticker512.png" width="128" style="margin: 0 0 -45px 0"/>
 
-</div>
-
-<div align="center">
-
-# <img src="Sticker128.png" width="22" hspace="5" /> Falko Languages Foundry <img src="Sticker128.png" width="18" hspace="5" />
+# Languages Foundry
 
 </div>
 
@@ -21,11 +17,7 @@
 
 Fluent and Zero-Allocation Code Generation for Source Generators.
 
-<div align="center">
-
-## <img src="Sticker128.png" width="18" hspace="5" /> Example <img src="Sticker128.png" width="18" hspace="5" />
-
-</div>
+## <img src="Sticker128.png" width="18" hspace="5" /> Example
 
 ```csharp
 // declare the element
@@ -38,11 +30,7 @@ var compilerElement = CSharpLanguageCompiler.Instance.CompileElement(in serviceT
 File.WriteAllBytes("output.g.cs", compilerElement.AsSpan());
 ```
 
-<div align="center">
-
-## <img src="Sticker128.png" width="18" hspace="5" /> License <img src="Sticker128.png" width="18" hspace="5" />
-
-</div>
+## <img src="Sticker128.png" width="18" hspace="5" /> License
 
 This project is licensed under the **[GNU General Public License v3.0](License.md)**.
 
