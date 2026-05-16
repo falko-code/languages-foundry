@@ -11,7 +11,6 @@ public readonly struct Utf8Char : ISafeStruct
     public const int MaxLength = 4;
 
     private readonly uint _raw;
-
     private readonly int _length;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
