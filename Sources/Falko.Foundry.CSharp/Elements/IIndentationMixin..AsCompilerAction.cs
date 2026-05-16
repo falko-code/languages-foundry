@@ -6,7 +6,8 @@ namespace Falko.Foundry.CSharp.Elements;
 
 public static class IndentationElementMixinExtensions
 {
-    public static IIndentationCompiler AsCompilerIndentationElement<T>(this T element) where T : ILanguageElement, IIndentationElementMixin<T>
+    public static IIndentationCompiler AsCompilerIndentationElement<T>(this T element)
+        where T : ILanguageElement, IIndentationElementMixin<T>
     {
         return new IndentationCompiler<T>(element);
     }
@@ -17,7 +18,8 @@ public interface IIndentationCompiler : ILanguageElement
     void Compile(ILanguageCompiler compiler, scoped ref Utf8Buffer buffer, int indent);
 }
 
-public sealed class IndentationCompiler<T>(T element) : IIndentationCompiler where T : ILanguageElement, IIndentationElementMixin<T>
+public sealed class IndentationCompiler<T>(T element) : IIndentationCompiler
+    where T : ILanguageElement, IIndentationElementMixin<T>
 {
     public void Compile(ILanguageCompiler compiler, scoped ref Utf8Buffer buffer, int indent)
     {

@@ -37,9 +37,9 @@ internal sealed class ScopeElementCompiler : IElementCompiler<ScopeElement>
         buffer.Append(in scopeBreak);
 
         var elementsIndent = elementIndent + 1;
-        foreach (var elementCompilerAction in elements)
+        foreach (var indentationElement in elements)
         {
-            elementCompilerAction.Compiler.Compile(compiler, ref buffer, elementsIndent);
+            indentationElement.Compiler.Compile(compiler, ref buffer, elementsIndent);
         }
 
         if (spaceCount > 0)

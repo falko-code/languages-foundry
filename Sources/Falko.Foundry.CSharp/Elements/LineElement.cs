@@ -2,7 +2,9 @@ using Falko.Foundry.Elements;
 
 namespace Falko.Foundry.CSharp.Elements;
 
-public readonly struct LineElement<TLineElement> : ILanguageElement, IIndentationElementMixin<LineElement<TLineElement>> where TLineElement : ILanguageElement
+public readonly struct LineElement<TLineElement>
+    : ILanguageElement, IIndentationElementMixin<LineElement<TLineElement>>
+        where TLineElement : ILanguageElement
 {
     public int Indent { get; init; }
 

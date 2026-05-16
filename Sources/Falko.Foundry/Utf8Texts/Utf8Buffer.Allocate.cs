@@ -22,7 +22,7 @@ public ref partial struct Utf8Buffer
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Allocate(int amount)
     {
-        var newLength = _position + amount;
+        var newLength = checked(_position + amount);
 
         if (newLength <= _buffer.Length) return;
 
@@ -30,7 +30,7 @@ public ref partial struct Utf8Buffer
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Allocate(int amount, int count) => Allocate(checked(amount * count));
+    public void Allocate(int amount, int count) => Allocate(amount * count);
 
     [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.AggressiveOptimization)]
     private void MoveToHeapCore()
