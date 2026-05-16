@@ -13,6 +13,8 @@ public sealed class CSharpLanguageCompiler : LanguageCompiler<CSharpLanguageComp
         SetElementCompiler<TypeIdentifierElementCompiler, TypeIdentifierElement>();
         SetElementCompiler<UsingNamespaceElementCompiler, UsingNamespaceElement>();
 
+        SetElementCompiler<ScopeElementCompiler, ScopeElement>();
+
         SetElementCompiler<LineElementCompiler<TypeIdentifierElement>, LineElement<TypeIdentifierElement>>();
         SetElementCompiler<LineElementCompiler<UsingNamespaceElement>, LineElement<UsingNamespaceElement>>();
     }

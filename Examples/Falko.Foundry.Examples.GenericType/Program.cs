@@ -10,18 +10,24 @@ var program = Utf8Buffer.StringScope(default(Unit), (scoped ref buffer, in _) =>
     var compiler = CSharpLanguageCompiler.Instance;
 
     UsingNamespaceElement usingSystem = "System"u8;
-    compiler.CompileElement(ref buffer, usingSystem.AsLine());
-
     UsingNamespaceElement usingCollectionsGeneric = "System.Collections.Generic"u8;
-    compiler.CompileElement(ref buffer, usingCollectionsGeneric.AsLine());
 
     var intType = new TypeElement { Name = "Int32"u8 };
     var intTypeCache = compiler.CompileElement(in intType); // for don't compile twice
-
     var listType = new TypeElement { Name = "List"u8, GenericTypes = [intTypeCache] };
     var pairType = new TypeElement { Name = "KeyValuePair"u8, GenericTypes = [intTypeCache, listType] };
     var pairVariable = new TypeIdentifierElement { Name = "pair"u8, Type = pairType };
-    compiler.CompileElement(ref buffer, pairVariable.AsLine());
+
+    var scope = new ScopeElement {
+        Indent = 1,
+        Elements = [
+            usingSystem.AsLine().AsCompilerAction(),
+            usingCollectionsGeneric.AsLine().AsCompilerAction(),
+            pairVariable.AsLine().AsCompilerAction()
+        ]
+    };
+
+    compiler.CompileElement(ref buffer, in scope);
 });
 
 Console.WriteLine(program);
