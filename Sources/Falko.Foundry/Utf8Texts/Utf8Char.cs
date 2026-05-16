@@ -7,6 +7,9 @@ namespace Falko.Foundry.Utf8Texts;
 
 public readonly struct Utf8Char : ISafeStruct
 {
+    public const int MinLength = 1;
+    public const int MaxLength = 4;
+
     private readonly uint _raw;
 
     private readonly int _length;
