@@ -17,7 +17,6 @@ internal sealed class UsingNamespaceElementCompiler : IElementCompiler<UsingName
         var usingNamespace = CSharpLanguageConstants.UsingNamespace;
 
         buffer.Allocate(usingNamespace.Length + nameSpace.Length);
-
         buffer.Append(in usingNamespace);
         buffer.Append(in nameSpace);
     }

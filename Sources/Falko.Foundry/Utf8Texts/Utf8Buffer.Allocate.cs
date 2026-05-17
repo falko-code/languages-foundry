@@ -30,7 +30,7 @@ public ref partial struct Utf8Buffer
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Allocate(int amount, int count) => Allocate(amount * count);
+    public void Allocate(int amount, int repeat) => Allocate(amount * repeat);
 
     [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.AggressiveOptimization)]
     private void MoveToHeapCore()
