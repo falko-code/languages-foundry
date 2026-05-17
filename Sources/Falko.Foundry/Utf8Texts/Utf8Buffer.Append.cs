@@ -8,13 +8,13 @@ public ref partial struct Utf8Buffer
     public void Append(scoped in Utf8String value) => Append(value.AsSpan());
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Append(scoped in Utf8String value, int count) => Append(value.AsSpan(), count);
+    public void Append(scoped in Utf8String value, int repeat) => Append(value.AsSpan(), repeat);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Append(scoped in Utf8Char value) => Append(value.AsSpan());
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Append(scoped in Utf8Char value, int count) => Append(value.AsSpan(), count);
+    public void Append(scoped in Utf8Char value, int repeat) => Append(value.AsSpan(), repeat);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Append(scoped in ReadOnlySpan<byte> value)
@@ -29,16 +29,16 @@ public ref partial struct Utf8Buffer
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Append(scoped in ReadOnlySpan<byte> value, int count)
+    public void Append(scoped in ReadOnlySpan<byte> value, int repeat)
     {
         var valueLength = value.Length;
 
-        if (valueLength is 1) { Append(value[0], count); return; } // utf8-char offend 1 byte, so first
-        if (count is 1) { Append(value); return; }
+        if (valueLength is 1) { Append(value[0], repeat); return; } // utf8-char often 1 byte, so first
+        if (repeat is 1) { Append(value); return; }
         if (valueLength is 0) return;
-        if (count <= 0) return;
+        if (repeat <= 0) return;
 
-        AppendCore(value, valueLength, count);
+        AppendCore(value, valueLength, repeat);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -51,21 +51,21 @@ public ref partial struct Utf8Buffer
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void Append(byte value, int count)
+    public void Append(byte value, int repeat)
     {
-        if (count is 1) { Append(value); return; }
-        if (count <= 0) return;
+        if (repeat is 1) { Append(value); return; }
+        if (repeat <= 0) return;
 
         scoped ref var positionRef = ref _position;
         var position = positionRef;
-        _buffer.Slice(position, count).Fill(value);
-        positionRef = position + count;
+        _buffer.Slice(position, repeat).Fill(value);
+        positionRef = position + repeat;
     }
 
     [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.AggressiveOptimization)]
-    private void AppendCore(scoped in ReadOnlySpan<byte> value, int valueLength, int count)
+    private void AppendCore(scoped in ReadOnlySpan<byte> value, int valueLength, int repeat)
     {
-        var appendLength = checked(valueLength * count);
+        var appendLength = checked(valueLength * repeat);
 
         scoped ref var positionRef = ref _position;
         var position = positionRef;
