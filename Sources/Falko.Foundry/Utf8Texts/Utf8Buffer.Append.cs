@@ -33,7 +33,7 @@ public ref partial struct Utf8Buffer
     {
         var valueLength = value.Length;
 
-        if (valueLength is 1) { Append(value[0], repeat); return; } // utf8-char offend 1 byte, so first
+        if (valueLength is 1) { Append(value[0], repeat); return; } // utf8-char often 1 byte, so first
         if (repeat is 1) { Append(value); return; }
         if (valueLength is 0) return;
         if (repeat <= 0) return;
