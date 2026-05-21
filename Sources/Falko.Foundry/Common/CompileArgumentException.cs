@@ -36,18 +36,6 @@ public static class CompileArgumentException
         }
     }
 
-    public static void ThrowIfDefault<T>
-    (
-        T element,
-        [CallerArgumentExpression(nameof(element))] string? paramName = null
-    ) where T : struct, ISafeStruct, allows ref struct
-    {
-        if (element.IsInit is false)
-        {
-            throw new ArgumentException(ValueCannotBeDefaultMessage, paramName);
-        }
-    }
-
     public static void ThrowIfDefault<T>(ImmutableArray<T> value, [CallerArgumentExpression(nameof(value))] string? paramName = null)
     {
         if (value.IsDefault)

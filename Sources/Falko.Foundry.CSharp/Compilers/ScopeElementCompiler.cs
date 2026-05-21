@@ -15,7 +15,7 @@ internal sealed class ScopeElementCompiler : IElementCompiler<ScopeElement>
         scoped ref Utf8Buffer buffer
     )
     {
-        CompileArgumentException.ThrowIfDefault(element);
+        StructArgumentException.ThrowIfNotInit(element);
 
         var elements = element.Elements;
         CompileArgumentException.ThrowIfDefault(elements);

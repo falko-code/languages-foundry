@@ -16,7 +16,7 @@ internal sealed class TypeIdentifierElementCompiler : IElementCompiler<TypeIdent
         scoped ref Utf8Buffer buffer
     )
     {
-        CompileArgumentException.ThrowIfDefault(element);
+        StructArgumentException.ThrowIfNotInit(element);
 
         var name = element.Name;
         CompileArgumentException.ThrowIfEmpty(name, nameof(element.Name));
