@@ -1,14 +1,13 @@
 using System.Runtime.CompilerServices;
+using Falko.Foundry.Common;
 using Falko.Foundry.Utf8Texts;
 
 namespace Falko.Foundry.Elements;
 
 // ReSharper disable once UnusedTypeParameter
 [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
-public readonly struct CompilerElement<TCompiledElement>
-(
-    Utf8String elementText
-) : ILanguageElement where TCompiledElement : ILanguageElement
+public readonly struct CompilerElement<TCompiledElement>(Utf8String elementText)
+    : ILanguageElement, ISafeStruct where TCompiledElement : ILanguageElement
 {
     public bool IsInit { get; } = true;
 

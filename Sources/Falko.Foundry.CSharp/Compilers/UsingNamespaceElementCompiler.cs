@@ -9,7 +9,7 @@ internal sealed class UsingNamespaceElementCompiler : IElementCompiler<UsingName
 {
     public void Compile(ILanguageCompiler compiler, scoped in UsingNamespaceElement element, scoped ref Utf8Buffer buffer)
     {
-        CompileArgumentException.ThrowIfDefault(element);
+        StructArgumentException.ThrowIfNotInit(element);
 
         var nameSpace = element.Namespace;
         CompileArgumentException.ThrowIfEmpty(nameSpace, nameof(element.Namespace));
