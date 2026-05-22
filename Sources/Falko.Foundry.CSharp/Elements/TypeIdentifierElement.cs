@@ -1,12 +1,13 @@
 using System.Runtime.CompilerServices;
-using Falko.Foundry.Common;
 using Falko.Foundry.Elements;
+using Falko.Foundry.Mixins;
 using Falko.Foundry.Utf8Texts;
 
 namespace Falko.Foundry.CSharp.Elements;
 
 [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
-public readonly record struct TypeIdentifierElement() : ILanguageElement, ISafeStruct
+public readonly record struct TypeIdentifierElement() : ILanguageElement,
+    IStructInitMixin<TypeIdentifierElement>
 {
     public bool IsInit { get; } = true;
 

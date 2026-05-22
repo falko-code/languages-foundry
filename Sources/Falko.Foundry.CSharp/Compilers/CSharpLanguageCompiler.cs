@@ -1,11 +1,13 @@
 using Falko.Foundry.Compilers;
 using Falko.Foundry.CSharp.Elements;
+using Falko.Foundry.Mixins;
 
 namespace Falko.Foundry.CSharp.Compilers;
 
-public sealed class CSharpLanguageCompiler : LanguageCompiler<CSharpLanguageCompiler>
+public sealed class CSharpLanguageCompiler : LanguageCompiler<CSharpLanguageCompiler>,
+    ISingletonMixin<CSharpLanguageCompiler>
 {
-    public static readonly CSharpLanguageCompiler Instance = new();
+    public static CSharpLanguageCompiler Instance { get; } = new();
 
     private CSharpLanguageCompiler()
     {

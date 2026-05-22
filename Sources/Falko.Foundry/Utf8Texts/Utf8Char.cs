@@ -1,11 +1,12 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
-using Falko.Foundry.Common;
+using Falko.Foundry.Exceptions;
+using Falko.Foundry.Mixins;
 
 namespace Falko.Foundry.Utf8Texts;
 
-public readonly struct Utf8Char : ISafeStruct
+public readonly struct Utf8Char : IStructInitMixin<Utf8Char>
 {
     public const int MinLength = 1;
     public const int MaxLength = 4;
@@ -25,7 +26,7 @@ public readonly struct Utf8Char : ISafeStruct
     public bool IsInit
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => _length is 0;
+        get => _length > 0;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

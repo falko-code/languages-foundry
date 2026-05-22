@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
+using Falko.Foundry.Mixins;
 
-namespace Falko.Foundry.Common;
+namespace Falko.Foundry.Exceptions;
 
 public static class StructArgumentException
 {
@@ -8,7 +9,7 @@ public static class StructArgumentException
     (
         scoped in T element,
         [CallerArgumentExpression(nameof(element))] string? paramName = null
-    ) where T : struct, ISafeStruct, allows ref struct
+    ) where T : struct, IStructInitMixin<T>, allows ref struct
     {
         if (element.IsInit is false)
         {

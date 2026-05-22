@@ -1,15 +1,14 @@
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
-using Falko.Foundry.Common;
 using Falko.Foundry.Elements;
+using Falko.Foundry.Mixins;
 
 namespace Falko.Foundry.CSharp.Elements;
 
 [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
-public readonly struct ScopeElement() : ILanguageElement, ISafeStruct, IIndentationElementMixin<ScopeElement>
+public readonly struct ScopeElement() : ILanguageElement,
+    IIndentationMixin<ScopeElement>, IStructInitMixin<ScopeElement>
 {
-    public static readonly ScopeElement Empty = new();
-
     public bool IsInit { get; } = true;
 
     public int Indent { get; init; }
@@ -19,7 +18,7 @@ public readonly struct ScopeElement() : ILanguageElement, ISafeStruct, IIndentat
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ScopeElement Copy
     (
-        in ScopeElement element,
+        scoped in ScopeElement element,
         int indent
     )
     {
@@ -41,6 +40,6 @@ public readonly struct ScopeElement() : ILanguageElement, ISafeStruct, IIndentat
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator IndentationElement(ScopeElement element)
     {
-        return new IndentationElement(element.ToIndentationElement());
+        return element.ToIndentationElement();
     }
 }
