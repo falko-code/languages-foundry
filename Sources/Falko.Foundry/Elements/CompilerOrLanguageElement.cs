@@ -1,11 +1,12 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using Falko.Foundry.Common;
+using Falko.Foundry.Mixins;
 
 namespace Falko.Foundry.Elements;
 
-public readonly struct CompilerOrLanguageElement<TElement>
-    : ILanguageElement, ISafeStruct where TElement : ILanguageElement
+public readonly struct CompilerOrLanguageElement<TElement> : ILanguageElement,
+    IStructInitMixin<CompilerOrLanguageElement<TElement>>
+        where TElement : ILanguageElement
 {
     private readonly CompilerElement<TElement> _compilerElement;
 

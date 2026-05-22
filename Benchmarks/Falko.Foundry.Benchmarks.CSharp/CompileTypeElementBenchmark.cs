@@ -39,8 +39,7 @@ public class CompileTypeElementBenchmark
 
         for (var i = 0; i < Iterations; i++)
         {
-            result = CSharpLanguageCompiler
-                .Instance
+            result = CSharpLanguageCompiler.Instance
                 .CompileElement(in _loggerType!);
         }
 

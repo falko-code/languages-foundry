@@ -1,23 +1,29 @@
 using System.Runtime.CompilerServices;
 using Falko.Foundry.Elements;
+using Falko.Foundry.Mixins;
 using Falko.Foundry.Utf8Texts;
 
 namespace Falko.Foundry.Compilers;
 
-[method: MethodImpl(MethodImplOptions.AggressiveInlining)]
-public sealed class IndentationElementCompiler<T>(T element) : IIndentationElementCompiler
-    where T : ILanguageElement, IIndentationElementMixin<T>
+public sealed class IndentationElementCompiler<T> : IIndentationElementCompiler
+    where T : ILanguageElement, IIndentationMixin<T>
 {
-    public void Compile(ILanguageCompiler compiler, scoped ref Utf8Buffer buffer, int indent)
+    private readonly T _element;
+    private readonly int _elementIndent;
+
+    [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public IndentationElementCompiler(scoped in T element)
     {
-        if (indent < 0) indent = 0;
-        if (element.Indent == indent) compiler.CompileElement(ref buffer, in element);
-        else compiler.CompileElement(ref buffer, T.Copy(in element, indent));
+        var elementIndent = element.Indent;
+        ArgumentOutOfRangeException.ThrowIfNegative(elementIndent, nameof(element.Indent));
+        _elementIndent = elementIndent;
+        _element = element;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator IndentationElement(IndentationElementCompiler<T> compiler)
+    public void Compile(ILanguageCompiler compiler, scoped ref Utf8Buffer buffer, int indent)
     {
-        return new IndentationElement(compiler);
+        ArgumentOutOfRangeException.ThrowIfNegative(indent);
+        if (_elementIndent == indent) compiler.CompileElement(ref buffer, in _element);
+        else compiler.CompileElement(ref buffer, T.Copy(in _element, indent));
     }
 }

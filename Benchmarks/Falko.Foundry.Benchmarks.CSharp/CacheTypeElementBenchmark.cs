@@ -46,8 +46,7 @@ public class CacheTypeElementBenchmark
 
         for (var i = 0; i < Iterations; i++)
         {
-            result = CSharpLanguageCompiler
-                .Instance
+            result = CSharpLanguageCompiler.Instance
                 .CompileElement(in loggerVariable);
         }
 
@@ -76,8 +75,7 @@ public class CacheTypeElementBenchmark
 
                 for (var i = 0; i < iterations; i++)
                 {
-                    result = CSharpLanguageCompiler
-                        .Instance
+                    result = CSharpLanguageCompiler.Instance
                         .CompileElement(in loggerVariable);
                 }
             }
