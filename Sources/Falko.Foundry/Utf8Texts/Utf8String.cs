@@ -5,7 +5,7 @@ using System.Text;
 namespace Falko.Foundry.Utf8Texts;
 
 [SkipLocalsInit]
-public readonly struct Utf8String : IEquatable<Utf8String>, IComparable<Utf8String>,
+public readonly partial struct Utf8String : IEquatable<Utf8String>, IComparable<Utf8String>,
     ISpanFormattable, IUtf8SpanFormattable
 {
     public static readonly Utf8String Empty = Wrap(ReadOnlyMemory<byte>.Empty);
@@ -212,37 +212,4 @@ public readonly struct Utf8String : IEquatable<Utf8String>, IComparable<Utf8Stri
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Utf8String Wrap(ReadOnlyMemory<byte> utf8Bytes) => new(utf8Bytes);
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Enumerator GetEnumerator() => new(AsSpan());
-
-    public ref struct Enumerator
-    {
-        private ReadOnlySpan<byte> _remaining;
-        private Utf8Char _current;
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal Enumerator(ReadOnlySpan<byte> span) => _remaining = span;
-
-        public Utf8Char Current
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => _current;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool MoveNext()
-        {
-            var remaining = _remaining;
-
-            if (remaining.IsEmpty) return false;
-
-            var utf8Char = Utf8Char.First(remaining);
-            if (utf8Char.IsInit is false) return false;
-
-            _current = utf8Char;
-            _remaining = remaining[utf8Char.Length..];
-            return true;
-        }
-    }
 }
