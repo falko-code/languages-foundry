@@ -8,9 +8,9 @@ namespace Falko.Foundry.Elements;
 [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
 public readonly struct CompilerElement<TCompiledElement>(Utf8String elementText) : ILanguageElement,
     IStructInitMixin<CompilerElement<TCompiledElement>>
-        where TCompiledElement : ILanguageElement
+    where TCompiledElement : ILanguageElement
 {
-    public bool IsInit { get; } = true;
+    public bool IsInit => elementText.IsEmpty is false;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Utf8String AsString() => elementText;

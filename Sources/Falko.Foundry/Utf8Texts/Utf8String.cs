@@ -5,7 +5,8 @@ using System.Text;
 namespace Falko.Foundry.Utf8Texts;
 
 [SkipLocalsInit]
-public readonly struct Utf8String : IEquatable<Utf8String>, IComparable<Utf8String>, ISpanFormattable, IUtf8SpanFormattable
+public readonly struct Utf8String : IEquatable<Utf8String>, IComparable<Utf8String>,
+    ISpanFormattable, IUtf8SpanFormattable
 {
     public static readonly Utf8String Empty = Wrap(ReadOnlyMemory<byte>.Empty);
 
@@ -15,7 +16,7 @@ public readonly struct Utf8String : IEquatable<Utf8String>, IComparable<Utf8Stri
     private Utf8String(ReadOnlyMemory<byte> utf8Bytes) => _utf8Bytes = utf8Bytes;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Utf8String(ReadOnlySpan<byte> utf8Bytes) : this(new ReadOnlyMemory<byte>(utf8Bytes.ToArray())) { }
+    public Utf8String(scoped ReadOnlySpan<byte> utf8Bytes) : this(new ReadOnlyMemory<byte>(utf8Bytes.ToArray())) { }
 
     [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public Utf8String(string text)
@@ -77,22 +78,22 @@ public readonly struct Utf8String : IEquatable<Utf8String>, IComparable<Utf8Stri
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryFormat
     (
-        Span<char> destination,
+        scoped Span<char> destination,
         out int charsWritten,
-        ReadOnlySpan<char> format,
+        scoped ReadOnlySpan<char> format,
         IFormatProvider? provider
     ) => Encoding.UTF8.TryGetChars(AsSpan(), destination, out charsWritten);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryFormat
     (
-        Span<byte> utf8Destination,
+        scoped Span<byte> utf8Destination,
         out int bytesWritten,
-        ReadOnlySpan<char> format,
+        scoped ReadOnlySpan<char> format,
         IFormatProvider? provider
     )
     {
-        var span = AsSpan();
+        scoped var span = AsSpan();
 
         if (span.TryCopyTo(utf8Destination))
         {
@@ -105,7 +106,7 @@ public readonly struct Utf8String : IEquatable<Utf8String>, IComparable<Utf8Stri
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator Utf8String(ReadOnlySpan<byte> utf8Bytes) => new(utf8Bytes);
+    public static implicit operator Utf8String(scoped ReadOnlySpan<byte> utf8Bytes) => new(utf8Bytes);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator Utf8String(string text) => new(text);
@@ -125,13 +126,13 @@ public readonly struct Utf8String : IEquatable<Utf8String>, IComparable<Utf8Stri
     [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public static Utf8String operator +(Utf8String left, Utf8String right)
     {
-        var leftSpan = left.AsSpan();
-        var rightSpan = right.AsSpan();
+        scoped var leftSpan = left.AsSpan();
+        scoped var rightSpan = right.AsSpan();
 
         var leftSpanLength = leftSpan.Length;
 
         var combinedBytes = new byte[leftSpanLength + rightSpan.Length];
-        var combinedSpan = combinedBytes.AsSpan();
+        scoped var combinedSpan = combinedBytes.AsSpan();
 
         leftSpan.CopyTo(combinedSpan);
         rightSpan.CopyTo(combinedSpan[leftSpanLength..]);
@@ -158,7 +159,7 @@ public readonly struct Utf8String : IEquatable<Utf8String>, IComparable<Utf8Stri
     [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.AggressiveOptimization)]
     private static Utf8String Concat
     (
-        ReadOnlySpan<byte> sourceSpan,
+        scoped ReadOnlySpan<byte> sourceSpan,
         string targetString,
         bool targetIsRight
     )
@@ -195,7 +196,11 @@ public readonly struct Utf8String : IEquatable<Utf8String>, IComparable<Utf8Stri
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static Utf8String Combine(ReadOnlySpan<byte> left, ReadOnlySpan<byte> right)
+    private static Utf8String Combine
+    (
+        scoped ReadOnlySpan<byte> left,
+        scoped ReadOnlySpan<byte> right
+    )
     {
         var combinedBytes = new byte[left.Length + right.Length];
 

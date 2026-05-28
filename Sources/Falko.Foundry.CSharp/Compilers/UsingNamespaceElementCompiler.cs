@@ -9,15 +9,15 @@ internal sealed class UsingNamespaceElementCompiler : IElementCompiler<UsingName
 {
     public void Compile(ILanguageCompiler compiler, scoped in UsingNamespaceElement element, scoped ref Utf8Buffer buffer)
     {
-        StructArgumentException.ThrowIfNotInit(element);
+        StructArgumentException.ThrowIfNotInit(in element);
 
         var nameSpace = element.Namespace;
-        CompileArgumentException.ThrowIfEmpty(nameSpace, nameof(element.Namespace));
+        StructArgumentException.ThrowIfEmpty(nameSpace, nameof(element.Namespace));
 
         var usingNamespace = CSharpLanguageConstants.UsingNamespace;
 
         buffer.Allocate(usingNamespace.Length + nameSpace.Length);
-        buffer.Append(in usingNamespace);
-        buffer.Append(in nameSpace);
+        buffer.Append(usingNamespace);
+        buffer.Append(nameSpace);
     }
 }

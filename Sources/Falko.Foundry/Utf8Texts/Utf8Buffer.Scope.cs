@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using Falko.Foundry.Exceptions;
 
 namespace Falko.Foundry.Utf8Texts;
 
@@ -12,9 +13,14 @@ public ref partial struct Utf8Buffer
         int capacity = MaxHeapBufferSize
     ) where TArgument : allows ref struct
     {
+        DebugArgumentException.ThrowIfDebug
+        (
+            throwIf: ArgumentOutOfRangeException.ThrowIfNegative, capacity
+        );
+
         scoped var builder = capacity > MaxHeapBufferSize
             ? new Utf8Buffer(capacity)
-            : new Utf8Buffer(stackalloc byte[capacity]); // if stackalloc we can use less capacity
+            : new Utf8Buffer(stackalloc byte[Math.Max(capacity, 0)]); // if stackalloc we can use less capacity
 
         try
         {
@@ -34,9 +40,14 @@ public ref partial struct Utf8Buffer
         int capacity = MaxHeapBufferSize
     ) where TArgument : allows ref struct
     {
+        DebugArgumentException.ThrowIfDebug
+        (
+            throwIf: ArgumentOutOfRangeException.ThrowIfNegative, capacity
+        );
+
         scoped var builder = capacity > MaxHeapBufferSize
             ? new Utf8Buffer(capacity)
-            : new Utf8Buffer(stackalloc byte[capacity]); // if stackalloc we can use less capacity
+            : new Utf8Buffer(stackalloc byte[Math.Max(capacity, 0)]); // if stackalloc we can use less capacity
 
         try
         {
@@ -57,9 +68,14 @@ public ref partial struct Utf8Buffer
         int capacity = MaxHeapBufferSize
     ) where TArgument : allows ref struct
     {
+        DebugArgumentException.ThrowIfDebug
+        (
+            throwIf: ArgumentOutOfRangeException.ThrowIfNegative, capacity
+        );
+
         scoped var builder = capacity > MaxHeapBufferSize
             ? new Utf8Buffer(capacity)
-            : new Utf8Buffer(stackalloc byte[capacity]); // if stackalloc we can use less capacity
+            : new Utf8Buffer(stackalloc byte[Math.Max(capacity, 0)]); // if stackalloc we can use less capacity
 
         try
         {

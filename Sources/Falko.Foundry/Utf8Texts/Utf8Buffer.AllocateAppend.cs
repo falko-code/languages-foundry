@@ -1,30 +1,47 @@
 using System.Runtime.CompilerServices;
+using Falko.Foundry.Exceptions;
 
 namespace Falko.Foundry.Utf8Texts;
 
 public ref partial struct Utf8Buffer
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void AllocateAppend(scoped in Utf8String value) => AllocateAppend(value.AsSpan());
+    public void AllocateAppend(Utf8String value) => AllocateAppend(value.AsSpan());
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void AllocateAppend(scoped in Utf8String value, int repeat) => AllocateAppend(value.AsSpan(), repeat);
+    public void AllocateAppend(Utf8String value, int repeat) => AllocateAppend(value.AsSpan(), repeat);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void AllocateAppend(scoped in Utf8Char value) => AllocateAppend(value.AsSpan());
+    public void AllocateAppend(Utf8Char value)
+    {
+        DebugArgumentException.ThrowIfDebug
+        (
+            throwIf: StructArgumentException.ThrowIfNotInit, value
+        );
+
+        AllocateAppend(value.AsSpan());
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void AllocateAppend(scoped in Utf8Char value, int repeat) => AllocateAppend(value.AsSpan(), repeat);
+    public void AllocateAppend(Utf8Char value, int repeat)
+    {
+        DebugArgumentException.ThrowIfDebug
+        (
+            throwIf: StructArgumentException.ThrowIfNotInit, value
+        );
+
+        AllocateAppend(value.AsSpan(), repeat);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void AllocateAppend(scoped in ReadOnlySpan<byte> value)
+    public void AllocateAppend(scoped ReadOnlySpan<byte> value)
     {
         Allocate(value.Length);
         Append(value);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public void AllocateAppend(scoped in ReadOnlySpan<byte> value, int repeat)
+    public void AllocateAppend(scoped ReadOnlySpan<byte> value, int repeat)
     {
         Allocate(value.Length, repeat);
         Append(value, repeat);

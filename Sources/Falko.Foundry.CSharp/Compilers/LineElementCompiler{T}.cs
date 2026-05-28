@@ -26,6 +26,6 @@ internal sealed class LineElementCompiler<T> : IElementCompiler<LineElement<T>> 
             allocateAdditional: lineBreak.Length // we can not invoke allocate 2 times
         );
 
-        buffer.Append(in lineBreak);
+        buffer.Append(lineBreak);
     }
 }
