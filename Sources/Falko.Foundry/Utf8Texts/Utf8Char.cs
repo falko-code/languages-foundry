@@ -54,10 +54,10 @@ public readonly struct Utf8Char : IStructInitMixin<Utf8Char>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator Utf8Char(scoped ReadOnlySpan<byte> utf8Bytes) => From(utf8Bytes);
+    public static implicit operator Utf8Char(scoped ReadOnlySpan<byte> utf8Bytes) => Single(utf8Bytes);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-    public static Utf8Char From(scoped ReadOnlySpan<byte> utf8Bytes)
+    public static Utf8Char Single(scoped ReadOnlySpan<byte> utf8Bytes)
     {
         StructArgumentException.ThrowIfEmpty(utf8Bytes);
         scoped ref var utf8BytesFirstByteRef = ref MemoryMarshal.GetReference(utf8Bytes);
@@ -73,13 +73,30 @@ public readonly struct Utf8Char : IStructInitMixin<Utf8Char>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
+    public static Utf8Char First(scoped ReadOnlySpan<byte> utf8Bytes)
+    {
+        if (utf8Bytes.IsEmpty) return default;
+
+        scoped ref var utf8BytesFirstByteRef = ref MemoryMarshal.GetReference(utf8Bytes);
+
+        var expectedLength = GetByteCount(utf8BytesFirstByteRef);
+        if (utf8Bytes.Length < expectedLength) return default;
+
+        return new Utf8Char
+        (
+            raw: Unsafe.ReadUnaligned<uint>(ref utf8BytesFirstByteRef),
+            length: expectedLength
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
     private static int GetByteCount(byte firstByte) => firstByte switch
     {
         < 0x80 => 1, // 0xxxxxxx ASCII
-        < 0xC0 => throw new ArgumentException("Invalid UTF-8 first byte."),
+        < 0xC0 => 0,
         < 0xE0 => 2, // 110xxxxx
         < 0xF0 => 3, // 1110xxxx
         < 0xF8 => 4, // 11110xxx
-        _ => throw new ArgumentException("Invalid UTF-8 first byte.")
+        _ => 0
     };
 }

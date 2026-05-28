@@ -219,12 +219,12 @@ public readonly struct Utf8String : IEquatable<Utf8String>, IComparable<Utf8Stri
     public ref struct Enumerator
     {
         private ReadOnlySpan<byte> _remaining;
-        private Rune _current;
+        private Utf8Char _current;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal Enumerator(ReadOnlySpan<byte> span) => _remaining = span;
 
-        public Rune Current
+        public Utf8Char Current
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get => _current;
@@ -237,8 +237,11 @@ public readonly struct Utf8String : IEquatable<Utf8String>, IComparable<Utf8Stri
 
             if (remaining.IsEmpty) return false;
 
-            Rune.DecodeFromUtf8(remaining, out _current, out var bytesConsumed);
-            _remaining = remaining[bytesConsumed..];
+            var utf8Char = Utf8Char.First(remaining);
+            if (utf8Char.IsInit is false) return false;
+
+            _current = utf8Char;
+            _remaining = remaining[utf8Char.Length..];
             return true;
         }
     }
