@@ -31,10 +31,10 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
         var typeNamespace = element.Namespace;
 
         var typeName = element.Name;
-        CompileArgumentException.ThrowIfEmpty(typeName, nameof(element.Name));
+        StructArgumentException.ThrowIfEmpty(typeName, nameof(element.Name));
 
         var genericTypes = element.GenericTypes;
-        CompileArgumentException.ThrowIfDefault(genericTypes, nameof(element.GenericTypes));
+        StructArgumentException.ThrowIfDefault(genericTypes, nameof(element.GenericTypes));
 
         var leftAngleBracket = CSharpLanguageConstants.LeftAngleBracket;
         var rightAngleBracket = CSharpLanguageConstants.RightAngleBracket;
@@ -58,15 +58,15 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
 
         if (hasTypeNamespace)
         {
-            buffer.Append(in typeNamespace);
-            buffer.Append(in dot); // namespace and type name separator
+            buffer.Append(typeNamespace);
+            buffer.Append(dot); // namespace and type name separator
         }
 
-        buffer.Append(in typeName);
+        buffer.Append(typeName);
 
         if (genericTypesCount is 0) return;
 
-        buffer.Append(in leftAngleBracket);
+        buffer.Append(leftAngleBracket);
 
         var genericTypesSpan = genericTypes.AsSpan();
         var genericTypeIndex = 0;
@@ -81,10 +81,10 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
 
         if (++genericTypeIndex < genericTypesCount)
         {
-            buffer.Append(in commaSpace);
+            buffer.Append(commaSpace);
             goto genericTypeAppendLoop;
         }
 
-        buffer.Append(in rightAngleBracket);
+        buffer.Append(rightAngleBracket);
     }
 }

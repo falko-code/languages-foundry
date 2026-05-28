@@ -8,7 +8,8 @@ namespace Falko.Foundry.Elements;
 public readonly struct IndentationElement(IIndentationElementCompiler compiler)
     : ILanguageElement, IStructInitMixin<IndentationElement>
 {
-    public bool IsInit { get; } = true;
+    // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+    public bool IsInit => compiler is not null;
 
     public IIndentationElementCompiler Compiler
     {

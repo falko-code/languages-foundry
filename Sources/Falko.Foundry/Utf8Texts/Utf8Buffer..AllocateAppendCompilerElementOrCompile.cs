@@ -1,7 +1,6 @@
 using System.Runtime.CompilerServices;
 using Falko.Foundry.Compilers;
 using Falko.Foundry.Elements;
-using Falko.Foundry.Exceptions;
 
 namespace Falko.Foundry.Utf8Texts;
 
@@ -19,8 +18,6 @@ public static partial class Utf8BufferExtensions
         if (element.TryGetCompilerElement(out var compilerElement))
         {
             var compilerElementString = compilerElement.AsString();
-            CompileArgumentException.ThrowIfEmpty(compilerElementString, nameof(compilerElement));
-
             buffer.Allocate(compilerElementString.Length + allocateAdditional);
             buffer.Append(compilerElementString);
         }

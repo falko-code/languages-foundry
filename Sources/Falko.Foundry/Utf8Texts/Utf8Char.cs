@@ -1,7 +1,6 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
-using Falko.Foundry.Exceptions;
 using Falko.Foundry.Mixins;
 
 namespace Falko.Foundry.Utf8Texts;
@@ -48,22 +47,20 @@ public readonly struct Utf8Char : IStructInitMixin<Utf8Char>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()
     {
-        Span<byte> bytes = stackalloc byte[_length];
+        scoped Span<byte> bytes = stackalloc byte[_length];
         AsSpan().CopyTo(bytes);
         return Encoding.UTF8.GetString(bytes);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static implicit operator Utf8Char(scoped in ReadOnlySpan<byte> utf8Bytes) => From(in utf8Bytes);
+    public static implicit operator Utf8Char(scoped ReadOnlySpan<byte> utf8Bytes) => From(utf8Bytes);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-    public static Utf8Char From(scoped in ReadOnlySpan<byte> utf8Bytes)
+    public static Utf8Char From(scoped ReadOnlySpan<byte> utf8Bytes)
     {
-        CompileArgumentException.ThrowIfEmpty(utf8Bytes);
         scoped ref var utf8BytesFirstByteRef = ref MemoryMarshal.GetReference(utf8Bytes);
 
         var expectedLength = GetByteCount(utf8BytesFirstByteRef);
-
         ArgumentOutOfRangeException.ThrowIfNotEqual(utf8Bytes.Length, expectedLength, nameof(utf8Bytes));
 
         return new Utf8Char

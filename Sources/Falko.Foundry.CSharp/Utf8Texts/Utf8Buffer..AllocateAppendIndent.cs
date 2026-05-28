@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using Falko.Foundry.CSharp.Compilers;
+using Falko.Foundry.Exceptions;
 using Falko.Foundry.Utf8Texts;
 
 namespace Falko.Foundry.CSharp.Utf8Texts;
@@ -15,6 +16,10 @@ internal static class Utf8BufferExtensions
         int indent
     )
     {
+        DebugArgumentException.ThrowIfDebug
+        (
+            throwIf: ArgumentOutOfRangeException.ThrowIfNegative, indent
+        );
         if (indent <= 0) return;
 
         var space = CSharpLanguageConstants.Space;

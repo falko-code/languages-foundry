@@ -13,6 +13,6 @@ internal sealed class LineElementCompiler : IElementCompiler<LineElement>
         scoped ref Utf8Buffer buffer
     )
     {
-        buffer.AllocateAppend(in CSharpLanguageConstants.LineEnd);
+        buffer.AllocateAppend(CSharpLanguageConstants.LineEnd);
     }
 }

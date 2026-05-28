@@ -3,7 +3,7 @@ using Falko.Foundry.Mixins;
 
 namespace Falko.Foundry.Exceptions;
 
-public static class StructArgumentException
+public static partial class StructArgumentException
 {
     public static void ThrowIfNotInit<T>
     (

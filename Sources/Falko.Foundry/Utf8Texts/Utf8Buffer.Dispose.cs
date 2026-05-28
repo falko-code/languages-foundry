@@ -9,9 +9,7 @@ public ref partial struct Utf8Buffer : IDisposable
     public readonly void Dispose()
     {
         var rented = _rented;
-
         if (rented is null) return; // we used stack-allocated buffer
-
         ArrayPool<byte>.Shared.Return(rented);
     }
 }

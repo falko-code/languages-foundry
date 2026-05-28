@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using Falko.Foundry.Elements;
+using Falko.Foundry.Exceptions;
 using Falko.Foundry.Mixins;
 using Falko.Foundry.Utf8Texts;
 
@@ -16,13 +17,18 @@ public sealed class IndentationElementCompiler<T> : IIndentationElementCompiler
     {
         var elementIndent = element.Indent;
         ArgumentOutOfRangeException.ThrowIfNegative(elementIndent, nameof(element.Indent));
+
         _elementIndent = elementIndent;
         _element = element;
     }
 
     public void Compile(ILanguageCompiler compiler, scoped ref Utf8Buffer buffer, int indent)
     {
-        ArgumentOutOfRangeException.ThrowIfNegative(indent);
+        DebugArgumentException.ThrowIfDebug
+        (
+            throwIf: ArgumentOutOfRangeException.ThrowIfNegative, indent
+        );
+
         if (_elementIndent == indent) compiler.CompileElement(ref buffer, in _element);
         else compiler.CompileElement(ref buffer, T.Copy(in _element, indent));
     }

@@ -16,10 +16,10 @@ internal sealed class TypeIdentifierElementCompiler : IElementCompiler<TypeIdent
         scoped ref Utf8Buffer buffer
     )
     {
-        StructArgumentException.ThrowIfNotInit(element);
+        StructArgumentException.ThrowIfNotInit(in element);
 
         var name = element.Name;
-        CompileArgumentException.ThrowIfEmpty(name, nameof(element.Name));
+        StructArgumentException.ThrowIfEmpty(name, nameof(element.Name));
 
         var space = CSharpLanguageConstants.Space;
         var postfixLength = space.Length + name.Length;
@@ -31,7 +31,7 @@ internal sealed class TypeIdentifierElementCompiler : IElementCompiler<TypeIdent
             allocateAdditional: postfixLength // we can not invoke allocate 2 times
         );
 
-        buffer.Append(in space);
-        buffer.Append(in name);
+        buffer.Append(space);
+        buffer.Append(name);
     }
 }
