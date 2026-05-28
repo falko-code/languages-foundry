@@ -48,7 +48,9 @@ public readonly struct Utf8Char : IStructInitMixin<Utf8Char>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public override string ToString()
     {
-        scoped Span<byte> bytes = stackalloc byte[_length];
+        var length = _length;
+        if (length is 0) return string.Empty;
+        scoped Span<byte> bytes = stackalloc byte[length];
         AsSpan().CopyTo(bytes);
         return Encoding.UTF8.GetString(bytes);
     }

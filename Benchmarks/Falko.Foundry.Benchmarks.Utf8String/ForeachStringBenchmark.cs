@@ -39,9 +39,9 @@ public class ForeachStringBenchmark
     }
 
     [Benchmark]
-    public Rune ForeachUtf8String()
+    public Utf8Char ForeachUtf8String()
     {
-        var result = Rune.ReplacementChar;
+        var result = default(Utf8Char);
 
         for (var i = 0; i < Iterations; i++)
         {
