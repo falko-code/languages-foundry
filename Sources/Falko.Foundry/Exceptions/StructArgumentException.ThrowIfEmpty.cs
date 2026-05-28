@@ -31,4 +31,16 @@ public static partial class StructArgumentException
             throw new ArgumentException(ValueCannotBeEmptyMessage, paramName);
         }
     }
+
+    public static void ThrowIfEmpty<T>
+    (
+        scoped ReadOnlySpan<T> value,
+        [CallerArgumentExpression(nameof(value))] string? paramName = null
+    )
+    {
+        if (value.IsEmpty)
+        {
+            throw new ArgumentException(ValueCannotBeEmptyMessage, paramName);
+        }
+    }
 }

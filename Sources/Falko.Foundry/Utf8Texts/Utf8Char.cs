@@ -1,6 +1,7 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
+using Falko.Foundry.Exceptions;
 using Falko.Foundry.Mixins;
 
 namespace Falko.Foundry.Utf8Texts;
@@ -58,6 +59,7 @@ public readonly struct Utf8Char : IStructInitMixin<Utf8Char>
     [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
     public static Utf8Char From(scoped ReadOnlySpan<byte> utf8Bytes)
     {
+        StructArgumentException.ThrowIfEmpty(utf8Bytes);
         scoped ref var utf8BytesFirstByteRef = ref MemoryMarshal.GetReference(utf8Bytes);
 
         var expectedLength = GetByteCount(utf8BytesFirstByteRef);
