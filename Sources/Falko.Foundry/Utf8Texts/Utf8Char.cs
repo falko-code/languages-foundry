@@ -75,7 +75,7 @@ public readonly struct Utf8Char : IStructInitMixin<Utf8Char>
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
-    public static Utf8Char First(scoped ReadOnlySpan<byte> utf8Bytes)
+    public static Utf8Char FirstOrDefault(scoped ReadOnlySpan<byte> utf8Bytes)
     {
         if (utf8Bytes.IsEmpty) return default;
 

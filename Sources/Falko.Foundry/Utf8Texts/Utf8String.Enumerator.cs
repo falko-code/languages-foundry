@@ -26,7 +26,7 @@ public readonly partial struct Utf8String
         {
             var remaining = _remaining;
 
-            var utf8Char = Utf8Char.First(remaining);
+            var utf8Char = Utf8Char.FirstOrDefault(remaining);
             if (utf8Char.IsInit is false) return false;
 
             _current = utf8Char;
