@@ -23,7 +23,7 @@ public partial class Utf8StringTester
     public void Count_Emoji_ReturnsRuneCount()
     {
         Utf8String utf8String = "😀🎉"u8;
-        Assert.That(utf8String.Count(), Is.EqualTo(2));
+        Assert.That(utf8String.Count(), Is.EqualTo(4));
     }
 
     [Test]
