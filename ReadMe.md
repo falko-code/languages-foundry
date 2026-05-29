@@ -27,8 +27,6 @@ Create `foundry.cs` file with the following content and run with `dotnet run fou
 
 ```csharp
 #:property TargetFramework=net10.0
-#:property PublishAot=true
-
 #:package Falko.Foundry.CSharp@0.1.0
 
 using Falko.Foundry.Compilers;
