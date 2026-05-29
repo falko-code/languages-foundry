@@ -23,16 +23,32 @@ Fluent and Zero-Allocation Code Generation for Source Generators.
 
 # <img src="Sticker128.png" width="25" hspace="5" /> Example
 
+Create `foundry.cs` file with the following content and run with `dotnet run foundry.cs`:
+
 ```csharp
-// declare the element
-var serviceType = new TypeElement { Name = "Service"u8 };
+#:property TargetFramework=net10.0
+#:property PublishAot=true
 
-// compile the element
-var compilerElement = CSharpLanguageCompiler.Instance.CompileElement(in serviceType);
+#:package Falko.Foundry.CSharp@0.1.0
 
-// output compiled element
-File.WriteAllBytes("output.g.cs", compilerElement.AsSpan());
+using Falko.Foundry.Compilers;
+using Falko.Foundry.CSharp.Compilers;
+using Falko.Foundry.CSharp.Elements;
+
+var compiler = CSharpLanguageCompiler.Instance;
+var intType = new TypeElement { Name = "Int32"u8, Namespace = "System"u8 };
+var intVar = new TypeIdentifierElement { Name = "myInt"u8, Type = intType };
+
+Console.WriteLine(compiler.CompileElement(intVar.AsLine()));
 ```
+
+This simple example will output the following code:
+
+```csharp
+System.Int32 myInt;
+```
+
+For how use the library in modern ways, see the [Wiki](https://github.com/falko-code/languages-foundry/wiki) and the [Examples](Examples/) folder.
 
 # <img src="Sticker128.png" width="25" hspace="5" /> License
 
