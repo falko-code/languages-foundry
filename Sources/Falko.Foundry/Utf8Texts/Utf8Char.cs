@@ -23,6 +23,13 @@ public readonly struct Utf8Char : IStructInitMixin<Utf8Char>
         get => _length;
     }
 
+    public bool IsDefault
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get => _length is 0;
+    }
+
+    [Obsolete("Use IsDefault instead; IsInit is for mixin compatibility.")]
     public bool IsInit
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
