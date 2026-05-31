@@ -1,5 +1,4 @@
 using System.Runtime.CompilerServices;
-using Falko.Foundry.Exceptions;
 
 namespace Falko.Foundry.Utf8Texts;
 
@@ -13,10 +12,7 @@ public ref partial struct Utf8Buffer
         int capacity = MaxHeapBufferSize
     ) where TArgument : allows ref struct
     {
-        DebugArgumentException.ThrowIfDebug
-        (
-            throwIf: ArgumentOutOfRangeException.ThrowIfNegative, capacity
-        );
+        ThrowIfDebug(ArgumentOutOfRangeException.ThrowIfNegative, capacity);
 
         scoped var builder = capacity > MaxHeapBufferSize
             ? new Utf8Buffer(capacity)
@@ -40,10 +36,7 @@ public ref partial struct Utf8Buffer
         int capacity = MaxHeapBufferSize
     ) where TArgument : allows ref struct
     {
-        DebugArgumentException.ThrowIfDebug
-        (
-            throwIf: ArgumentOutOfRangeException.ThrowIfNegative, capacity
-        );
+        ThrowIfDebug(ArgumentOutOfRangeException.ThrowIfNegative, capacity);
 
         scoped var builder = capacity > MaxHeapBufferSize
             ? new Utf8Buffer(capacity)
@@ -68,10 +61,7 @@ public ref partial struct Utf8Buffer
         int capacity = MaxHeapBufferSize
     ) where TArgument : allows ref struct
     {
-        DebugArgumentException.ThrowIfDebug
-        (
-            throwIf: ArgumentOutOfRangeException.ThrowIfNegative, capacity
-        );
+        ThrowIfDebug(ArgumentOutOfRangeException.ThrowIfNegative, capacity);
 
         scoped var builder = capacity > MaxHeapBufferSize
             ? new Utf8Buffer(capacity)

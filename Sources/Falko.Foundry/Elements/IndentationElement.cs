@@ -4,16 +4,32 @@ using Falko.Foundry.Mixins;
 
 namespace Falko.Foundry.Elements;
 
-[method: MethodImpl(MethodImplOptions.AggressiveInlining)]
-public readonly struct IndentationElement(IIndentationElementCompiler compiler)
-    : ILanguageElement, IStructInitMixin<IndentationElement>
+
+public readonly record struct IndentationElement : ILanguageElement, IStructInitMixin<IndentationElement>
 {
-    // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-    public bool IsInit => compiler is not null;
+    private readonly IIndentationElementCompiler _elementCompiler;
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private IndentationElement(IIndentationElementCompiler elementCompiler)
+    {
+        _elementCompiler = elementCompiler;
+    }
+
+    public bool IsInit => _elementCompiler is not null;
 
     public IIndentationElementCompiler Compiler
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        get => compiler;
+        get => _elementCompiler;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static IndentationElement Wrap<T>(scoped in T indentationElement)
+        where T : ILanguageElement, IIndentationMixin<T>
+    {
+        return new IndentationElement
+        (
+            elementCompiler: new IndentationElementCompiler<T>(in indentationElement)
+        );
     }
 }

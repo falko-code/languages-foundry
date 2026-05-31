@@ -1,6 +1,5 @@
 using System.Buffers;
 using System.Runtime.CompilerServices;
-using Falko.Foundry.Exceptions;
 
 namespace Falko.Foundry.Utf8Texts;
 
@@ -22,11 +21,7 @@ public ref partial struct Utf8Buffer
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Allocate(int amount)
     {
-        DebugArgumentException.ThrowIfDebug
-        (
-            throwIf: ArgumentOutOfRangeException.ThrowIfNegative, amount
-        );
-
+        ThrowIfDebug(ArgumentOutOfRangeException.ThrowIfNegative, amount);
         var newLength = checked(_position + amount);
         if (newLength <= _buffer.Length) return;
         AllocateCore(newLength);
