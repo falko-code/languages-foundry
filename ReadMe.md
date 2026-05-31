@@ -40,24 +40,21 @@ var intVar = new TypeIdentifierElement { Name = "myInt"u8, Type = intType };
 Console.WriteLine(compiler.CompileElement(intVar.AsLine()));
 ```
 
-Run directly with dotnet:
+**Run** directly with dotnet:
 ```bash
 dotnet run Example.cs
 ```
 
-**Or** make it an executable CLI 
+**Or** make it an executable CLI and run in shorter command name:
 ```bash
 ln -s Example.cs example
 chmod +x example
 ```
-
-And run in shorter command name:
-
 ```bash
 ./example
 ```
 
-This simple example will output the following code:
+**This** simple example will output the following code:
 
 ```csharp
 System.Int32 myInt;
