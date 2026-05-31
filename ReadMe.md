@@ -23,10 +23,11 @@ Fluent and Zero-Allocation Code Generation for Source Generators.
 
 # <img src="Sticker128.png" width="25" hspace="5" /> Example
 
-Create `foundry.cs` file with the following content and run with `dotnet run foundry.cs`:
+Create `Example.cs` file with the following content:
 
 ```csharp
-#:property TargetFramework=net10.0
+#!/usr/bin/env -S dotnet --
+
 #:package Falko.Foundry.CSharp@0.1.0
 
 using Falko.Foundry.Compilers;
@@ -38,6 +39,19 @@ var intType = new TypeElement { Name = "Int32"u8, Namespace = "System"u8 };
 var intVar = new TypeIdentifierElement { Name = "myInt"u8, Type = intType };
 
 Console.WriteLine(compiler.CompileElement(intVar.AsLine()));
+```
+
+Link `Example.cs` as `CLIApp`:
+
+```bash
+ln Example.cs example
+chmod +x example
+```
+
+Run `example` in simple way:
+
+```bash
+./example
 ```
 
 This simple example will output the following code:
