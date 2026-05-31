@@ -33,10 +33,10 @@ using Falko.Foundry.Compilers;
 using Falko.Foundry.CSharp.Compilers;
 using Falko.Foundry.CSharp.Elements;
 
-var compiler = CSharpLanguageCompiler.Instance;
 var intType = new TypeElement { Name = "Int32"u8, Namespace = "System"u8 };
 var intVar = new TypeIdentifierElement { Name = "myInt"u8, Type = intType };
 
+var compiler = CSharpLanguageCompiler.Instance;
 Console.WriteLine(compiler.CompileElement(intVar.AsLine()));
 ```
 
