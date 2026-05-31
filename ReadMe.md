@@ -27,7 +27,6 @@ Create `Example.cs` file with the following content:
 
 ```csharp
 #!/usr/bin/env -S dotnet --
-
 #:package Falko.Foundry.CSharp@0.1.0
 
 using Falko.Foundry.Compilers;
@@ -41,14 +40,18 @@ var intVar = new TypeIdentifierElement { Name = "myInt"u8, Type = intType };
 Console.WriteLine(compiler.CompileElement(intVar.AsLine()));
 ```
 
-Link `Example.cs` as `CLIApp`:
-
+Run directly with dotnet:
 ```bash
-ln Example.cs example
+dotnet run Example.cs
+```
+
+**Or** make it an executable CLI 
+```bash
+ln -s Example.cs example
 chmod +x example
 ```
 
-Run `example` in simple way:
+And run in shorter command name:
 
 ```bash
 ./example
