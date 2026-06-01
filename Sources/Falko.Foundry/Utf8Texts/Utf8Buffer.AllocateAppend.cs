@@ -14,22 +14,14 @@ public ref partial struct Utf8Buffer
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void AllocateAppend(Utf8Char value)
     {
-        DebugArgumentException.ThrowIfDebug
-        (
-            throwIf: StructArgumentException.ThrowIfNotInit, value
-        );
-
+        ThrowIfDebug(StructArgumentException.ThrowIfNotInit, value);
         AllocateAppend(value.AsSpan());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void AllocateAppend(Utf8Char value, int repeat)
     {
-        DebugArgumentException.ThrowIfDebug
-        (
-            throwIf: StructArgumentException.ThrowIfNotInit, value
-        );
-
+        ThrowIfDebug(StructArgumentException.ThrowIfNotInit, value);
         AllocateAppend(value.AsSpan(), repeat);
     }
 

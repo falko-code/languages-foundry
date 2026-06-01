@@ -27,6 +27,6 @@ public readonly struct LineElement<TLineElement> : ILanguageElement,
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator IndentationElement(LineElement<TLineElement> element)
     {
-        return element.ToIndentationElement();
+        return element.AsIndentationElement();
     }
 }

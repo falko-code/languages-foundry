@@ -1,6 +1,5 @@
 using System.Buffers;
 using System.Runtime.CompilerServices;
-using Falko.Foundry.Exceptions;
 
 namespace Falko.Foundry.Utf8Texts;
 
@@ -14,19 +13,12 @@ public ref partial struct Utf8Buffer
     private int _position;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private Utf8Buffer(Span<byte> stackAllocatedBuffer)
-    {
-        _buffer = stackAllocatedBuffer;
-    }
+    private Utf8Buffer(Span<byte> stackAllocatedBuffer) => _buffer = stackAllocatedBuffer;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private Utf8Buffer(int capacity)
     {
-        DebugArgumentException.ThrowIfDebug
-        (
-            throwIf: ArgumentOutOfRangeException.ThrowIfNegative, capacity
-        );
-
+        ThrowIfDebug(ArgumentOutOfRangeException.ThrowIfNegative, capacity);
         capacity = Math.Max(capacity, MinArrayBufferSize); // if array we can't use less capacity
         _rented = ArrayPool<byte>.Shared.Rent(capacity);
         _buffer = _rented;

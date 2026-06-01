@@ -40,6 +40,6 @@ public readonly struct ScopeElement() : ILanguageElement,
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static implicit operator IndentationElement(ScopeElement element)
     {
-        return element.ToIndentationElement();
+        return element.AsIndentationElement();
     }
 }

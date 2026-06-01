@@ -14,22 +14,14 @@ public ref partial struct Utf8Buffer
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Append(Utf8Char value)
     {
-        DebugArgumentException.ThrowIfDebug
-        (
-            throwIf: StructArgumentException.ThrowIfNotInit, value
-        );
-
+        ThrowIfDebug(StructArgumentException.ThrowIfNotInit, value);
         Append(value.AsSpan());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Append(Utf8Char value, int repeat)
     {
-        DebugArgumentException.ThrowIfDebug
-        (
-            throwIf: StructArgumentException.ThrowIfNotInit, value
-        );
-
+        ThrowIfDebug(StructArgumentException.ThrowIfNotInit, value);
         Append(value.AsSpan(), repeat);
     }
 
@@ -54,10 +46,7 @@ public ref partial struct Utf8Buffer
         if (repeat is 1) { Append(value); return; }
         if (valueLength is 0) return;
 
-        DebugArgumentException.ThrowIfDebug
-        (
-            throwIf: ArgumentOutOfRangeException.ThrowIfNegative, repeat
-        );
+        ThrowIfDebug(ArgumentOutOfRangeException.ThrowIfNegative, repeat);
         if (repeat <= 0) return;
 
         AppendCore(value, valueLength, repeat);
@@ -77,10 +66,7 @@ public ref partial struct Utf8Buffer
     {
         if (repeat is 1) { Append(value); return; }
 
-        DebugArgumentException.ThrowIfDebug
-        (
-            throwIf: ArgumentOutOfRangeException.ThrowIfNegative, repeat
-        );
+        ThrowIfDebug(ArgumentOutOfRangeException.ThrowIfNegative, repeat);
         if (repeat <= 0) return;
 
         scoped ref var positionRef = ref _position;
