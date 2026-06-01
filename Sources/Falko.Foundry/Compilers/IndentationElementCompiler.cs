@@ -33,7 +33,7 @@ internal sealed class IndentationElementCompiler<T> : IIndentationElementCompile
         var elementIndent = _elementIndent;
         var globalIndent = checked(sourceIndent + elementIndent);
         if (elementIndent == globalIndent) compiler.CompileElement(ref buffer, in _element);
-        else compiler.CompileElement(ref buffer, T.Copy(in _element, sourceIndent));
+        else compiler.CompileElement(ref buffer, T.Copy(in _element, globalIndent));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining | MethodImplOptions.AggressiveOptimization)]
@@ -49,6 +49,6 @@ internal sealed class IndentationElementCompiler<T> : IIndentationElementCompile
         ArgumentOutOfRangeException.ThrowIfNegative(elementIndent);
         var globalIndent = checked(sourceIndent + elementIndent);
         if (_elementIndent == globalIndent) compiler.CompileElement(ref buffer, in _element);
-        else compiler.CompileElement(ref buffer, T.Copy(in _element, sourceIndent));
+        else compiler.CompileElement(ref buffer, T.Copy(in _element, globalIndent));
     }
 }
