@@ -10,6 +10,9 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
 {
     private const int MinimumTypeLength = 64; // average type name length
 
+    private static readonly int LeftRightAngleBracketsLength
+        = CSharpLanguageConstants.LeftAngleBracket.Length + CSharpLanguageConstants.RightAngleBracket.Length;
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Compile
     (
@@ -36,20 +39,20 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
         var genericTypes = element.GenericTypes;
         StructArgumentException.ThrowIfDefault(genericTypes, nameof(element.GenericTypes));
 
-        var leftAngleBracket = CSharpLanguageConstants.LeftAngleBracket;
-        var rightAngleBracket = CSharpLanguageConstants.RightAngleBracket;
         var dot = CSharpLanguageConstants.Dot;
         var commaSpace = CSharpLanguageConstants.CommaSpace;
 
         var hasTypeNamespace = typeNamespace.IsEmpty is false;
 
         var dotBetweenLength = hasTypeNamespace ? dot.Length : 0;
-        var typeLength = typeNamespace.Length + typeName.Length + dotBetweenLength;
+        var typeLength = checked(typeNamespace.Length + typeName.Length + dotBetweenLength);
         var genericTypesCount = genericTypes.Length;
 
-        if (genericTypesCount is not 0)
+        var hasGenericTypes = genericTypesCount is not 0;
+
+        if (hasGenericTypes)
         {
-            typeLength += leftAngleBracket.Length + rightAngleBracket.Length; // for generic type brackets
+            typeLength += LeftRightAngleBracketsLength; // for generic type brackets
             typeLength += checked(MinimumTypeLength * genericTypesCount); // for do fewer allocations when appending generic types
             typeLength += commaSpace.Length * (genericTypesCount - 1); // for comma and space between generic types
         }
@@ -64,9 +67,9 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
 
         buffer.Append(typeName);
 
-        if (genericTypesCount is 0) return;
+        if (hasGenericTypes is false) return;
 
-        buffer.Append(leftAngleBracket);
+        buffer.Append(CSharpLanguageConstants.LeftAngleBracket);
 
         var genericTypesSpan = genericTypes.AsSpan();
         var genericTypeIndex = 0;
@@ -85,6 +88,6 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
             goto genericTypeAppendLoop;
         }
 
-        buffer.Append(rightAngleBracket);
+        buffer.Append(CSharpLanguageConstants.RightAngleBracket);
     }
 }
