@@ -45,7 +45,7 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
         var hasTypeNamespace = typeNamespace.IsEmpty is false;
 
         var dotBetweenLength = hasTypeNamespace ? dot.Length : 0;
-        var typeLength = checked(typeNamespace.Length + typeName.Length + dotBetweenLength);
+        var typeLength = typeNamespace.Length + typeName.Length + dotBetweenLength;
         var genericTypesCount = genericTypes.Length;
 
         var hasGenericTypes = genericTypesCount is not 0;
@@ -53,7 +53,7 @@ internal sealed class TypeElementCompiler : IElementCompiler<TypeElement>
         if (hasGenericTypes)
         {
             typeLength += LeftRightAngleBracketsLength; // for generic type brackets
-            typeLength += checked(MinimumTypeLength * genericTypesCount); // for do fewer allocations when appending generic types
+            typeLength += MinimumTypeLength * genericTypesCount; // for do fewer allocations when appending generic types
             typeLength += commaSpace.Length * (genericTypesCount - 1); // for comma and space between generic types
         }
 
